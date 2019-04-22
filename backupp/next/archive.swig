@@ -27,7 +27,7 @@
         {% else %}
           {% set cheers = 'um' %}
         {% endif %}
-         {{ _p("counter.archive_posts", site.posts.length, totalcount(site)) }} 
+        {{ __('cheers.' + cheers) }}! {{ _p("counter.archive_posts", site.posts.length, totalcount(site)) }} 
       </span>
       {% endif %}
 
