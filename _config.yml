@@ -11,6 +11,17 @@ author: Sayi
 language: zh-CN
 timezone:
 
+#字数统计
+ #启用符号
+ #启用阅读时间
+ #启用符号，总站文章
+ #启用时间，总站文章
+symbols_count_time:
+  symbols: true 
+  time: true    
+  total_symbols: true    
+  total_time: true      
+  
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
 url: http://yoursite.com
