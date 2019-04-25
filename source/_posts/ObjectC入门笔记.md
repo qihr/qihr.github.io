@@ -1,7 +1,7 @@
 ---
-titile:OC入门笔记
-tags:[ObjectC-C]
-categories:Program
+titile: OC入门笔记
+tags: [ObjectC-C]
+categories: Program
 ---
 
 ## 属性
