@@ -621,7 +621,168 @@ if (GraphUpdateUtilities.UpdateGraphsNoBlock(guo, spawnPointNode, goalNode, fals
 
 # 保存和加载图表
 
- 
+ 图的设置通过Unity的序列化来保存，但图没有通过序列化保存和加载，而是被保存至一个字节数组中，通过数组完成了保存和加载。
+
+可以A* inspector面板中可以看到Save&Load选项。
+
+[需要一张图片]
+
+## 图的计算缓存
+
+通常你希望游戏启动时重新计算图，但有的时候，尤其是使用RecastGraph或者在移动设备上开发，游戏开始时的延迟会非常烦。
+
+打开Save&Load面板，点击Generate Cache来创建缓存。它将会询问你是否保存之前重新扫描图。现在游戏启动时会加载缓存读取图的节点信息和其他参数，不需要另外的计算时间。
+
+[需要一张图片]
+
+## 将图保存至文件并读取
+
+您可能还希望将图表保存到稍后可以加载的文件中。您甚至可以在运行时从服务器加载它。
+
+如果想保存你的图，点击Save to file 按钮，你可以只保存配置参数或者保存配置参数和节点数据。如果只保存设置配置参数，则在图被加载后，你需要重新计算他在任何角色使用图进行导航之前。你可以使用以下代码重新计算所有的图：
+
+```
+AstarPath.active.Scan();
+```
+
+如果要再次加载图形，只需按“从文件加载”按钮并找到该文件。请注意，这将替换您当前的图表。
+
+问题：只保存设置，还如何加载图形？？保存的设置是什么？？？
+
+## 使用代码进行保存和加载
+
+如果需要实时加载或保存图，则需要在代码里进行操作。
+
+`SerializeGraphs()`方法会将图的参数序列化为数组，默认情况下包含节点信息（假设序列化之前保存过图形）。
+
+```csharp
+byte[] bytes = AstarPath.active.data.SerializeGraphs();
+```
+
+可以近一步配置
+
+```csharp
+var settings = new Pathfinding.Serialization.SerializeSettings();
+
+// Only save settings
+settings.nodes = false;
+byte[] bytes = AstarPath.active.data.SerializeGraphs(settings);
+```
+
+加载保存的数据：
+
+```c++
+AstarPath.active.data.DeserializeGraphs(bytes);
+```
+
+如果只加载了设置，你可能需要调用Scan方法在加载设置后：
+
+```csharp
+AstarPath.active.data.DeserializeGraphs(bytes);
+AstarPath.active.Scan();
+```
+
+如果不是替换当前图，可以使用附加的方式加载图：
+
+> Instead of replacing the currently loaded graphs, you can additively load graphs using
+
+```
+AstarPath.active.data.DeserializeGraphsAdditive(bytes);
+```
+
+使用以下方法卸载图：
+
+```
+var data = AstarPath.active.data;
+var myGraph = data.gridGraph;
+data.RemoveGraph(myGraph);
+```
+
+### Including Data in a TextAsset
+
+图表数据可以被包含在TextAsset中，当你将数据保存为文件，把文件重命名为入“myGraph.bytes”，然后将它放入你的Unity工程中，这样会告诉Unity将文件视作二进制文件。如果使用.txt的后缀会使出现问题，因为Unity会尝试用text读取文件。一些操作系统会隐藏扩展名，所以如果Unity无法识别.bytes请检查文件后缀是否真的是bytes。zip（或者其他）后缀名可能会被隐藏。**然后，您可以通过在变量访问.bytes字段来加载text asse的图形，访问.bytes文件。**
+
+```
+Graph data can be included in textassets for easier inclusion in the build. When you have saved the data to a file, rename that file to something like "myGraph.bytes" and place it in your Unity Project. This will tell Unity to handle it as binary information. With an extension like .txt the data would get corrupted because Unity would try to read it as text. Some operating systems like to hide the extension, so if Unity doesn't seem to recognize the file with the .bytes extension make sure it really has a .bytes extension, the .zip (or other) extension might just be hidden. Then you can load the graph from a text asset by referencing it in a variable, and accessing the .bytes field.
+```
+
+### 数据类型
+
+所有的参数设置都会被序列化为JSON，可以很好的保持向前或向后兼容。下面提到的所有文件都会被压缩进单独的zip文件，缩小尺寸，使数据更容易处理。这也意味着你可以打开zip文件进行手动处理。
+
+【需要一章图片】
+
+**meta**
+
+meta.json文件会在所有的序列化中出现，A meta.json file is present in all serializations. This file contains information which is not connected to a specific graph, or is needed to load the other graphs.
+
+- Version number for the system
+- Number of graphs which are saved
+- GUID values for each graph, to identify them
+- Type of each graph
+
+例如：
+
+```
+{
+    "version": "3.0.9.5",
+    
+    "graphs": 1,
+    
+    "guids": 
+        [
+            "0d83c93fc4928934-8362a8662ec4fb9d"
+        ],
+    
+    "typeNames": 
+        [
+            "Pathfinding.GridGraph"
+        ]
+}
+```
+
+### Graph Settings
+
+每个图的配置参数会被保存为"graph#.json"，#代表图的编号。下面是一个grid图的参数序列化的例子（删除了一些参数以保持代码不会很长）：
+
+```
+{
+   "aspectRatio":1,
+   "rotation":{
+      "x":0,
+      "y":0,
+      "z":0
+   },
+   "center":{
+      "x":0,
+      "y":-0.1,
+      "z":0
+   },
+   "unclampedSize":{
+      "x":100,
+      "y":100
+   },
+   "nodeSize":1,
+   "maxClimb":0.4,
+   "maxClimbAxis":1,
+   "maxSlope":90,
+   "erodeIterations":0,
+   "autoLinkGrids":false,
+   "autoLinkDistLimit":10,
+   "neighbours":"Eight",
+   "cutCorners":true,
+   "penaltyPositionOffset":0,
+   "penaltyPosition":false,
+   "penaltyPositionFactor":1,
+   "penaltyAngle":false,
+   "penaltyAngleFactor":100,
+   "open":true,
+   "infoScreenOpen":false
+   ...
+}
+```
+
+节点信息使用json来保存会占用很多空间，所以被替代为使用二进制文件写入。每个图类型都有自己的序列化保存节点代码。这由每个图上的SerializeExtraInfo和DeserializeExtraInfo方法处理。
 
 # 多种代理类型
 
