@@ -1,8 +1,14 @@
 ---
-titile: OC入门笔记
+title: OC入门笔记
 tags: [ObjectC-C]
 categories: Program
 ---
+
+OC学习笔记
+
+<!--more-->
+
+
 
 ## 属性
 
