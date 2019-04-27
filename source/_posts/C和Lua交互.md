@@ -1,5 +1,5 @@
 ---
-titile: C和Lua交互
+title: C和Lua交互
 tags: [C,Lua,Unity]
 categories: Program
 ---
