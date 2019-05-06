@@ -784,9 +784,43 @@ meta.json文件会在所有的序列化中出现，A meta.json file is present i
 
 节点信息使用json来保存会占用很多空间，所以被替代为使用二进制文件写入。每个图类型都有自己的序列化保存节点代码。这由每个图上的SerializeExtraInfo和DeserializeExtraInfo方法处理。
 
-# 多种代理类型
+# 多种Agent类型
 
- 
+ 不同尺寸的Agent通常有不同的寻路结果，最简单的方法是创建多个图，每一个图对应一种Agent。如果拥有很多代理，您可能希望将它们分组为具有大量图形将增加内存使用量并且扫描将花费更长时间。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # 编辑器寻路
 
@@ -803,100 +837,3 @@ meta.json文件会在所有的序列化中出现，A meta.json file is present i
 # 优化
 
  
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-[,类](http://dict.youdao.com/search?q=%2C类&keyfrom=chrome.extension) [详细](http://www.youdao.com/search?q=%2C类&ue=utf8&keyfrom=chrome.extension)X
-
-  没有英汉互译结果
-[请尝试网页搜索](http://www.youdao.com/search?q=%2C类&ue=utf8&keyfrom=chrome.extension)
