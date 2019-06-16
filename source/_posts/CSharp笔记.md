@@ -585,19 +585,278 @@ set; get;
 
 （插入一个问题  1-6章什么时候讲了修饰符 private protect public这些东西了）
 
-
-
 静态属性：不能访问实例成员，只能被实例成员访问。不管有没有实例都是存在的。外部访问使用类名。
 
 
 
+实例构造函数
+
+构造函数声明为public可以从类的外部创建实例
+
+构造函数没有返回值
+
+构造函数可以被重载
+
+如果用户声明了任何构造方法，则编译器不会提供默认的构造方法。
+
+构造方法可以声明为static，
+
+用于初始化类级别的项，静态字段这种。
+
+**类中只能有一个静态构造函数，而且不能带参数**
+
+静态构造函数不能有任何访问修饰符。
+
+静态构造函数和静态方法一样，不能访问实例成员，因此不能使用**this访问器**
+
+不能从程序中显示调用静态构造方法，系统会自动调用它：
+
+引用任何静态成员之前，创建类的任何实例之前。
+
+
+
+对象初始化有两种
+
+1. new xxx()
+2. new xxx(){在此初始化设置公有字段的值}  大括号里就是初始化
+
+第二种也叫**对象初始化语句** 扩展了对象创建的语法
+
+需要注意，初始化发生在构造方法执行之后，因此构造方法中设置的值可能会在之后对象初始化中重置为相同或不相同的值。
+
+
+
+析构函数  destructor
+
+析构函数具体在后面讲  执行类的实例被销毁之前需要的清理或释放非托管资源的行为。
+
+非托管资源是指通过win32api获得的文件句柄 如果坚持使用。net类就不用编写析构方法
 
 
 
 
 
+readonly修饰符
+
+字段可以用readonly修饰符声明 作为类似const  一旦值被设定就不能改变。
+
+但有一些却别：
+
+const字段只能在声明语句中初始化，readonly可以在 声明语句和任何构造函数中初始化。如果readonly的字段是static的则需要在静态构造函数中初始化。
+
+const字段的值必须在编译的时候决定，但readonly可以在运行时决定。也就是说可以在不同的构造方法中设置不同的值。
+
+const的行为是静态的，readonly是实例字段，也可以说静态字段，在内存中有存储位置
 
 
+
+
+
+this关键字
+
+在类中使用，对当前实例的引用。只能被用在 **实例**构造函数、实例方法、属性和索引器的实例访问器
+
+不能再静态方法中使用this
+
+this的目的是区分累的成员和本地变量或者参数，或者作为调用方法的实参。
+
+
+
+索引器
+
+和属性差不多：
+
+和属性意义，不用分配内存来存储
+
+索引器和属性都是主要被用来访问其他数据成员
+
+属性通常表示单独的数据成员 索引通常表示多个数据成员
+
+索引器不能被声明为static
+
+
+
+需要注意：
+
+索引器没有名称，在名称的位置关键字是this
+
+参数列表再方括号中间
+
+参数列表至少声明一个参数
+
+![2019-06-16-12-10-11](CSharp笔记/2019-06-16-12-10-11.png)
+
+索引器的set访问器接受两项数据：1.隐式参数value持有要保存的数据，2.一个或更多索引参数表示数据应该保存到哪。
+
+![2019-06-16-12-15-09](CSharp笔记/2019-06-16-12-15-09.png)
+
+get、访问器必须检查索引参数确定他表示那个字段，并返回字段值。
+
+![2019-06-16-12-16-18](CSharp笔记/2019-06-16-12-16-18.png)
+
+补充
+
+set和get是不能显示调用的，当索引器在表达式中取值时将自动调用get 赋值时自动调用set
+
+emp[0] = "q";
+
+string name = emp[0];
+
+例子
+
+```csharp
+class Empolyee
+{
+    public string LastName;
+    public string FirstName;
+    public string City;
+    
+    public string this[int index]
+    {
+        set{
+            switch(idnex){
+                case 0:lastName = value; break;
+                    ...
+                        default: throw new ArgumentOutOfRangeexception("index");
+            }
+		}
+        get{
+            case 0:return LastName; break;
+                    ...
+                        default: throw new ArgumentOutOfRangeexception("index");
+        }
+	}
+}
+```
+
+
+
+```csharp
+class Class1
+{
+    int tmp1;
+    int tmp2;
+    public int this[int index]
+    {
+        get{
+            return (0 == index)
+                	? tmp1
+                	:tmp1;
+        }
+        set{
+            if(0 == idnex)
+                tmp1 = value;
+            else
+                tmp2 = value;
+        }
+    }
+}
+```
+
+
+
+索引器可以重载，一定要保持有不同的参数列表。
+
+```csharp
+class Class1
+{
+    int tmp1;
+    int tmp2;
+    public int this[int index]
+    {
+        get{
+           ...
+        }
+        set{
+  			...
+        }
+    }
+    
+        public int this[int index，int index]
+    {
+        get{
+           ...
+        }
+        set{
+  			...
+        }
+    }
+}
+
+
+```
+
+
+
+**访问器的修饰符** 看好了 是访问器 不是索引器
+
+属性和索引器是函数成员，并自带了get和set索引器
+
+可以对get和set设置不同的访问级别 可以用于在对象的外部，只能读取该属性 是一个非常重要的封装工具
+
+但要注意
+
+必须同时有gat和set访问器时，访问器才能有修饰符，并且只能有一个访问修饰符
+
+访问器的修饰符必须比成员的级别更严格。 也就是访问器的访问级别必须要比成员的访问级别的位置低，也不能等于属性的访问级别
+
+访问级别：
+
+
+
+public --> protected ------>protected--------> private
+
+​				  internal---------->internal----------->private
+
+分部类和分部类型：
+
+分部类可以生命在不同或相同的文件中  ，局部声明要被标注为partial class。
+
+partial不是关键字，在程序中可以用于标识符。但在class struct（局部结构） interface（局部借口）前它表示分布类型。
+
+
+
+分部方法：
+
+分布方法是声明在分部类中不同部分的方法，也可以声明在同一个类中
+
+分为两个部分：
+
+定义分布方法声明：给出签名和返回类型，声明的实现部分知识一个分号。
+
+实现分部方法声明：给出签名和返回类型，是以正常形式的语句块实现。
+
+需要注意的内容：
+
+定义和实现的签名和返回类型必须匹配。返回类型必须是void，签名不能包括访问修饰符，也就是说分部方法是私有的，列表不能包含out参数。定义和实现必须包含上下文关键字partial，直接放在关键字void之前。
+
+可以有定义而没有实现 编译器会把方法的声明以及方法内部任何对方法的调用移除。
+
+例子：
+
+```csharp
+public class Myclass
+{
+    partial void PrintSum(int x , int y); 
+    
+    public void Add(int x, int y)
+    {
+        PrintSum(x,y);
+    }
+}
+
+
+
+partial class Myclass
+{
+    partial void PrintSum(int x, int y)
+    {
+        console.writeLine("xxx:" , x +y);
+    }
+}
+
+
+```
 
 
 
