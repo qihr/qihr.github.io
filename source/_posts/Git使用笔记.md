@@ -1,24 +1,27 @@
 ---
 title: Git使用手册
+date: 2019-12-15 20:40:21
 tags: [Git]
 categories: Program
 ---
 
+s
 
+<!-- more -->
 
 ### 1.连接GitHub
 
- 配置信息
+ 配置信息 
 
-```shell
+```bash
 git config --global user.name "你的GitHub用户名"
 git config --global user.email "你的GitHub注册邮箱"
 ```
 
  生成密钥文件
 
-```shell
-ssh-keygen -t rsa -C "你的GitHub注册邮箱"
+```bash
+$ ssh-keygen -t rsa -C "你的GitHub注册邮箱"
 ```
 
 后面提示连按三个回车即可。
@@ -171,6 +174,12 @@ git clone git@github.com:......
 
 
 
+###  7.Bash生成hexo文章
+
+md手动去打标签和日期很不方便。
+
+
+
 ### 9.其他问题
 
 #### 关于git commit -m 卡在vim编辑器无法退出
@@ -184,25 +193,30 @@ vim对新人真的太不又好了，退出都不会。
 > > [core]
 > >         editor = 'D:/Program Files/Notepad/notepad++.exe' -multiImst -nosession
 >
-> 
->
 > 作者：Elpie Kay
-> 链接：https://www.zhihu.com/question/61913534/answer/192748096
+>链接：https://www.zhihu.com/question/61913534/answer/192748096
 > 来源：知乎
 > 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
 
 
 
+#### 站点文章并没有按时间排序
+
+记得写date,不然会按文章标题排序。
+
+```markdown
+title: Mac OS X 10.10.3下android-5.1.1_r9 源码下载与编译
+date: 2015-08-18 10:36:21
+categories: Android
+tags: [Tech,Android]
+```
+
 
 
 ### 0.附录
 
-[^1]: [GitHub+Hexo 搭建个人网站详细教程]https://zhuanlan.zhihu.com/p/26625249()
-[^2]: [使用hexo，如果换了电脑怎么更新博客]https://www.zhihu.com/question/21193762/answer/79109280
-
-
-
-
+[^1]: [GitHub+Hexo 搭建个人网站详细教程](https://zhuanlan.zhihu.com/p/26625249)
+[^2]: [使用hexo，如果换了电脑怎么更新博客](https://www.zhihu.com/question/21193762/answer/79109280)
 
 
 
