@@ -104,5 +104,131 @@ deploy:
   branch: master
 ```
 
-修改这是为了给hexo d配置对应参数，此时生成的静态页面会推送至master分支。
+修改这是为了给hexo d配置对应参数，生成的静态页面会推送至master分支。
+
+安装Git部署插件：
+
+```powershell
+npm install hexo-deployer-git --save
+```
+
+然后推送至master：
+
+```shell
+hexo clean 
+hexo g 
+hexo d
+```
+
+### 4.主题下载
+
+```shell
+git clone https://github.com/iissnan/hexo-theme-next themes/next
+```
+
+打开站点目录下的`_config.yml`文件，修改主题为下载的：
+
+```yaml
+# Extensions
+## Plugins: https://hexo.io/plugins/
+## Themes: https://hexo.io/themes/
+theme: next  
+#theme: landscape
+
+```
+
+### 5.保存文章和配置文件到分支
+
+master分支保存的只是渲染出的静态网页，新建一个分支用于保存文章和网站配置文件比较靠谱。
+
+新建一个分支，名如hexo，然后设置为默认分支。
+
+执行：
+
+```shell
+git add .
+git commit -m "..."
+git push origin hexo
+```
+
+这样网站文件会推送至hexo分支，而静态网页（hexo d）生成的文件会在master分支中。
+
+
+
+### 6.更换环境后的重新部署
+
+0.执行章节2的git部分操作。
+
+1.将hexo分支的网站文件clone至本地：
+
+```shell
+git clone git@github.com:......
+```
+
+因为刚刚设置了默认分支为hexo，所以会直接download网站文件。
+
+2.然后执行章节2的hexo部分操作。
+
+
+
+### 9.其他问题
+
+#### 关于git commit -m 卡在vim编辑器无法退出
+
+vim对新人真的太不又好了，退出都不会。
+
+> 按下小写字母i，会进入编辑模式。可以在此模式下输入你想要的commit message。输入结束以后，按下esc退出编辑模式，这时按下英文输入法下的冒号，再输入wq，就可以保存退出了。w是write，q是quit。也可以在按esc退出编辑模式以后，切换到大写模式，连按两下Z。
+>
+> 如果你用不惯这个编辑器的话，可以通过配置git config --global core.editor '其它文本编辑器的执行文件的路径'，这样需要调用文本编辑器时，就不会用默认的vi了。譬如设置成notepad++，sublimetext等等。
+>
+> > [core]
+> >         editor = 'D:/Program Files/Notepad/notepad++.exe' -multiImst -nosession
+>
+> 
+>
+> 作者：Elpie Kay
+> 链接：https://www.zhihu.com/question/61913534/answer/192748096
+> 来源：知乎
+> 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+
+
+
+
+
+### 0.附录
+
+[^1]: [GitHub+Hexo 搭建个人网站详细教程]https://zhuanlan.zhihu.com/p/26625249()
+[^2]: [使用hexo，如果换了电脑怎么更新博客]https://www.zhihu.com/question/21193762/answer/79109280
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
