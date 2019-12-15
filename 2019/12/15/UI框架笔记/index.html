@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description" content="一 设计模式1.工厂模式所有对象的创造，都由同一个对象去创造 简单来说： 向工厂类或者方法传入一个参数，会得到一个new出来的对应对象。 2.存储讲解一些知识点(因为教程中工厂创建类是根据 参数 == “类名” 来区分的)： 1string tmpa = &quot;hello&quot;; String tmpb = &quot;hello&quot;; 刚刚记笔记的时候简写了直接赋值常量字符串，这样是不能观察出去别的，必须像下图一">
+<meta name="keywords" content="Unity">
+<meta property="og:type" content="article">
+<meta property="og:title" content="UI框架笔记">
+<meta property="og:url" content="http://yoursite.com/2019/12/15/UI框架笔记/index.html">
+<meta property="og:site_name" content="Note">
+<meta property="og:description" content="一 设计模式1.工厂模式所有对象的创造，都由同一个对象去创造 简单来说： 向工厂类或者方法传入一个参数，会得到一个new出来的对应对象。 2.存储讲解一些知识点(因为教程中工厂创建类是根据 参数 == “类名” 来区分的)： 1string tmpa = &quot;hello&quot;; String tmpb = &quot;hello&quot;; 刚刚记笔记的时候简写了直接赋值常量字符串，这样是不能观察出去别的，必须像下图一">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yoursite.com/2019/12/15/UI框架笔记/C:/Users/Sayi1/AppData/Roaming/Typora/typora-user-images/image-20191215161524583.png">
+<meta property="og:image" content="http://yoursite.com/2019/12/15/UI框架笔记/C:/Users/Sayi1/AppData/Roaming/Typora/typora-user-images/image-20191215161620196.png">
+<meta property="og:image" content="http://yoursite.com/2019/12/15/UI框架笔记/C:/Users/Sayi1/AppData/Roaming/Typora/typora-user-images/image-20191215161644256.png">
+<meta property="og:image" content="http://yoursite.com/2019/12/15/UI框架笔记/C:/Users/Sayi1/AppData/Roaming/Typora/typora-user-images/image-20191215161738292.png">
+<meta property="og:image" content="http://yoursite.com/2019/12/15/UI框架笔记/C:/Users/Sayi1/AppData/Roaming/Typora/typora-user-images/image-20191215161749804.png">
+<meta property="og:image" content="http://yoursite.com/2019/12/15/UI框架笔记/C:/Users/Sayi1/AppData/Roaming/Typora/typora-user-images/image-20191215161807283.png">
+<meta property="og:updated_time" content="2019-12-15T08:18:09.522Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="UI框架笔记">
+<meta name="twitter:description" content="一 设计模式1.工厂模式所有对象的创造，都由同一个对象去创造 简单来说： 向工厂类或者方法传入一个参数，会得到一个new出来的对应对象。 2.存储讲解一些知识点(因为教程中工厂创建类是根据 参数 == “类名” 来区分的)： 1string tmpa = &quot;hello&quot;; String tmpb = &quot;hello&quot;; 刚刚记笔记的时候简写了直接赋值常量字符串，这样是不能观察出去别的，必须像下图一">
+<meta name="twitter:image" content="http://yoursite.com/2019/12/15/UI框架笔记/C:/Users/Sayi1/AppData/Roaming/Typora/typora-user-images/image-20191215161524583.png">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>UI框架笔记</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- rss -->
+    
+    
+</head>
+
+<body>
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fa fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fa fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/_posts/">Writing</a></li>
+         
+          <li><a href="/categories/">T</a></li>
+         
+          <li><a href="http://github.com/sergodeeva">Projects</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" href="/2019/12/11/Unity插件：AStarPathfinding寻路系统（中）/"><i class="fa fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fa fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2019/12/15/UI框架笔记/"><i class="fa fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2019/12/15/UI框架笔记/&text=UI框架笔记"><i class="fa fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2019/12/15/UI框架笔记/&title=UI框架笔记"><i class="fa fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2019/12/15/UI框架笔记/&is_video=false&description=UI框架笔记"><i class="fa fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=UI框架笔记&body=Check out this article: http://yoursite.com/2019/12/15/UI框架笔记/"><i class="fa fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2019/12/15/UI框架笔记/&title=UI框架笔记"><i class="fa fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2019/12/15/UI框架笔记/&title=UI框架笔记"><i class="fa fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2019/12/15/UI框架笔记/&title=UI框架笔记"><i class="fa fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2019/12/15/UI框架笔记/&title=UI框架笔记"><i class="fa fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2019/12/15/UI框架笔记/&name=UI框架笔记&description="><i class="fa fa-tumblr " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一-设计模式"><span class="toc-number">1.</span> <span class="toc-text">一 设计模式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-工厂模式"><span class="toc-number">1.1.</span> <span class="toc-text">1.工厂模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-存储讲解"><span class="toc-number">1.2.</span> <span class="toc-text">2.存储讲解</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#参数传递"><span class="toc-number">1.2.1.</span> <span class="toc-text">参数传递</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-策略模式"><span class="toc-number">1.3.</span> <span class="toc-text">3.策略模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-观察者模式"><span class="toc-number">1.4.</span> <span class="toc-text">4.观察者模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-代理模式"><span class="toc-number">1.5.</span> <span class="toc-text">5.代理模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-单例模式"><span class="toc-number">1.6.</span> <span class="toc-text">6.单例模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-门面模式"><span class="toc-number">1.7.</span> <span class="toc-text">7.门面模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-建造模式"><span class="toc-number">1.8.</span> <span class="toc-text">8.建造模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-中介者模式"><span class="toc-number">1.9.</span> <span class="toc-text">9.中介者模式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#零-问题"><span class="toc-number">2.</span> <span class="toc-text">零 问题</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index width mx-auto px2 my4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        UI框架笔记
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Note</span>
+      </span>
+      
+    <div class="postdate">
+        <time datetime="2019-12-15T07:59:09.181Z" itemprop="datePublished">2019-12-15</time>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/Unity/">Unity</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <a id="more"></a>
+<h2 id="一-设计模式"><a href="#一-设计模式" class="headerlink" title="一 设计模式"></a>一 设计模式</h2><h3 id="1-工厂模式"><a href="#1-工厂模式" class="headerlink" title="1.工厂模式"></a>1.工厂模式</h3><p>所有对象的创造，都由同一个对象去创造</p>
+<p>简单来说： 向工厂类或者方法传入一个参数，会得到一个new出来的对应对象。</p>
+<h3 id="2-存储讲解"><a href="#2-存储讲解" class="headerlink" title="2.存储讲解"></a>2.存储讲解</h3><p>一些知识点(因为教程中工厂创建类是根据 参数 == “类名” 来区分的)：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">string</span> tmpa = <span class="string">"hello"</span>; String tmpb = <span class="string">"hello"</span>;</span><br></pre></td></tr></table></figure>
+<p>刚刚记笔记的时候简写了直接赋值常量字符串，这样是不能观察出去别的，必须像下图一样new出来</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">string</span> tmpA = <span class="keyword">new</span> <span class="keyword">string</span> (<span class="keyword">new</span> <span class="keyword">char</span>[])&#123;<span class="string">'H'</span>,<span class="string">'L'</span>&#125;);</span><br><span class="line"><span class="keyword">string</span> tmpB = <span class="keyword">new</span> <span class="keyword">string</span> (<span class="keyword">new</span> <span class="keyword">char</span>[])&#123;<span class="string">'H'</span>,<span class="string">'L'</span>&#125;);</span><br><span class="line">Debug.Log(tempA == tempB);</span><br><span class="line">Debug.Log(tempA.Equals(tempB));</span><br></pre></td></tr></table></figure>
+<p>（两个都是true）</p>
+<p>Equal 对比的是变量的地址是否相等 ==比较的是内容是否一样 除了string类型（string较特殊 字符串是共享的 equal对于string对比的是内容。）</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//zhan 1001</span></span><br><span class="line"><span class="keyword">object</span> tmpC = tempA;</span><br><span class="line"><span class="comment">//zhan 1002</span></span><br><span class="line"><span class="keyword">object</span> tmpD = tmpB;</span><br><span class="line"></span><br><span class="line">Debug.Log(<span class="string">"tmpc == tmpD"</span>)</span><br><span class="line">Debug.Log(tmpc ==tempD);</span><br><span class="line"></span><br><span class="line">Debug.Log(tempD.<span class="keyword">equals</span>(tempC));</span><br></pre></td></tr></table></figure>
+<p>答案是 false true</p>
+<p>因为虽然是tempd.equal 但是tempd实质上是tempb传过来的，并且equal被重载所以还是在比较string的内容</p>
+<p>注意 == 号是可以被重载的：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">bool</span> <span class="keyword">operator</span> ==(Vecter Ihs ,Vecter rhs)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span>(exp)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>同时需要重载 != 不然会报错。</p>
+<h4 id="参数传递"><a href="#参数传递" class="headerlink" title="参数传递"></a>参数传递</h4><ol>
+<li><p>按值传递值类型</p>
+</li>
+<li><p>按值传递引用类型</p>
+</li>
+<li><p>按引用传递值类型</p>
+</li>
+<li><p>按引用传递引用类型</p>
+</li>
+</ol>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Food</span>(<span class="params"><span class="keyword">int</span> x</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    x = <span class="number">10</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//按值传递引用类型</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Food2</span>(<span class="params"><span class="keyword">ref</span> <span class="keyword">int</span> temp</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    tempX = <span class="number">10</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Food3</span>(<span class="params">Vecter tmpVect1</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    tempVect1.xx = <span class="number">10</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Food4</span>(<span class="params">Vecter tempVect2</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Vecter tmpVect = <span class="keyword">new</span> Vecter(<span class="number">10</span>);</span><br><span class="line">    tmpVect2 = tempVect;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Food5</span>(<span class="params"><span class="keyword">ref</span> Vecter tmpVect2</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Vecter tmpVect = <span class="keyword">new</span> Vecter(<span class="number">10</span>);</span><br><span class="line">    </span><br><span class="line">    tmpVect2 = tmpVect;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>需要说一下 ： Food4接受的参数是，参数里的对象在堆上所在的地址。而不是参数在栈上的地址。 自始至终 都是在做值传递。</p>
+<p>food5加了ref 所以参数传了栈的值</p>
+<h3 id="3-策略模式"><a href="#3-策略模式" class="headerlink" title="3.策略模式"></a>3.策略模式</h3><p>API传一个参数，得到不同的答案<br>一般做一些算法处理。<br>根据不同的参数做不同的处理。<br>多态的补充： 父类的指针 指向子类 再调用子类的方法。 eg： personnal（子类对象） person = new personstrage(子类构造方法)<br>也可以是 stragenase（父类对象） sb = new personstrage（子类构造方法）<br>override的方法 当子类以父类形式调用方法时，调用的时子类的override的方法。</p>
+<h3 id="4-观察者模式"><a href="#4-观察者模式" class="headerlink" title="4.观察者模式"></a>4.观察者模式</h3><p>观察者每隔一段时间去询问对象工作是否完成</p>
+<p>缺点： 经常询问，效率比较低。</p>
+<h3 id="5-代理模式"><a href="#5-代理模式" class="headerlink" title="5.代理模式"></a>5.代理模式</h3><p>对象完成工作后通知代理</p>
+<p>优点：完成任务后主动通知，不浪费性能</p>
+<p>能用代理模式的时候，不要使用观察者模式。</p>
+<p>和观察者模式不一样的地方在于，虽然对象在两种模式下都是每一帧在工作（比如播放动画），但是代理模式下，调用者不需要去每帧检查。而观察者模式下，调用者需要每帧检查。</p>
+<p><img src="/2019/12/15/UI框架笔记/C:/Users\Sayi1\AppData\Roaming\Typora\typora-user-images\image-20191215161524583.png" alt="image-20191215161524583" style="zoom:50%;"></p>
+<p>在干活的人多的时候，代理模式去向调用层报告要比观察者模式好得多。</p>
+<p>观察者模式和代理模式的优缺点。</p>
+<h3 id="6-单例模式"><a href="#6-单例模式" class="headerlink" title="6.单例模式"></a>6.单例模式</h3><p>单例模式存在一些问题：</p>
+<p>单例对象之间的交叉问题。代码混乱。</p>
+<p>尽量少用单例，要分析场景是否适合。</p>
+<h3 id="7-门面模式"><a href="#7-门面模式" class="headerlink" title="7.门面模式"></a>7.门面模式</h3><ol>
+<li><p>管理的东西，没有关联的逻辑关系 </p>
+</li>
+<li><p>但是把这些东西集合，可以形成一个功能。</p>
+</li>
+</ol>
+<p><img src="/2019/12/15/UI框架笔记/C:/Users\Sayi1\AppData\Roaming\Typora\typora-user-images\image-20191215161620196.png" alt="image-20191215161620196" style="zoom:50%;"></p>
+<h3 id="8-建造模式"><a href="#8-建造模式" class="headerlink" title="8.建造模式"></a>8.建造模式</h3><p><img src="/2019/12/15/UI框架笔记/C:/Users\Sayi1\AppData\Roaming\Typora\typora-user-images\image-20191215161644256.png" alt="image-20191215161644256"></p>
+<p>什么是assetbundle：比如说一个图片资源，和一个text文本资源，打成一个文件 test.u3d 这个u3d就是assetbundle。</p>
+<p>案例中写了两个类  一个是从内存中读取assetbundle：IABResuse。另一个是从硬盘中：AssetbundleLoad</p>
+<p>上层调用-&gt;AssetbundleLoad到内存-&gt;Assetbundle.LoadAsset</p>
+<p>自上而下的 每一个环节都提供不同的功能 分工明确。</p>
+<p>也叫责任链模式</p>
+<h3 id="9-中介者模式"><a href="#9-中介者模式" class="headerlink" title="9.中介者模式"></a>9.中介者模式</h3><p>迪米特原则  最少的引用其他类</p>
+<p>中介者模式就是这个原则。</p>
+<p>一个面试题：</p>
+<p><img src="/2019/12/15/UI框架笔记/C:/Users\Sayi1\AppData\Roaming\Typora\typora-user-images\image-20191215161738292.png" alt="image-20191215161738292"></p>
+<p>点乘 叉乘</p>
+<p><img src="/2019/12/15/UI框架笔记/C:/Users\Sayi1\AppData\Roaming\Typora\typora-user-images\image-20191215161749804.png" alt="image-20191215161749804"></p>
+<p>先判断夹角是否小于九十度 小于证明 npc在前方。</p>
+<p>然后判断x和y的投影。</p>
+<p><img src="/2019/12/15/UI框架笔记/C:/Users\Sayi1\AppData\Roaming\Typora\typora-user-images\image-20191215161807283.png" alt="image-20191215161807283"></p>
+<h2 id="零-问题"><a href="#零-问题" class="headerlink" title="零 问题"></a>零 问题</h2><p>对象为什么都在堆中？</p>
+<p>堆 栈 全局变量区 程序存储的三个区域 栈也有地址吗</p>
+<p>为什么 tempc == tempd 是false，因为类没有定义==重载吗？</p>
+
+  </div>
+</article>
+
+
+
+    </div>
+    
+      <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/_posts/">Writing</a></li>
+         
+          <li><a href="/categories/">T</a></li>
+         
+          <li><a href="http://github.com/sergodeeva">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一-设计模式"><span class="toc-number">1.</span> <span class="toc-text">一 设计模式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-工厂模式"><span class="toc-number">1.1.</span> <span class="toc-text">1.工厂模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-存储讲解"><span class="toc-number">1.2.</span> <span class="toc-text">2.存储讲解</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#参数传递"><span class="toc-number">1.2.1.</span> <span class="toc-text">参数传递</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-策略模式"><span class="toc-number">1.3.</span> <span class="toc-text">3.策略模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-观察者模式"><span class="toc-number">1.4.</span> <span class="toc-text">4.观察者模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-代理模式"><span class="toc-number">1.5.</span> <span class="toc-text">5.代理模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-单例模式"><span class="toc-number">1.6.</span> <span class="toc-text">6.单例模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-门面模式"><span class="toc-number">1.7.</span> <span class="toc-text">7.门面模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-建造模式"><span class="toc-number">1.8.</span> <span class="toc-text">8.建造模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-中介者模式"><span class="toc-number">1.9.</span> <span class="toc-text">9.中介者模式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#零-问题"><span class="toc-number">2.</span> <span class="toc-text">零 问题</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2019/12/15/UI框架笔记/"><i class="fa fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2019/12/15/UI框架笔记/&text=UI框架笔记"><i class="fa fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2019/12/15/UI框架笔记/&title=UI框架笔记"><i class="fa fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2019/12/15/UI框架笔记/&is_video=false&description=UI框架笔记"><i class="fa fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=UI框架笔记&body=Check out this article: http://yoursite.com/2019/12/15/UI框架笔记/"><i class="fa fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2019/12/15/UI框架笔记/&title=UI框架笔记"><i class="fa fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2019/12/15/UI框架笔记/&title=UI框架笔记"><i class="fa fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2019/12/15/UI框架笔记/&title=UI框架笔记"><i class="fa fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2019/12/15/UI框架笔记/&title=UI框架笔记"><i class="fa fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2019/12/15/UI框架笔记/&name=UI框架笔记&description="><i class="fa fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+      <ul>
+        <li id="toc"><a class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa fa-list fa-lg" aria-hidden="true"></i> TOC</a></li>
+        <li id="share"><a class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa fa-share-alt fa-lg" aria-hidden="true"></i> Share</a></li>
+        <li id="top" style="display:none"><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a></li>
+        <li id="menu"><a class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa fa-bars fa-lg" aria-hidden="true"></i> Menu</a></li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+    
+    <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2019 Sayi
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/_posts/">Writing</a></li>
+         
+          <li><a href="/categories/">T</a></li>
+         
+          <li><a href="http://github.com/sergodeeva">Projects</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+</body>
+</html>
+<!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="/lib/meslo-LG/styles.css">
+<link rel="stylesheet" href="/lib/justified-gallery/justifiedGallery.min.css">
+
+<!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+
+
+    <!-- Google Analytics -->
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-37473492-6', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+
+
