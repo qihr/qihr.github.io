@@ -2,6 +2,7 @@
 title: CSharp笔记
 tags: [CSharp]
 categories: Program
+date: 2019年12月17日08点55分
 ---
 iOS的SDK接入流程
 
@@ -9,11 +10,34 @@ iOS的SDK接入流程
 
 <!-- more -->
 
-## 一 .net框架
+## 一 .Net框架
 
 ### 1.2 .net框架构成
 
 ![Image 0011559550021](CSharp笔记/Image 0011559550021.png)
+
+
+
+
+
+eeee
+
+```flow
+graph LR
+A[方形] -->B(圆角)
+    B --> C{条件a}
+    C -->|a=1| D[结果1]
+    C -->|a=2| E[结果2]
+    F[横向流程图]
+```
+
+
+
+eeeeee
+
+
+
+
 
 CLR：Common Language Runtime 公共语言运行库
 
@@ -86,6 +110,10 @@ CTS最重要的特征是，所有类型都继承公共的基类 object
 c#的演化可以单独说一下
 
 ![Image 0011559553508](CSharp笔记/Image 0011559553508.png)
+
+
+
+
 
 ## 二
 
