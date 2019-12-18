@@ -97,7 +97,7 @@
 
 
   <meta name="description" content="iOS的SDK接入流程">
-<meta name="keywords" content="Lua,Unity,iOS,SDK">
+<meta name="keywords" content="Unity,Lua,iOS,SDK">
 <meta property="og:type" content="article">
 <meta property="og:title" content="UnityiOSSDK接入">
 <meta property="og:url" content="http://yoursite.com/2019/12/11/UnityIosSDK接入/index.html">
@@ -634,9 +634,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Lua/" rel="tag"># Lua</a>
-          
             <a href="/tags/Unity/" rel="tag"># Unity</a>
+          
+            <a href="/tags/Lua/" rel="tag"># Lua</a>
           
             <a href="/tags/iOS/" rel="tag"># iOS</a>
           
@@ -794,6 +794,8 @@
                     
                       
                     
+                      
+                    
                     <span class="site-state-item-count">11</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
@@ -921,6 +923,15 @@
 
 
 
+
+
+
+  <script src="https://unpkg.com/mermaid@7.1.2/dist/mermaid.min.js"></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize("");
+    }
+  </script>
 
         
 
@@ -1363,6 +1374,26 @@
   
 
   
+<script>
+if ($('body').find('pre.mermaid').length) {
+  $.ajax({
+    type: 'GET',
+    url: '',
+    dataType: 'script',
+    cache: true,
+    success: function() {
+      mermaid.initialize({
+        theme: '',
+        logLevel: 3,
+        flowchart: { curve: 'linear' },
+        gantt: { axisFormat: '%m/%d/%Y' },
+        sequence: { actorMargin: 50 }
+      });
+    }
+  });
+}
+</script>
+
 
   
 

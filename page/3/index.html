@@ -851,7 +851,7 @@
       
         
           <p>LuaInterface</p>
-<p><a href="https://www.cnblogs.com/sifenkesi/p/3901831.html" target="_blank" rel="noopener">https://www.cnblogs.com/sifenkesi/p/3901831.html</a></p>
+<p><a href="https://www.cnblogs.com/sifenkesi/p/3901831.html">https://www.cnblogs.com/sifenkesi/p/3901831.html</a></p>
           <!--noindex-->
           
             <div class="post-button text-center">
@@ -1006,6 +1006,8 @@
                     
                       
                     
+                      
+                    
                     <span class="site-state-item-count">11</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
@@ -1116,6 +1118,15 @@
 
 
 
+
+
+
+  <script src="https://unpkg.com/mermaid@7.1.2/dist/mermaid.min.js"></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize("");
+    }
+  </script>
 
         
 
@@ -1552,6 +1563,26 @@
   
 
   
+<script>
+if ($('body').find('pre.mermaid').length) {
+  $.ajax({
+    type: 'GET',
+    url: '',
+    dataType: 'script',
+    cache: true,
+    success: function() {
+      mermaid.initialize({
+        theme: '',
+        logLevel: 3,
+        flowchart: { curve: 'linear' },
+        gantt: { axisFormat: '%m/%d/%Y' },
+        sequence: { actorMargin: 50 }
+      });
+    }
+  });
+}
+</script>
+
 
   
 

@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Git使用手册</title>
+    <title>Hexo使用手册</title>
     <url>/2019/12/15/Git%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<p>hexo和git的基本操作。</p>
+    <content><![CDATA[<p>hexo的基本操作。</p>
 <a id="more"></a>
-<h3 id="1-连接GitHub"><a href="#1-连接GitHub" class="headerlink" title="1.连接GitHub"></a>1.连接GitHub</h3><p> 配置信息 </p>
+<h3 id="1-连接GitHub"><a href="#1-连接GitHub" class="headerlink" title="1.连接GitHub"></a>1.连接GitHub</h3><p>配置信息 </p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git config --global user.name <span class="string">"你的GitHub用户名"</span></span><br><span class="line">git config --global user.email <span class="string">"你的GitHub注册邮箱"</span></span><br></pre></td></tr></table></figure>
 <p> 生成密钥文件</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ ssh-keygen -t rsa -C <span class="string">"你的GitHub注册邮箱"</span></span><br></pre></td></tr></table></figure>
 <p>后面提示连按三个回车即可。</p>
 <p>找到C:\Users\Sayi1.ssh文件夹中的id_rsa.pub，复制全部内容。</p>
-<p>打开<a href="https://github.com/settings/keys" target="_blank" rel="noopener">GitHub-Settings-SSH And GPGkeys</a> ，选择New SSH Key，粘贴.pub的内容。</p>
+<p>打开<a href="https://github.com/settings/keys">GitHub-Settings-SSH And GPGkeys</a> ，选择New SSH Key，粘贴.pub的内容。</p>
 <p>检测GitHub公钥设置是否成功，输入：</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ssh git@github.com</span><br></pre></td></tr></table></figure>
 <p>出现 Hi ! “你的github名字”即设置成功。</p>
@@ -49,7 +49,14 @@
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git clone git@github.com:......</span><br></pre></td></tr></table></figure>
 <p>因为刚刚设置了默认分支为hexo，所以会直接download网站文件。</p>
 <p>2.然后执行章节2的hexo部分操作。</p>
-<h3 id="7-Bash生成hexo文章"><a href="#7-Bash生成hexo文章" class="headerlink" title="7.Bash生成hexo文章"></a>7.Bash生成hexo文章</h3><p>md手动去打标签和日期很不方便。</p>
+<h3 id="7-支持mermaid"><a href="#7-支持mermaid" class="headerlink" title="7.支持mermaid"></a>7.支持mermaid</h3><p>官方教程很简单，不做介绍： <a href="https://github.com/webappdevelp/hexo-filter-mermaid-diagrams">官方教程</a></p>
+<p>安装完成后无法显示的几个解决办法：</p>
+<p>1.将站点的<code>_config.yml</code>文件的external_link字段设置为false。作者说这是一个hexo的bug。</p>
+<p>2.如果是next主题，检查主题（themes/next）的<code>_config.yml</code>是否有mermaid属性：</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line"># <span class="selector-tag">Mermaid</span> <span class="selector-tag">tag</span></span><br><span class="line"><span class="selector-tag">mermaid</span>:</span><br><span class="line">  <span class="selector-tag">enable</span>: <span class="selector-tag">false</span></span><br><span class="line">  # Available themes: default | dark | forest | neutral</span><br><span class="line">  <span class="selector-tag">theme</span>: <span class="selector-tag">forest</span></span><br><span class="line">  cdn: //cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js</span><br><span class="line">  #cdn: //cdnjs.cloudflare.com/ajax/libs/mermaid/8.0.0/mermaid.min.js</span><br></pre></td></tr></table></figure>
+<p>改为：</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line"># <span class="selector-tag">Mermaid</span> <span class="selector-tag">tag</span></span><br><span class="line">mermaid: ## mermaid url https://github.com/knsv/mermaid</span><br><span class="line">  <span class="selector-tag">enable</span>: <span class="selector-tag">true</span>  # <span class="selector-tag">default</span> <span class="selector-tag">true</span></span><br><span class="line">  <span class="selector-tag">version</span>: "7<span class="selector-class">.1</span><span class="selector-class">.2</span>" # <span class="selector-tag">default</span> <span class="selector-tag">v7</span><span class="selector-class">.1</span><span class="selector-class">.2</span></span><br><span class="line">  options:  # find more api options from https://github.com/knsv/mermaid/blob/master/src/mermaidAPI.js</span><br><span class="line">    #startOnload: true  // default true</span><br></pre></td></tr></table></figure>
+<p>这点非常坑，很多教程都没有讲到。</p>
 <h3 id="9-其他问题"><a href="#9-其他问题" class="headerlink" title="9.其他问题"></a>9.其他问题</h3><h4 id="关于git-commit-m-卡在vim编辑器无法退出"><a href="#关于git-commit-m-卡在vim编辑器无法退出" class="headerlink" title="关于git commit -m 卡在vim编辑器无法退出"></a>关于git commit -m 卡在vim编辑器无法退出</h4><p>vim对新人真的太不又好了，退出都不会。</p>
 <blockquote>
 <p>按下小写字母i，会进入编辑模式。可以在此模式下输入你想要的commit message。输入结束以后，按下esc退出编辑模式，这时按下英文输入法下的冒号，再输入wq，就可以保存退出了。w是write，q是quit。也可以在按esc退出编辑模式以后，切换到大写模式，连按两下Z。</p>
@@ -57,17 +64,17 @@
 <blockquote>
 <p>[core]<br>        editor = ‘D:/Program Files/Notepad/notepad++.exe’ -multiImst -nosession</p>
 </blockquote>
-<p>作者：Elpie Kay<br>链接：<a href="https://www.zhihu.com/question/61913534/answer/192748096" target="_blank" rel="noopener">https://www.zhihu.com/question/61913534/answer/192748096</a><br>来源：知乎<br>著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</p>
+<p>作者：Elpie Kay<br>链接：<a href="https://www.zhihu.com/question/61913534/answer/192748096">https://www.zhihu.com/question/61913534/answer/192748096</a><br>来源：知乎<br>著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</p>
 </blockquote>
 <h4 id="站点文章并没有按时间排序"><a href="#站点文章并没有按时间排序" class="headerlink" title="站点文章并没有按时间排序"></a>站点文章并没有按时间排序</h4><p>记得写date,不然会按文章标题排序。</p>
 <figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">title: Mac OS X 10.10.3下android-5.1.1_r9 源码下载与编译</span><br><span class="line">date: 2015-08-18 10:36:21</span><br><span class="line">categories: Android</span><br><span class="line">tags: [Tech,Android]</span><br></pre></td></tr></table></figure>
-<h3 id="0-附录"><a href="#0-附录" class="headerlink" title="0.附录"></a>0.附录</h3><p>[^1]: <a href="https://zhuanlan.zhihu.com/p/26625249" target="_blank" rel="noopener">GitHub+Hexo 搭建个人网站详细教程</a><br>[^2]: <a href="https://www.zhihu.com/question/21193762/answer/79109280" target="_blank" rel="noopener">使用hexo，如果换了电脑怎么更新博客</a></p>
+<h3 id="0-附录"><a href="#0-附录" class="headerlink" title="0.附录"></a>0.附录</h3><p>[^1]: <a href="https://zhuanlan.zhihu.com/p/26625249">GitHub+Hexo 搭建个人网站详细教程</a><br>[^2]: <a href="https://www.zhihu.com/question/21193762/answer/79109280">使用hexo，如果换了电脑怎么更新博客</a></p>
 ]]></content>
       <categories>
         <category>Program</category>
       </categories>
       <tags>
-        <tag>Git</tag>
+        <tag>Hexo</tag>
       </tags>
   </entry>
   <entry>
@@ -161,27 +168,27 @@
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">c#</span><br><span class="line">using UnityEngine;</span><br><span class="line">using System.Collections;</span><br><span class="line">using Pathfinding;</span><br><span class="line">public class AstarAI : MonoBehaviour</span><br><span class="line">&#123;</span><br><span class="line">public Transform target;</span><br><span class="line">public void Start()</span><br><span class="line">&#123;</span><br><span class="line">//Get a reference to the Seeker component we added earlier</span><br><span class="line">Seeker seeker = GetComponent&lt;Seeker&gt;();</span><br><span class="line">//Start a new path to the targetPosition, return the result to the OnPathComplete function</span><br><span class="line">seeker.StartPath(transform.position, target.position, OnPathComplete);</span><br><span class="line">&#125;</span><br><span class="line">public void OnPathComplete(Path p)</span><br><span class="line">&#123;</span><br><span class="line">Debug.Log(&quot;Yay, we got a path back. Did it have an error? &quot; + p.error);</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>运行后，会显示如图的绿色寻路路径，如果未显示，检查seeker脚本中的Draw Gizmos选项是否勾选。<br><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（中）/84506670.jpg" alt="img"></p>
 <p>将Shape属性改为Hexagonal可以将网格更改为六边形：</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding中/Image 0011551784583.png" target="_blank" rel="noopener"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（中）/Image 0011551784583.png" alt="Image 0011551784583.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding中/Image 0011551784583.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（中）/Image 0011551784583.png" alt="Image 0011551784583.png"></a></p>
 <p>也可以修改为适用于ISO的寻路网格：</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding中/Image 0011551784750.png" target="_blank" rel="noopener"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（中）/Image 0011551784750.png" alt="Image 0011551784750.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding中/Image 0011551784750.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（中）/Image 0011551784750.png" alt="Image 0011551784750.png"></a></p>
 <h2 id="1-2-NavMesh-Graph"><a href="#1-2-NavMesh-Graph" class="headerlink" title="1.2 NavMesh Graph"></a>1.2 NavMesh Graph</h2><h2 id="1-3-Point-Graph"><a href="#1-3-Point-Graph" class="headerlink" title="1.3 Point Graph"></a>1.3 Point Graph</h2><p>（1）场景内添加添加物体和上面的图也一样，不过过多了一个如图的<strong>Way</strong>节点，用于当作路点使用。在Way中添加一些Cube充当路点。</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding中/Image 0011551672728.png" target="_blank" rel="noopener"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（中）/Image 0011551672728.png" alt="Image 0011551672728.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding中/Image 0011551672728.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（中）/Image 0011551672728.png" alt="Image 0011551672728.png"></a></p>
 <p>（2）在A*组件中添加Point Graph。并将<strong>Root属性</strong>设置为Way。</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding中/Image 0011551672544.png" target="_blank" rel="noopener"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（中）/Image 0011551672544.png" alt="Image 0011551672544.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding中/Image 0011551672544.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（中）/Image 0011551672544.png" alt="Image 0011551672544.png"></a></p>
 <p>（3）点击Scan即可。</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding中/Image 0011551672681.png" target="_blank" rel="noopener"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（中）/Image 0011551672681.png" alt="Image 0011551672681.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding中/Image 0011551672681.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（中）/Image 0011551672681.png" alt="Image 0011551672681.png"></a></p>
 <h2 id="1-4-Recast-Graph"><a href="#1-4-Recast-Graph" class="headerlink" title="1.4 Recast Graph"></a>1.4 Recast Graph</h2><p><strong>（1）</strong>和1.1的Grid做一样的准备工作</p>
 <p><strong>（2）</strong>在AstarPath组件中添加RecastGraph。</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding中/Image 0011551669627.png" target="_blank" rel="noopener"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（中）/Image 0011551669627.png" alt="Image 0011551669627.png"></a></p>
-<p><strong>（3）</strong>点击Snap Bounds按钮，组件会自动适配场景中的地形。<a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding中/Image 0011551671673.png" target="_blank" rel="noopener"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（中）/Image 0011551671673.png" alt="Image 0011551671673.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding中/Image 0011551669627.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（中）/Image 0011551669627.png" alt="Image 0011551669627.png"></a></p>
+<p><strong>（3）</strong>点击Snap Bounds按钮，组件会自动适配场景中的地形。<a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding中/Image 0011551671673.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（中）/Image 0011551671673.png" alt="Image 0011551671673.png"></a></p>
 <p><strong>（4）</strong>点击Scan 生成NavMesh</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding中/Image 0011551671933.png" target="_blank" rel="noopener"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（中）/Image 0011551671933.png" alt="Image 0011551671933.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding中/Image 0011551671933.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（中）/Image 0011551671933.png" alt="Image 0011551671933.png"></a></p>
 <p><strong>（5）</strong>寻路脚本的添加和1.1一样，不再介绍。</p>
 <h2 id="1-5-Layered-Grid-Graph"><a href="#1-5-Layered-Grid-Graph" class="headerlink" title="1.5 Layered Grid Graph"></a>1.5 Layered Grid Graph</h2><p>Layered 图和Grid图的生成方式一样，但Layered图可以分辨出台阶和地面，如图：</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding中/Image 0011551684240.png" target="_blank" rel="noopener"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（中）/Image 0011551684240.png" alt="Image 0011551684240.png"></a></p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding中/Image 0011551684260.png" target="_blank" rel="noopener"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（中）/Image 0011551684260.png" alt="Image 0011551684260.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding中/Image 0011551684240.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（中）/Image 0011551684240.png" alt="Image 0011551684240.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding中/Image 0011551684260.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（中）/Image 0011551684260.png" alt="Image 0011551684260.png"></a></p>
 <p>Layered图中可以明确的分出台阶和地面</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding中/Image 0011551775319.png" target="_blank" rel="noopener"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（中）/Image 0011551775319.png" alt="Image 0011551775319.png"></a><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding中/Image 0011551775716.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E4%B8%AD/Image%200011551775716.png" alt="Image 0011551775716.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding中/Image 0011551775319.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（中）/Image 0011551775319.png" alt="Image 0011551775319.png"></a><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding中/Image 0011551775716.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E4%B8%AD/Image%200011551775716.png" alt="Image 0011551775716.png"></a></p>
 <p>Grid会将台阶下面的区域设定为不可走</p>
 <h1 id="一些常用场景"><a href="#一些常用场景" class="headerlink" title="一些常用场景"></a>一些常用场景</h1><h2 id="1-1-RVO"><a href="#1-1-RVO" class="headerlink" title="1.1 RVO"></a>1.1 RVO</h2><h2 id="1-7-问题"><a href="#1-7-问题" class="headerlink" title="1.7 问题"></a>1.7 问题</h2><p>1.Grid和Lay图的图层问题</p>
 ]]></content>
@@ -200,18 +207,18 @@
     <content><![CDATA[<p>本文为AStarPathfinding插件的进阶内容，如果需要简单的使用寻路功能可以看上和中。</p>
 <p>AI漫游以及扩展系统暂时没有做介绍，感兴趣的可以去官网看。</p>
 <a id="more"></a>
-<h1 id="Navmesh-Cutting（付费功能）"><a href="#Navmesh-Cutting（付费功能）" class="headerlink" title="Navmesh Cutting（付费功能）"></a>Navmesh Cutting（付费功能）</h1><p><a href="https://arongranberg.com/astar/docs/navmeshcutting.html" target="_blank" rel="noopener">官方文档</a></p>
+<h1 id="Navmesh-Cutting（付费功能）"><a href="#Navmesh-Cutting（付费功能）" class="headerlink" title="Navmesh Cutting（付费功能）"></a>Navmesh Cutting（付费功能）</h1><p><a href="https://arongranberg.com/astar/docs/navmeshcutting.html">官方文档</a></p>
 <p>Navmesh Cutting用于动态添加一个物体时，移除（切割）Navmesh或Recast图中被障碍物阻挡的部分。Navmesh Cutting很适用于动态添加物体/障碍物的场景。（通常情况下Navmesh/Recast只允许更改现有的节点参数，不允许添加新内容或更改节点的位置）</p>
 <p>官方文档不知道为什么没有写如何使用Navmesh Cutting是如何使用的，下面给出我使用此功能的流程：</p>
 <p>1.首先新建一个具有Recast图并能正确使用的场景。</p>
 <p>2.添加一个空物体，命名为Helper，为Helper添加Tile Handler Helper组件。</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011546871877.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011546871877.png" alt="Image 0011546871877.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011546871877.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011546871877.png" alt="Image 0011546871877.png"></a></p>
 <p>（Tile Handler Helper组件干嘛用的）</p>
 <p>3.添加一个障碍物，并为其添加NavMesh Cut组件，并按下图中所示调整参数：</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding上/Image 0011546871977.png" target="_blank" rel="noopener"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（下）/Image 0011546871977.png" alt="Image 0011546871977.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding上/Image 0011546871977.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（下）/Image 0011546871977.png" alt="Image 0011546871977.png"></a></p>
 <p>4.运行游戏，拖动障碍物时NavMesh被遮挡的部分会不可用。</p>
 <p>需要注意的是，切割的形状是XZ轴投影到Navmeshi平面的2D图形，不是3D，但2D图形通过拉伸也形成了高度，高度用于判断物体距离平面多高就需要切割的高度：</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding上/Image 0011546931837.png" target="_blank" rel="noopener"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（下）/Image 0011546931837.png" alt="Image 0011546931837.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding上/Image 0011546931837.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（下）/Image 0011546931837.png" alt="Image 0011546931837.png"></a></p>
 <p>所以只有物体在navmeshcut组件中设置的图形与NavMesh的接触部分才会被切割，包括高度和半径。</p>
 <p>Is dual功能到底干嘛的</p>
 <p>在3.x中，navmesh切割只能与重铸图一起使用，但在4.x中，它们可以与重铸和导航网图一起使用。</p>
@@ -220,12 +227,12 @@
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">// Schedule pending updates to be done as soon as the pathfinding threads</span><br><span class="line">// are done with what they are currently doing.</span><br><span class="line">AstarPath.active.navmeshUpdates.ForceUpdate();</span><br><span class="line">// Block until the updates have finished</span><br><span class="line">AstarPath.active.FlushGraphUpdates();</span><br><span class="line"></span><br><span class="line">也可以通过代码控制检查navmeshcut是否变化的时间:</span><br><span class="line"></span><br><span class="line">// Check every frame (the default)</span><br><span class="line">AstarPath.active.navmeshUpdates.updateInterval = 0;</span><br><span class="line"></span><br><span class="line">// Check every 0.1 seconds</span><br><span class="line">AstarPath.active.navmeshUpdates.updateInterval = 0.1f;</span><br><span class="line"></span><br><span class="line">// Never check for changes</span><br><span class="line">AstarPath.active.navmeshUpdates.updateInterval = -1;</span><br><span class="line">// You will have to schedule updates manually using</span><br><span class="line">AstarPath.active.navmeshUpdates.ForceUpdate();</span><br></pre></td></tr></table></figure>
 <p>（代码都不好使）</p>
 <p>也可以通过Update Interval来更改。（这个值的更改位置不对 版本不同？？ ）</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011546945990.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011546945990.png" alt="Image 0011546945990.png"></a></p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding上/Image 0011546943710.png" target="_blank" rel="noopener"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（下）/Image 0011546943710.png" alt="Image 0011546943710.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011546945990.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011546945990.png" alt="Image 0011546945990.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding上/Image 0011546943710.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（下）/Image 0011546943710.png" alt="Image 0011546943710.png"></a></p>
 <p>因为navmesh切割可以很好地修改navmesh中的三角形，所以在更新图形时不可能保留标签和惩罚。对于在应用更新时保持完全相同的节点，将保留标签和惩罚。</p>
 <p>如果您需要使用标记，唯一可靠的方法是保留它们是应用所有图形更新，每次完成导航网格剪切更新时都会设置它们。这当然相对较慢，但它至少会起作用。</p>
 <h1 id="RVO（付费）"><a href="#RVO（付费）" class="headerlink" title="RVO（付费）"></a>RVO（付费）</h1><h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><h3 id="概览"><a href="#概览" class="headerlink" title="概览"></a>概览</h3><p>到底躲的是谁  需不需要操作</p>
-<p>AStarPathfinding使用了基于RVO的局部回避系统（Low level），RVO的性能良好，根据开发者的测试，i7处理器的电脑上可以以50-100FPS模拟五千个具有RVO系统的Agent。关于本章节，以及压力测试请看：<a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/localavoidance.html" target="_blank" rel="noopener">https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/localavoidance.html</a></p>
+<p>AStarPathfinding使用了基于RVO的局部回避系统（Low level），RVO的性能良好，根据开发者的测试，i7处理器的电脑上可以以50-100FPS模拟五千个具有RVO系统的Agent。关于本章节，以及压力测试请看：<a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/localavoidance.html">https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/localavoidance.html</a></p>
 <p>RVO是路径规划中的Low level底层避障算法，用于躲避不可预估的障碍。具体看：</p>
 <p>RVO基于采样检测和gradient descent算法来找到最佳躲避方案。它非常适合于移动的类人代理。但不太适合不能快速变换速度的物体。</p>
 <p>RVO系统分为两个部分，一是完全独立不依赖Unity的核心代码，唯一使用到的Unity类是Math。核心代码控制着所有使用ROV的Agent。</p>
@@ -248,16 +255,16 @@
 <p>Often you want to have colliders on your agents, maybe to be able to hit them with bullets or something. However if you just add colliders (plus a rigidbody) to your agents you may see that the local avoidance quality goes down drastically in crowded scenarios. This is because when it is very crowded agents may overlap a tiny bit, the physics system will prevent that, but it will not do it in as nice a way as the local avoidance system, and this may lead to worse movement.</p>
 </blockquote>
 <p>如果Agent上有碰撞器，作者建议的解决办法是禁用代理之间的物理碰撞，将所有的代理放到一个单独的图层中，在Unity的物理系统设置中将该图层自身的碰撞关闭。</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding下/disable_collisions.png" target="_blank" rel="noopener"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（下）/disable_collisions.png" alt="disable_collisions.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding下/disable_collisions.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（下）/disable_collisions.png" alt="disable_collisions.png"></a></p>
 <h3 id="保持代理在图中"><a href="#保持代理在图中" class="headerlink" title="保持代理在图中"></a>保持代理在图中</h3><p>在局部躲避时，在拥挤的情况下会出现Agent将另一个Agent推出图外的情况。</p>
 <p>如果使用RichAI，则会自动处理被推出的情况。因为RichAI的移动需要它。如果使用AIPath，可以通过启用constrainInsideGraph来避免。</p>
 <p>还有一种办法是使用RVONavmesh 组件，组件会将图的边界转化为障碍物添加进RVO系统。RVONavmesh计算成本偏高，尤其是在图较大或者运行时更新图的时候，但它允许RVO系统更好地预测障碍，而不是当撞到时才找到墙壁。</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011547030156.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011547030156.png" alt="Image 0011547030156.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011547030156.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011547030156.png" alt="Image 0011547030156.png"></a></p>
 <p>如图所示，组件在图的边缘围一堵墙。但这样会增加一些性能开销（尤其是较大的图或者在运行期间更新图。）</p>
 <p>使用方法：在场景中的任意物体添加RVONavmesh组件即可，可以通过RVOSimulator组件中的Draw Obstacles显示如图橙色的线。</p>
 <h3 id="障碍"><a href="#障碍" class="headerlink" title="障碍"></a>障碍</h3><p>将障碍添加至本地躲避系统后，代理将不会通过并且会使用本地躲避系统躲开障碍。</p>
 <p>在Component-Pathfinding-Localavoidance中可以找到用于添加障碍物的组件，如图：</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011547032327.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011547032327.png" alt="Image 0011547032327.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011547032327.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011547032327.png" alt="Image 0011547032327.png"></a></p>
 <p>也可以自己写碰撞器，看下章。</p>
 <p>内置的碰撞体可以移动，并且可以适当的更新。但因为可以在周围移动并不代表移动的内置碰撞体可以将代理推开。事实上移动的内置碰撞体并不擅长这样。当碰撞体移动很慢时可以实现推开，但移动很快时会导致代理卡住。</p>
 <p>内置的障碍物组件有一个属性很重要，Obstacle Mode，有两个值：Keep out会阻止代理进入障碍物，但如果处于某种原因留在了里面则会很容易出来。Keep in会将代理留在障碍物内部自由移动。</p>
@@ -269,7 +276,7 @@
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">using UnityEngine;</span><br><span class="line">using System.Collections;</span><br><span class="line">using Pathfinding.RVO;</span><br><span class="line"></span><br><span class="line">public class SimpleRVOAI : MonoBehaviour &#123;</span><br><span class="line">RVOController controller;</span><br><span class="line"></span><br><span class="line">// Use this for initialization</span><br><span class="line">void Awake () &#123;</span><br><span class="line">controller = GetComponent&lt;RVOController&gt;();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// Update is called once per frame</span><br><span class="line">public void Update () &#123;</span><br><span class="line">// Just some point far away</span><br><span class="line">var targetPoint = transform.position + transform.forward * 100;</span><br><span class="line"></span><br><span class="line">// Set the desired point to move towards using a desired speed of 10 and a max speed of 12</span><br><span class="line">controller.SetTarget(targetPoint, 10, 12);</span><br><span class="line"></span><br><span class="line">// Calculate how much to move during this frame</span><br><span class="line">// This information is based on movement commands from earlier frames</span><br><span class="line">// as local avoidance is calculated globally at regular intervals by the RVOSimulator component</span><br><span class="line">var delta = controller.CalculateMovementDelta(transform.position, Time.deltaTime);</span><br><span class="line">transform.position = transform.position + delta;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>4.复制几个圆柱体并调整至相对，运行游戏可以看到圆柱体会尝试躲避其他圆柱体。</p>
 <p>可以从代码看出来，<strong>RVOController本身不处理移动</strong>。因为一旦其他脚本也在控制移动，就会引起混乱。（在4.0之前RVOController是处理移动的）</p>
-<p>RVOSimulator实际上是 <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/simulator.html" target="_blank" rel="noopener">Pathfinding.RVO.Simulator</a>的包装类。</p>
+<p>RVOSimulator实际上是 <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/simulator.html">Pathfinding.RVO.Simulator</a>的包装类。</p>
 <p>rvo面板介绍</p>
 <h2 id="添加RVO障碍"><a href="#添加RVO障碍" class="headerlink" title="添加RVO障碍"></a>添加RVO障碍</h2><p>可以通过代码获取到RVOSimulator：</p>
 <p>Pathfinding.RVO.Simulator sim = (FindObjectOfType(typeof(RVOSimulator)) as RVOSimulator).GetSimulator ();</p>
@@ -284,21 +291,21 @@
 <p><strong>划分自定义代价值区域的使用方法：</strong></p>
 <p><strong>1.</strong>在场景中创建一个空物体命名为GUO（不是必须的），添加组件<strong>Graph Update Scene。</strong></p>
 <p><strong>2.</strong>点击GUO，在场景中按住左Shift键，然后点击你想划分区域的地方，会出现一个点，再点击一下会将两个点连接起来。这样就可以创建出一块自定义的区域：</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding下/Honeycam 2019-03-11 16-39-23.gif" target="_blank" rel="noopener"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（下）/Honeycam 2019-03-11 16-39-23.gif" alt="Honeycam 2019-03-11 16-39-23.gif"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding下/Honeycam 2019-03-11 16-39-23.gif"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（下）/Honeycam 2019-03-11 16-39-23.gif" alt="Honeycam 2019-03-11 16-39-23.gif"></a></p>
 <p>节点的位置信息可以在组件的Points属性里进行修改。</p>
 <p><strong>3.</strong>根据组件中的Penalty Delta来修改区域的代价值，不同的代价会让Agent在寻路时选择最优的路线，避开代价较大的区域。也可以设置为不可走区域。</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding下/Image 0011552293900.png" target="_blank" rel="noopener"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（下）/Image 0011552293900.png" alt="Image 0011552293900.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding下/Image 0011552293900.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（下）/Image 0011552293900.png" alt="Image 0011552293900.png"></a></p>
 <p><strong>4.</strong>如图所示，代理会尝试绕过代价高的区域</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding下/Image 0011552295310.png" target="_blank" rel="noopener"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（下）/Image 0011552295310.png" alt="Image 0011552295310.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding下/Image 0011552295310.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（下）/Image 0011552295310.png" alt="Image 0011552295310.png"></a></p>
 <p><strong>Tag的使用方法：</strong></p>
 <p>Tag可以使两个Agent在同样的区域有不同的寻路结果.</p>
 <p>0.新建一个场景，场景中像之前的流程一样，保持有地板，寻路目标，Agent，并可以正常寻路。</p>
 <p>1.利用<strong>Graph Update Scene</strong>划分一片区域，并为区域添加一个Tag，命名为Grass（Tag的名称可以在A*组件的面板中修改。）</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding下/Image 0011552296107.png" target="_blank" rel="noopener"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（下）/Image 0011552296107.png" alt="Image 0011552296107.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding下/Image 0011552296107.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（下）/Image 0011552296107.png" alt="Image 0011552296107.png"></a></p>
 <p>2.添加两个agent，并附加Seeker脚本。修改Seeker的Tag属性，一个Agent将tag的Traversable取消勾选，另一个保持勾选。</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding下/Image 0011552547742.png" target="_blank" rel="noopener"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（下）/Image 0011552547742.png" alt="Image 0011552547742.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding下/Image 0011552547742.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（下）/Image 0011552547742.png" alt="Image 0011552547742.png"></a></p>
 <p>3.运行游戏，两个Agent会规划出不同的路径。</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding下/Image 0011552548056.png" target="_blank" rel="noopener"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（下）/Image 0011552548056.png" alt="Image 0011552548056.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding下/Image 0011552548056.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（下）/Image 0011552548056.png" alt="Image 0011552548056.png"></a></p>
 <p>也可以对每个Agent的每个Tag设置不同的惩罚值，可以实现开头说的场景。</p>
 <hr>
 <p>NavMesh下有问题</p>
@@ -328,7 +335,7 @@
 </tr>
 <tr>
 <td>在某些物体移动或创建销毁时更新图</td>
-<td>阅读重计算部分图或<a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/dynamicgridobstacle.html" target="_blank" rel="noopener">DynamicGridObstacle</a>类或<a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/navmeshcutting.html" target="_blank" rel="noopener">Navmesh Cutting</a>章节</td>
+<td>阅读重计算部分图或<a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/dynamicgridobstacle.html">DynamicGridObstacle</a>类或<a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/navmeshcutting.html">Navmesh Cutting</a>章节</td>
 </tr>
 <tr>
 <td>修改某单个节点的属性</td>
@@ -340,19 +347,19 @@
 </tr>
 <tr>
 <td>创建一小块图在角色周围</td>
-<td>阅读<a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/proceduralgridmover.html" target="_blank" rel="noopener">ProceduralGridMover</a>类</td>
+<td>阅读<a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/proceduralgridmover.html">ProceduralGridMover</a>类</td>
 </tr>
 <tr>
 <td>创建新节点并使用代码连接他们</td>
-<td>See <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/pointgraph.html#AddNode" target="_blank" rel="noopener">PointGraph.AddNode</a> and <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/writinggraphgenerators.html" target="_blank" rel="noopener">Writing Graph Generators</a></td>
+<td>See <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/pointgraph.html#AddNode">PointGraph.AddNode</a> and <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/writinggraphgenerators.html">Writing Graph Generators</a></td>
 </tr>
 <tr>
 <td>使图的一部分成本变高</td>
-<td>See <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdates.html#smaller-updates" target="_blank" rel="noopener">Recalculating parts of graphs</a>, <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdates.html#direct" target="_blank" rel="noopener">Using direct access to graph data</a> and <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdatescene.html" target="_blank" rel="noopener">GraphUpdateScene</a></td>
+<td>See <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdates.html#smaller-updates">Recalculating parts of graphs</a>, <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdates.html#direct">Using direct access to graph data</a> and <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdatescene.html">GraphUpdateScene</a></td>
 </tr>
 <tr>
 <td>阻止一些单位穿过某个节点，但是其他节点可以穿过</td>
-<td>See <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/tags.html" target="_blank" rel="noopener">Working with tags</a>, <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdates.html#smaller-updates" target="_blank" rel="noopener">Recalculating parts of graphs</a>, <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdatescene.html" target="_blank" rel="noopener">GraphUpdateScene</a> and <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdates.html#direct" target="_blank" rel="noopener">Using direct access to graph data</a></td>
+<td>See <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/tags.html">Working with tags</a>, <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdates.html#smaller-updates">Recalculating parts of graphs</a>, <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdatescene.html">GraphUpdateScene</a> and <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdates.html#direct">Using direct access to graph data</a></td>
 </tr>
 <tr>
 <td>移动物体的寻路（如一艘船）</td>
@@ -360,17 +367,17 @@
 </tr>
 <tr>
 <td>添加一个障碍物，但首先确定障碍物没有困住或覆盖任何其他单位（TD游戏）</td>
-<td>See <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdates.html#blocking" target="_blank" rel="noopener">Check for blocking placements</a></td>
+<td>See <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdates.html#blocking">Check for blocking placements</a></td>
 </tr>
 </tbody>
 </table>
 <h2 id="需要更新的内容"><a href="#需要更新的内容" class="headerlink" title="需要更新的内容"></a>需要更新的内容</h2><p>当需要更新图时，通常会需要做两件事情中的一件。</p>
-<p>你可能希望使用与最初生成图时相同的设置重新计算图形，但如果为了更新一部分区域而重新计算了整个图似乎很浪费（<a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/astarpath.html#Scan" target="_blank" rel="noopener">AstarPath.Scan</a>），比如，玩家可能只是TD游戏中放置了一座新塔。</p>
+<p>你可能希望使用与最初生成图时相同的设置重新计算图形，但如果为了更新一部分区域而重新计算了整个图似乎很浪费（<a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/astarpath.html#Scan">AstarPath.Scan</a>），比如，玩家可能只是TD游戏中放置了一座新塔。</p>
 <p>或者只想要更改现有图的某些设置。例如，更改某些节点上的tag或代价。</p>
 <p>可以对除了NavMesh之外的图重新计算一小部分，navmesh只有完全重新计算才有意义。使用脚本和GraphUpdateScene组件执行此操作，将名为“updatePhysics”的字段设置为true。</p>
 <p>Grid 图会正常工作，只需指定边界，它就会为你完成所有操作。但是，考虑到侵蚀等问题，它可能会重新计算一个比指定边界略大的区域。</p>
 <p>Recast  图只能全部重新计算。因此，使用较小的tile尺寸可以缩短重新计算的时间。但是如果太小，Recast图会退化为Grid图。如果使用多线程，则会将大部分重新计算放置到单独的线程中，以避免过多地影响FPS。</p>
-<p>点图将重新计算通过边界的所有连接。但是，它不会寻找以GameObject形式新添加的新节点，为此你需要使用  <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/astarpath.html#Scan" target="_blank" rel="noopener">AstarPath.Scan</a>.</p>
+<p>点图将重新计算通过边界的所有连接。但是，它不会寻找以GameObject形式新添加的新节点，为此你需要使用  <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/astarpath.html#Scan">AstarPath.Scan</a>.</p>
 <p>如想更改节点的属性，有一些东西可供你修改</p>
 <p>你可以更改node的tag以实现不同单位行走不同区域，也可以修改节点的惩罚值</p>
 <p>可以更改节点上的惩罚。这用于使某些节点比其他节点更难/更慢地遍历，以便代理在其他节点之前更喜欢某些路径。但是有一些限制。您不能指定负惩罚，因为使用的算法无法处理（如果可能，系统会慢得多）。然而，常见的技巧是设置非常大的初始惩罚（可以在图形设置中完成），然后从该高值减少惩罚。但请注意，由于必须搜索更多节点，因此这将使路径寻找更慢。所需的惩罚值非常高。没有真正的“惩罚单位”，但罚款1000大致相当于一个世界旅行单位。</p>
@@ -384,8 +391,8 @@
 <p>协程加载 但不能保证良好的FPS，但至少可以显示加载屏幕</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">IEnumerator Start () &#123;</span><br><span class="line">foreach (Progress progress in AstarPath.active.ScanAsync()) &#123;</span><br><span class="line">Debug.Log(&quot;Scanning... &quot; + progress.description + &quot; - &quot; + (progress.progress*100).ToString(&quot;0&quot;) + &quot;%&quot;);</span><br><span class="line">yield return null;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>看一下这俩</p>
-<p><a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/astarpath.html#Scan" target="_blank" rel="noopener">AstarPath.Scan</a></p>
-<p><a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/astarpath.html#ScanAsync" target="_blank" rel="noopener">AstarPath.ScanAsync</a></p>
+<p><a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/astarpath.html#Scan">AstarPath.Scan</a></p>
+<p><a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/astarpath.html#ScanAsync">AstarPath.ScanAsync</a></p>
 <h2 id="重新计算部分图"><a href="#重新计算部分图" class="headerlink" title="重新计算部分图"></a>重新计算部分图</h2><p>可以使用GraphUpdateScene组件或使用脚本,调用AstarPath类中的方法完成部分图更新，脚本通过使用Bounds对象或Pathfinding.GraphUpdateObject（就是GraphUpdateScene组件，实际上是在后台就是这么运行的）。</p>
 <blockquote>
 <p>Smaller graph updates can either be done using the GraphUpdateScene component which can be edited in the Unity inspector or using scripting which is done by calling a method in the AstarPath class with either a Bounds object or a Pathfinding.GraphUpdateObject (which is what the GraphUpdateScene component actually does in the background).</p>
@@ -395,7 +402,7 @@
 <blockquote>
 <p>The method will then put the task in a queue to be carried out before the next path calculation. It has to be put in a queue because if it carried out directly, it might interfere with pathfinding, especially if multithreading is on, and cause all kinds of errors. This means that you might not see an update of the graph directly, but it will always be updated before the next pathfinding calculation starts (almost always, see AstarPath.limitGraphUpdates ).</p>
 </blockquote>
-<p>Recast图也可以使用<a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/navmeshcutting.html" target="_blank" rel="noopener">navmesh cutting</a>伪更新，<a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/navmeshcutting.html" target="_blank" rel="noopener">navmesh cutting</a>可以使障碍物在Navmesh中切出一个洞，但无法添加更多的Navmesh平面。See <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/navmeshcut.html" target="_blank" rel="noopener">Pathfinding.NavmeshCut</a>，比重新计算整张图快的多，但是有更有限。</p>
+<p>Recast图也可以使用<a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/navmeshcutting.html">navmesh cutting</a>伪更新，<a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/navmeshcutting.html">navmesh cutting</a>可以使障碍物在Navmesh中切出一个洞，但无法添加更多的Navmesh平面。See <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/navmeshcut.html">Pathfinding.NavmeshCut</a>，比重新计算整张图快的多，但是有更有限。</p>
 <p>如果在Unity的Editor中编辑修改已知的图形，那么使用GraphUpdateScene组件是最方便简单的，使用组件你可以轻松更改特定区域的tag而无需任何代码。 但是，如果需要在游戏中动态执行，则使用代码更新图会更方便。 例如，在塔防游戏中新放置的建筑物的更新部分表操作。</p>
 <h2 id="使用脚本"><a href="#使用脚本" class="headerlink" title="使用脚本"></a>使用脚本</h2><p>需要创建GraphUpdateObject并设置所需的参数，然后调用AstarPath.UpdateGraphs方法，将更新任务添加至队列中。</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">// using Pathfinding; //At top of script</span><br><span class="line"></span><br><span class="line">// As an example, use the bounding box from the attached collider</span><br><span class="line">Bounds bounds = GetComponent&lt;Collider&gt;().bounds;</span><br><span class="line">var guo = new GraphUpdateObject(bounds);</span><br><span class="line"></span><br><span class="line">// Set some settings</span><br><span class="line">guo.updatePhysics = true;</span><br><span class="line">AstarPath.active.UpdateGraphs(guo);</span><br></pre></td></tr></table></figure>
@@ -404,52 +411,52 @@
 <p>如果在使用网格图或者点图时，不需要重新计算所有节点的参数，可以将updatePhysics 设置为 false以避免不必要的计算</p>
 <p>（我的理解是如果局部计算的话，需要将这个选项关闭以避免不必要的计算）</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">guo.updatePhysics = false;</span><br></pre></td></tr></table></figure>
-<p>For details about exactly what fields to set, take a look at the class documentation for the <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdateobject.html" target="_blank" rel="noopener">GraphUpdateObject </a>.</p>
+<p>For details about exactly what fields to set, take a look at the class documentation for the <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdateobject.html">GraphUpdateObject </a>.</p>
 <h3 id="直接使用图数据"><a href="#直接使用图数据" class="headerlink" title="直接使用图数据"></a>直接使用图数据</h3><p>有时可能需要直接对图数据进行操作。</p>
-<p><a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/accessingdata.html" target="_blank" rel="noopener">Accessing graph data</a> for information about how to access graph data.</p>
-<p><a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/usingnodes.html#node-properties" target="_blank" rel="noopener">Node properties</a> and <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphnode.html" target="_blank" rel="noopener">Pathfinding.GraphNode</a> for information about what properties a node has.</p>
+<p><a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/accessingdata.html">Accessing graph data</a> for information about how to access graph data.</p>
+<p><a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/usingnodes.html#node-properties">Node properties</a> and <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphnode.html">Pathfinding.GraphNode</a> for information about what properties a node has.</p>
 <p>下面是一个更改网格图中所有节点并使用perlin噪声来决定节点是否应该可以行走的示例：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">AstarPath.active.AddWorkItem(new AstarWorkItem(ctx =&gt; &#123;</span><br><span class="line">var gg = AstarPath.active.data.gridGraph;</span><br><span class="line">for (int z = 0; z &lt; gg.depth; z++) &#123;</span><br><span class="line">for (int x = 0; x &lt; gg.width; x++) &#123;</span><br><span class="line">var node = gg.GetNode(x, z);</span><br><span class="line">// This example uses perlin noise to generate the map</span><br><span class="line">node.Walkable = Mathf.PerlinNoise(x * 0.087f, z * 0.087f) &gt; 0.4f;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// Recalculate all grid connections</span><br><span class="line">// This is required because we have updated the walkability of some nodes</span><br><span class="line">gg.GetNodes(node =&gt; gg.CalculateConnections((GridNodeBase)node));</span><br><span class="line"></span><br><span class="line">// Update the &apos;area&apos; information in the graph.</span><br><span class="line">// This is required because we have updated the connectivity of the graph</span><br><span class="line">ctx.QueueFloodFill();</span><br><span class="line">&#125;));</span><br></pre></td></tr></table></figure>
 <p>经过修改后的图：</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding下/Image 0011552639822.png" target="_blank" rel="noopener"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（下）/Image 0011552639822.png" alt="Image 0011552639822.png"></a></p>
-<p>只有在安全的情况下才能修改图表数据。路径查找可能随时在运行，因此必须先暂停路径寻找线程，然后更新数据。最简单的方法是使用<a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/astarpath.html#AddWorkItem" target="_blank" rel="noopener">AstarPath.AddWorkItem</a>：</p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding下/Image 0011552639822.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（下）/Image 0011552639822.png" alt="Image 0011552639822.png"></a></p>
+<p>只有在安全的情况下才能修改图表数据。路径查找可能随时在运行，因此必须先暂停路径寻找线程，然后更新数据。最简单的方法是使用<a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/astarpath.html#AddWorkItem">AstarPath.AddWorkItem</a>：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">AstarPath.active.AddWorkItem(() =&gt; &#123;</span><br><span class="line">// Safe to update graphs here</span><br><span class="line">var node = AstarPath.active.GetNearest(transform.position).node;</span><br><span class="line">node.position = (Int3)transform.position;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 <p>更改图数据后要及时更新图。如果更改了任何节点的Walkable或连接，则需要更新Area的信息，系统通过Area来确定哪些节点可以到达哪些其他节点，而这些节点又用于快速确定路径是否可行。</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">AstarPath.active.AddWorkItem(new AstarWorkItem(ctx =&gt; &#123;</span><br><span class="line">var node = AstarPath.active.GetNearest(transform.position).node;</span><br><span class="line">node.Walkable = false;</span><br><span class="line">ctx.QueueFloodFill();</span><br><span class="line">&#125;));</span><br></pre></td></tr></table></figure>
-<p>QueueFloodFill()是根据性能进行批处理的，因此在连续更新的多个图更新时不需要多次调用QueueFloodFill()。如果需要Area的信息是最新的，则应该调用<a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/iworkitemcontext.html#EnsureValidFloodFill" target="_blank" rel="noopener">ctx.EnsureValidFloodFill</a>方法。但是通常开发中不会用到。</p>
+<p>QueueFloodFill()是根据性能进行批处理的，因此在连续更新的多个图更新时不需要多次调用QueueFloodFill()。如果需要Area的信息是最新的，则应该调用<a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/iworkitemcontext.html#EnsureValidFloodFill">ctx.EnsureValidFloodFill</a>方法。但是通常开发中不会用到。</p>
 <blockquote>
 <p>The flood fill calls are batched for performance so that multiple graph updates which are executed directly after each other do not have to run the flood fill more than once. If your work item requires that the area information is up to date you should call the ctx.EnsureValidFloodFill method first. Usually this is not something that work items require however.</p>
 </blockquote>
-<p>如果修改了walkability，需要重新计算节点之间的链接。对于Grid图来说非常重要，可以使用<a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/gridgraph.html#CalculateConnections5" target="_blank" rel="noopener">GridGraph.CalculateConnections</a>方法。注意，这需要在你更改了walkability的节点以及与其相邻的节点上调用，因为他们可能必须更改其连接以添加或删除该节点作为连接。</p>
+<p>如果修改了walkability，需要重新计算节点之间的链接。对于Grid图来说非常重要，可以使用<a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/gridgraph.html#CalculateConnections5">GridGraph.CalculateConnections</a>方法。注意，这需要在你更改了walkability的节点以及与其相邻的节点上调用，因为他们可能必须更改其连接以添加或删除该节点作为连接。</p>
 <p>AddWorkItem方法也可以以更高级的方式使用。例如，它允许您在必要时将计算分布在多个帧上：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">AstarPath.active.AddWorkItem(new AstarWorkItem(</span><br><span class="line">        () =&gt; &#123;</span><br><span class="line">    // Called once, right before the</span><br><span class="line">    // first call to the method below</span><br><span class="line">&#125;,</span><br><span class="line">        force =&gt; &#123;</span><br><span class="line">    // Called every frame until complete.</span><br><span class="line">    // Signal that the work item is</span><br><span class="line">    // complete by returning true.</span><br><span class="line">    // The &quot;force&quot; parameter will</span><br><span class="line">    // be true if the work item is</span><br><span class="line">    // required to complete immediately.</span><br><span class="line">    // In that case this method should</span><br><span class="line">    // block and return true when done.</span><br><span class="line">    return true;</span><br><span class="line">&#125;</span><br><span class="line">        ));</span><br></pre></td></tr></table></figure>
 <p>debug记得写一下</p>
 <h2 id="工作原理"><a href="#工作原理" class="headerlink" title="工作原理"></a>工作原理</h2><p>当使用GraphUpdateObject进行实时更新时， 所有可以更新的内置的图都会循环调用自身的UpdateArea 方法。</p>
-<p>图将每一个需要被更新或受影响的节点发送给<a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdateobject.html#Apply" target="_blank" rel="noopener">Pathfinding.GraphUpdateObject.Apply </a>， Apply方法会更改惩罚值，walkablity或者其他指定的参数，图也可以使用特定的更新逻辑，如GridGraph(see <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdates.html#gridgraphs" target="_blank" rel="noopener">GridGraph specific details</a>)。你不需要明白这些更新方法的不同，这些方法的具体细节的了解适合想使用源码的人。</p>
+<p>图将每一个需要被更新或受影响的节点发送给<a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdateobject.html#Apply">Pathfinding.GraphUpdateObject.Apply </a>， Apply方法会更改惩罚值，walkablity或者其他指定的参数，图也可以使用特定的更新逻辑，如GridGraph(see <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdates.html#gridgraphs">GridGraph specific details</a>)。你不需要明白这些更新方法的不同，这些方法的具体细节的了解适合想使用源码的人。</p>
 <blockquote>
-<p>When updating is carried out using a GraphUpdateObject, all graphs will be looped over and those which can be updated (all built in ones) will have their UpdateArea function called (i.e be updated).<br>Each node is updated by the graphs calling <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdateobject.html#Apply" target="_blank" rel="noopener">Pathfinding.GraphUpdateObject.Apply</a> sending each affected node to it, the Apply function will then change penalty, walkability or other parameters specified. Graphs can also use custom updating logic, such as the GridGraph (see <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdates.html#gridgraphs" target="_blank" rel="noopener">GridGraph specific details</a>). You do not have to understand all different function calls to be able to use it, those are mostly for people who want to mess around with the source code.</p>
+<p>When updating is carried out using a GraphUpdateObject, all graphs will be looped over and those which can be updated (all built in ones) will have their UpdateArea function called (i.e be updated).<br>Each node is updated by the graphs calling <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdateobject.html#Apply">Pathfinding.GraphUpdateObject.Apply</a> sending each affected node to it, the Apply function will then change penalty, walkability or other parameters specified. Graphs can also use custom updating logic, such as the GridGraph (see <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdates.html#gridgraphs">GridGraph specific details</a>). You do not have to understand all different function calls to be able to use it, those are mostly for people who want to mess around with the source code.</p>
 </blockquote>
-<h3 id="Gird图的特殊细节"><a href="#Gird图的特殊细节" class="headerlink" title="Gird图的特殊细节"></a>Gird图的特殊细节</h3><p><a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdateobject.html#updatePhysics" target="_blank" rel="noopener">updatePhysics</a>是更新Gird图时非常重要的属性，如果设置为true，所有被影响的节点都会重新计算他们的高度，然后检查自身是否可走。当更新Grid图时，最好保持为true。</p>
-<p>当更新Grid图时，GraphUpdateObject的Apply方法会被更新范围内的所有节点调用，节点会检查<a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdateobject.html#updatePhysics" target="_blank" rel="noopener">updatePhysics</a>变量，如果<a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdateobject.html#updatePhysics" target="_blank" rel="noopener">updatePhysics</a>设置为true（默认值是true），则更新区域会根据Collision Testing设置的直径扩张，并且在其中的每个节点都会做碰撞检测，如果是false，则只有更新区域内的节点会调用Apply方法，并不会做其他事情。</p>
+<h3 id="Gird图的特殊细节"><a href="#Gird图的特殊细节" class="headerlink" title="Gird图的特殊细节"></a>Gird图的特殊细节</h3><p><a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdateobject.html#updatePhysics">updatePhysics</a>是更新Gird图时非常重要的属性，如果设置为true，所有被影响的节点都会重新计算他们的高度，然后检查自身是否可走。当更新Grid图时，最好保持为true。</p>
+<p>当更新Grid图时，GraphUpdateObject的Apply方法会被更新范围内的所有节点调用，节点会检查<a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdateobject.html#updatePhysics">updatePhysics</a>变量，如果<a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdateobject.html#updatePhysics">updatePhysics</a>设置为true（默认值是true），则更新区域会根据Collision Testing设置的直径扩张，并且在其中的每个节点都会做碰撞检测，如果是false，则只有更新区域内的节点会调用Apply方法，并不会做其他事情。</p>
 <blockquote>
 <p>The updatePhysics variable matters a lot when updating grid graphs. If it is set to true, all nodes affected will have their height recalculated and then checked if they are still walkable. You usually want to leave this to true when updating a grid graph.</p>
 <p>When updating a GridGraph, the GraphUpdateObject’s Apply function (which changed walkability, tags and penalties) will be called for each node inside the bounds, it will check the updatePhysics variable, if it is true (which is the default value), the area will be expanded by the diameter of the specified in the Collision Testing settings and every node inside the area will be checked for collisions. If it is false, however, only the Apply function will be called for the nodes inside the area (not expanded) and nothing else will be done.</p>
 </blockquote>
 <h3 id="基于Navmesh的图"><a href="#基于Navmesh的图" class="headerlink" title="基于Navmesh的图"></a>基于Navmesh的图</h3><p>基于navmesh的图（Navmesh和RecastGraph）只支持更新已存在的节点的惩罚，walkablity等以更新整个图，GraphUpdateObjects 不能添加新的节点（更新整个图除外），GraphUpdateObject 会更新所有交叉接触的节点/多边形，或者在GUO范围内的所有节点。对于recast也可以通过Nacmesh cut快速更新图。</p>
 <blockquote>
-<p>Navmesh based graphs (NavMeshGraph and RecastGraph) only have support for updating penalty, walkability and similar on already existing nodes or for recast graphs, to completely recalculate whole tiles. New nodes cannot be created using GraphUpdateObjects (unless recalculating whole tiles). The GraphUpdateObject will affect all nodes/triangles which intersect or are contained by the GUO’s bounds.<br>For recast graphs you can also use <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/navmeshcut.html" target="_blank" rel="noopener">navmesh cutting </a>to update the graph in a fast way.</p>
+<p>Navmesh based graphs (NavMeshGraph and RecastGraph) only have support for updating penalty, walkability and similar on already existing nodes or for recast graphs, to completely recalculate whole tiles. New nodes cannot be created using GraphUpdateObjects (unless recalculating whole tiles). The GraphUpdateObject will affect all nodes/triangles which intersect or are contained by the GUO’s bounds.<br>For recast graphs you can also use <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/navmeshcut.html">navmesh cutting </a>to update the graph in a fast way.</p>
 </blockquote>
 <h3 id="点图（PointGraphs）"><a href="#点图（PointGraphs）" class="headerlink" title="点图（PointGraphs）"></a>点图（PointGraphs）</h3><p>点图的更新会调用边界内的所有节点的Apply方法，GraphUpdateObject.updatePhysics如果设置为true，它还会重新计算经过更新区域的所有链接点。</p>
-<h2 id="Graph-Update-Object"><a href="#Graph-Update-Object" class="headerlink" title="Graph Update Object"></a>Graph Update Object</h2><p>The GraphUpdateObject contains some basic variables on how to update each node. See documentation for the <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdateobject.html" target="_blank" rel="noopener">Pathfinding.GraphUpdateObject</a> for more info.</p>
+<h2 id="Graph-Update-Object"><a href="#Graph-Update-Object" class="headerlink" title="Graph Update Object"></a>Graph Update Object</h2><p>The GraphUpdateObject contains some basic variables on how to update each node. See documentation for the <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdateobject.html">Pathfinding.GraphUpdateObject</a> for more info.</p>
 <h4 id="从GraphUpdateObject继承"><a href="#从GraphUpdateObject继承" class="headerlink" title="从GraphUpdateObject继承"></a>从GraphUpdateObject继承</h4><p>GraphUpdateObject可以被继承，覆写某些方法。下面是一个例子，执行父类Apply方法的同时移动节点：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">using UnityEngine;</span><br><span class="line">using Pathfinding;</span><br><span class="line"></span><br><span class="line">public class MyGUO : GraphUpdateObject &#123;</span><br><span class="line">public Vector3 offset = Vector3.up;</span><br><span class="line">public override void Apply (GraphNode node) &#123;</span><br><span class="line">// Keep the base functionality</span><br><span class="line">base.Apply(node);</span><br><span class="line">// The position of a node is an Int3, so we need to cast the offset</span><br><span class="line">node.position += (Int3)offset;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>也可以这样：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public void Start () &#123;</span><br><span class="line">    MyGUO guo = new MyGUO();</span><br><span class="line"></span><br><span class="line">    guo.offset = Vector3.up*2;</span><br><span class="line">    guo.bounds = new Bounds(Vector3.zero, Vector3.one*10);</span><br><span class="line">    AstarPath.active.UpdateGraphs(guo);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h2 id="检查是否阻塞（塔防）"><a href="#检查是否阻塞（塔防）" class="headerlink" title="检查是否阻塞（塔防）"></a>检查是否阻塞（塔防）</h2><p>在塔防游戏中很重要的一点是，玩家放置的塔没有使出兵点和目标点直接堵塞，插件为此提供了对应的API。</p>
-<p><a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdateutilities.html#UpdateGraphsNoBlock" target="_blank" rel="noopener">Pathfinding.GraphUpdateUtilities.UpdateGraphsNoBlock</a>方法会检查给定的graph update object是否会引起两个或更多的点引起堵塞，然而该方法会比常规更新图速度要慢，所以你可能不会经常使用它。</p>
+<p><a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdateutilities.html#UpdateGraphsNoBlock">Pathfinding.GraphUpdateUtilities.UpdateGraphsNoBlock</a>方法会检查给定的graph update object是否会引起两个或更多的点引起堵塞，然而该方法会比常规更新图速度要慢，所以你可能不会经常使用它。</p>
 <p>举个例子，当玩家再塔防游戏中放置一个防御塔的时候，你可以初始化防御塔，然后调用UpdateGraphsNoBlock方法检查新添加的防御塔是否会阻挡路径，如果是则立即移除防御塔并提示玩家选择的位置不符合规则。你也可以传递节点列表给UpdateGraphsNoBlock方法，这样不仅可以确定初始点和目标点之间没有堵塞，并且在单位行走时可以放置防御塔的情况下，所有单位都能到达目标。</p>
 <blockquote>
-<p>The <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdateutilities.html#UpdateGraphsNoBlock" target="_blank" rel="noopener">Pathfinding.GraphUpdateUtilities.UpdateGraphsNoBlock</a> method can be used to first check if a given graph update object will cause the path between two or more points to become blocked. This is however slower than a normal graph update so you probably don’t want to use it too often.</p>
+<p>The <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdateutilities.html#UpdateGraphsNoBlock">Pathfinding.GraphUpdateUtilities.UpdateGraphsNoBlock</a> method can be used to first check if a given graph update object will cause the path between two or more points to become blocked. This is however slower than a normal graph update so you probably don’t want to use it too often.</p>
 <p>For example when a player in a tower defence game places a tower, you could instantiate it, then call the UpdateGraphsNoBlock method to check if the newly placed tower will block the path. If it did then remove the tower immediately and notify the player that the choosen position was not valid. You can pass a list of nodes to the UpdateGraphsNoBlock method so you could for example make sure that not only is the path from the start to the goal not blocked, but also that all units can still reach the goal (if it is possible to place towers when enemies are walking around).</p>
 </blockquote>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var guo = new GraphUpdateObject(tower.GetComponent&lt;Collider&gt;().bounds);</span><br><span class="line">var spawnPointNode = AstarPath.active.GetNearest(spawnPoint.position).node;</span><br><span class="line">var goalNode = AstarPath.active.GetNearest(goalPoint.position).node;</span><br><span class="line"></span><br><span class="line">if (GraphUpdateUtilities.UpdateGraphsNoBlock(guo, spawnPointNode, goalNode, false)) &#123;</span><br><span class="line">    // Valid tower position</span><br><span class="line">    // Since the last parameter (which is called &quot;alwaysRevert&quot;) in the method call was false</span><br><span class="line">    // The graph is now updated and the game can just continue</span><br><span class="line">&#125; else &#123;</span><br><span class="line">    // Invalid tower position. It blocks the path between the spawn point and the goal</span><br><span class="line">    // The effect on the graph has been reverted</span><br><span class="line">    Destroy(tower);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -518,23 +525,23 @@
 <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>除阅读热身章节外，需要了解寻路的基础知识才能阅读以下内容：</p>
 <ol>
 <li>游戏寻路基本原理</li>
-<li><a href="http://dongbeigtl.top/2019/01/02/寻路常用的图/" target="_blank" rel="noopener">寻路常用的几种图介绍</a></li>
-<li><a href="http://dongbeigtl.top/2018/12/27/导航网格等寻路工作原理/" target="_blank" rel="noopener">Unity的寻路系统</a></li>
+<li><a href="http://dongbeigtl.top/2019/01/02/寻路常用的图/">寻路常用的几种图介绍</a></li>
+<li><a href="http://dongbeigtl.top/2018/12/27/导航网格等寻路工作原理/">Unity的寻路系统</a></li>
 </ol>
 <p>如果只是想了解该插件的基础功能，可以直接跳至热身章节阅读。</p>
-<p>以下的讲解内容，一部分是翻译自文档，翻译的部分会给出原文参考。英语好的同学可以直接看官方文档，文档包括寻路常用的几种图的介绍和优劣对比，以及一套寻路系统的工作原理是怎样的，写的非常详细，<a href="https://www.arongranberg.com/astar/docs/beginner.html" target="_blank" rel="noopener">官网地址</a></p>
-<p>此外官方还有一个入门的<a href="https://youtu.be/5QT5Czfe0YE" target="_blank" rel="noopener">视频</a>，需要梯子看。</p>
+<p>以下的讲解内容，一部分是翻译自文档，翻译的部分会给出原文参考。英语好的同学可以直接看官方文档，文档包括寻路常用的几种图的介绍和优劣对比，以及一套寻路系统的工作原理是怎样的，写的非常详细，<a href="https://www.arongranberg.com/astar/docs/beginner.html">官网地址</a></p>
+<p>此外官方还有一个入门的<a href="https://youtu.be/5QT5Czfe0YE">视频</a>，需要梯子看。</p>
 <h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p>APathfinding是比较主流的Unity寻路插件，分付费（100刀）和免费版。支持五种图：Grid Graph，Navmesh Graph，Point Graph，Recast Graph（付费），Layered Grid Graph（付费）。同时支持自动生成Navmesh（付费），自带RVO避障系统（付费）。目前Unity寻路插件用的比较多的就是该插件，功能齐全，可调节估价公式等等等，总之是一款非常强大的插件。</p>
 <h1 id="准备，简单的Demo"><a href="#准备，简单的Demo" class="headerlink" title="准备，简单的Demo"></a>准备，简单的Demo</h1><p>下面的Demo是一个简单的寻路，将准备好的插件包导入新建项目中然后完成下面的操作：</p>
 <p><strong>（1）</strong>准备工作：场景中添加Plane（一块地板），障碍物。为Plane添加一个Layer（我的命名是Ground）。添加几个障碍物，为所有的障碍物添加Layer（Obs），注意障碍物要添加Box Collider组件*。新建一个空物体，并为空物体添加<strong>Astar Path</strong>组件。添加一个游戏人物命名为hero，一个球体命名为target用于表示hero要去的目标。场景内现在应该有：地板，障碍物，游戏人物，以及target，挂载了Astar Path的空物体。</p>
 <p><strong>（2）</strong>生成导航网格<strong>：</strong>准备完成后，在Astar Path中添加<strong>Grid Graph</strong>，并设置网格图的长宽以足够覆盖整个Plane。将Collison Testing中的<strong>Obstacle Layer</strong> Mask设置为障碍物所在的图层（Obs）。将<strong>Height Tesing</strong>中的Mask设置为Plane所在的图层（Ground）。<br><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（上）/97475890.jpg" alt="img"></p>
 <p>设置完成后点击Scan，效果如图：</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011545907201.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011545907201.png" alt="Image 0011545907201.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011545907201.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011545907201.png" alt="Image 0011545907201.png"></a></p>
 <p>(3)让hero可以寻路：添加Seeker，Character Controler组件。新建一个名为MineAstarAI的脚本，并填入以下代码：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">using Pathfinding;</span><br><span class="line"></span><br><span class="line">public void Start () &#123;</span><br><span class="line">// Get the seeker component attached to this GameObject</span><br><span class="line">var seeker = GetComponent&lt;Seeker&gt;();</span><br><span class="line"></span><br><span class="line">// Start a new path request from the current position to a position 10 units forward.</span><br><span class="line">// When the path has been calculated, it will be returned to the function OnPathComplete unless it was canceled by another path request</span><br><span class="line">seeker.StartPath (transform.position, transform.position+transform.forward*10, OnPathComplete);</span><br><span class="line"></span><br><span class="line">// Note that the path is NOT calculated at this stage</span><br><span class="line">// It has just been queued for calculation</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public void OnPathComplete (Path p) &#123;</span><br><span class="line">// We got our path back</span><br><span class="line">if (p.error) &#123;</span><br><span class="line">// Nooo, a valid path couldn&apos;t be found</span><br><span class="line">&#125; else &#123;</span><br><span class="line">// Yay, now we can get a Vector3 representation of the path</span><br><span class="line">// from p.vectorPath</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>然后在Target Position拖入Target。</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011545908704.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011545908704.png" alt="Image 0011545908704.png"></a></p>
-<p>（4）运行，Scene窗口会显示寻路的路径：<br><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011545908795.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011545908795.png" alt="Image 0011545908795.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011545908704.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011545908704.png" alt="Image 0011545908704.png"></a></p>
+<p>（4）运行，Scene窗口会显示寻路的路径：<br><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011545908795.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011545908795.png" alt="Image 0011545908795.png"></a></p>
 <p>若没显示路径（绿线），检查seeker脚本中的Draw Gizmos选项是否勾选。</p>
 <hr>
 <h1 id="组件介绍"><a href="#组件介绍" class="headerlink" title="组件介绍"></a>组件介绍</h1><p><strong>概览</strong></p>
@@ -625,16 +632,16 @@
 </table>
 <p>[1]Thread Count：推荐使用Automatic，因为不同用户间配置的不同，会导致性能的浪费或导致游戏无法以正常帧数运行。Automatic会检查当前机器的配置来确定线程数，稳定运行。另外需要的注意，如果场景中只有一个（或很少）需要寻路的角色（代理），应该只使用一个线程。因为多线程计算路径适用于计算不同路径以提升吞吐量，<strong>但是多线程并不会使单个路径的计算速度变快。</strong></p>
 <p>[2]不同的估价公式：</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011546845961.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011546845961.png" alt="Image 0011546845961.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011546845961.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011546845961.png" alt="Image 0011546845961.png"></a></p>
 <p>估价公式的作用请看寻路原理文档以及网上查阅资料。</p>
 <p>[3]Heuristic Scale：如果使用小于1的值，则寻路处理时会搜索更多节点（更慢）。 如果使用0，则路径查找算法将简化为dijkstra算法。 相当于将Heuristic选项设置为None。 如果使用大于1的值，则路径查找通常会更快，但因为搜索了更少的节点，所以路径可能不再是最佳路径（即最短路径）。</p>
 <p>[4]Heuristic Optimization：</p>
 <p>[5]Batch Graph Updates：图形更新将批处理并执行较少（由graphUpdateBatchingInterval指定更新）。</p>
 <p>[6]Prioritize Graphs：图表将根据他们在检查员中的顺序进行优先排序。 将选择具有比优先级图限制更近的节点的第一个图，而不是搜索所有图。</p>
 <p>[7]Smooth Transitions：</p>
-<h3 id="SaveAndLoad面板"><a href="#SaveAndLoad面板" class="headerlink" title="SaveAndLoad面板"></a>SaveAndLoad面板</h3><p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011545903520.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011545903520.png" alt="Image 0011545903520.png"></a></p>
+<h3 id="SaveAndLoad面板"><a href="#SaveAndLoad面板" class="headerlink" title="SaveAndLoad面板"></a>SaveAndLoad面板</h3><p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011545903520.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011545903520.png" alt="Image 0011545903520.png"></a></p>
 <p>此面板用于读取和保存图的信息。通过读取缓存数据避免在游戏中进行大量的图生成计算。</p>
-<h3 id="Optimization面板"><a href="#Optimization面板" class="headerlink" title="Optimization面板"></a>Optimization面板</h3><p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011545903671.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011545903671.png" alt="Image 0011545903671.png"></a></p>
+<h3 id="Optimization面板"><a href="#Optimization面板" class="headerlink" title="Optimization面板"></a>Optimization面板</h3><p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011545903671.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011545903671.png" alt="Image 0011545903671.png"></a></p>
 <p>禁用或使用面板中的某些功能来提升性能。</p>
 <hr>
 <h2 id="2-图"><a href="#2-图" class="headerlink" title="2.图"></a>2.图</h2><p>点击Graphs后会提示选择其中一种图来进行下一步的操作，这里拿Grid来做讲解，这几种图是干吗的在前言的文章有介绍。</p>
@@ -766,10 +773,10 @@
 </table>
 <p><strong>[1]Shape:</strong>Grid Graph有很多种，如网格图等等</p>
 <p><strong>[2]Cut Corners:</strong></p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/cutCorners.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/cutCorners.png" alt="cutCorners.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/cutCorners.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/cutCorners.png" alt="cutCorners.png"></a></p>
 <p><strong>[3]Erosion iterations：</strong></p>
 <p>通过调整Erosion iterations实现侵蚀的效果，根据值的不同侵蚀的程度也不同：</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/erosion.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/erosion.png" alt="erosion.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/erosion.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/erosion.png" alt="erosion.png"></a></p>
 <p>分别为值是0，1，2时的效果</p>
 <p>过多的侵蚀迭代次数会降低运行时（Graph UpdateObject）中的图形更新速度。</p>
 <p><strong>[4]Ray length：</strong></p>
@@ -777,7 +784,7 @@
 <p><strong>[6]Use Jump point Search：</strong></p>
 <p>[/su_spoiler] [/su_accordion]</p>
 <p>[su_accordion][su_spoiler title=”Navmesh Graph” open=”no” style=”default” icon=”plus” anchor=”” class=””]</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011545905039.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011545905039.png" alt="Image 0011545905039.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011545905039.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011545905039.png" alt="Image 0011545905039.png"></a></p>
 <table>
 <thead>
 <tr>
@@ -821,7 +828,7 @@
 <p><strong>[3]Initial Penalty</strong></p>
 <p>[/su_spoiler] [/su_accordion]</p>
 <p>[su_accordion][su_spoiler title=”Point Graph” open=”no” style=”default” icon=”plus” anchor=”” class=””]</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011545905044.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011545905044.png" alt="Image 0011545905044.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011545905044.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011545905044.png" alt="Image 0011545905044.png"></a></p>
 <table>
 <thead>
 <tr>
@@ -880,7 +887,7 @@
 <p>[2]Optimize For Sparse Graph：</p>
 <p>[/su_spoiler] [/su_accordion]</p>
 <p>[su_accordion][su_spoiler title=”Recast Graph” open=”no” style=”default” icon=”plus” anchor=”” class=””]</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011545905050.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011545905050.png" alt="Image 0011545905050.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011545905050.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011545905050.png" alt="Image 0011545905050.png"></a></p>
 <table>
 <thead>
 <tr>
@@ -999,10 +1006,10 @@
 <p><strong>注意Seeker一次只能进行一次寻路调用，如果在前一个路径完成之前请求新路径，则前一个路径请求将被取消。</strong>并且StartPath调用之后<strong>并不</strong>会立即计算路径。StartPath调用仅目标点放入队列中。这样做是因为当许多单位同时请求计算路径时，可以在几帧上展开寻路计算以避免FPS下降。如果已启用多线程，还可以在其他线程计算路径。如果需要立即计算路径。可以使用Pathfinding.Path.BlockUntilCalculated方法。</p>
 <p>原文：</p>
 <blockquote>
-<p>A common mistake is to assume that the path is already calculated right after the StartPath call. This is however incorrect. The StartPath call will only put the path in a queue. This is done because when many units are calculating their paths at the same time, it is desriable to spread out the path calculations over several frames to avoid FPS drops. We can also calculate the paths in other threads if <a href="https://www.arongranberg.com/astar/docs/astarpath.html#threadCount" target="_blank" rel="noopener">multithreading</a> has been enabled. There are of course cases where you need to calculate the path immediately. Then you can use the <a href="https://www.arongranberg.com/astar/docs/path.html#BlockUntilCalculated" target="_blank" rel="noopener">Pathfinding.Path.BlockUntilCalculated</a>method.</p>
+<p>A common mistake is to assume that the path is already calculated right after the StartPath call. This is however incorrect. The StartPath call will only put the path in a queue. This is done because when many units are calculating their paths at the same time, it is desriable to spread out the path calculations over several frames to avoid FPS drops. We can also calculate the paths in other threads if <a href="https://www.arongranberg.com/astar/docs/astarpath.html#threadCount">multithreading</a> has been enabled. There are of course cases where you need to calculate the path immediately. Then you can use the <a href="https://www.arongranberg.com/astar/docs/path.html#BlockUntilCalculated">Pathfinding.Path.BlockUntilCalculated</a>method.</p>
 </blockquote>
 <p>Seeker并不是必须要挂载的，但是用它寻路会更简单。</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011546850497.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011546850497.png" alt="Image 0011546850497.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011546850497.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011546850497.png" alt="Image 0011546850497.png"></a></p>
 <table>
 <thead>
 <tr>
@@ -1117,7 +1124,7 @@
 <h2 id="5-Modifiers组件"><a href="#5-Modifiers组件" class="headerlink" title="5.Modifiers组件"></a>5.Modifiers组件</h2><p>Modifiers是一些小组件，如SimpleSmoothModifier，RaycastModifier，FunnelModifier，和Seeker挂在同一个GameObject上。在Seeker返回路径给调用者之前，对路径<strong>自动（</strong>需手动修改或调用<strong>）</strong>进行圆滑或简化处理。</p>
 <p>例如，下图中，Raycast Modifier删除了路径中不必要的节点，使路径更短。SimpleSmoothModifier使路径更圆滑，看起来更自然。</p>
 <p>下面是几种最常见的Modifier的比较：</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/modifier_comparison_grid.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/modifier_comparison_grid.png" alt="modifier_comparison_grid.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/modifier_comparison_grid.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/modifier_comparison_grid.png" alt="modifier_comparison_grid.png"></a></p>
 <p>关于这些Modifier的具体功能，看下面章节。</p>
 <p>需要注意，Modifiers通常不考虑世界几何图形或图形，因此小心使用太多平滑，可能会导致路径穿过不可行走的区域。圆滑路径一定要注意将参数调大，不然会卡死，如图：<br><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（上）/84506670.jpg" alt="img"></p>
 <p><strong>只有Seeker可以调用Modifieer吗</strong></p>
@@ -1136,11 +1143,11 @@
 <blockquote>
 <p>The simple smooth modifier is a modifier to smooth the path. It can do that either by just subdividing it and moving the vertices closer to each other or use splines, namely the Bezier curve.<br>Below are two images showing a path with the smooth modifier turned off first and then on. Note that the smoothed path cuts the corners a bit, this can be a problem with the smooth modifier since it does not take world geometry into account when smoothing.</p>
 </blockquote>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/smoothModifier_off.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/smoothModifier_off.png" alt="smoothModifier_off.png"></a></p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/smoothModifier_on.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/smoothModifier_on.png" alt="smoothModifier_on.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/smoothModifier_off.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/smoothModifier_off.png" alt="smoothModifier_off.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/smoothModifier_on.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/smoothModifier_on.png" alt="smoothModifier_on.png"></a></p>
 <p>SimpleSmooth的类型有如下几种：</p>
 <h4 id="1-SimpleSmooth"><a href="#1-SimpleSmooth" class="headerlink" title="1.SimpleSmooth"></a>1.SimpleSmooth</h4><p>通过细分路径，使顶点互相靠近实现平滑。</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011545992300.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011545992300.png" alt="Image 0011545992300.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011545992300.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011545992300.png" alt="Image 0011545992300.png"></a></p>
 <table>
 <thead>
 <tr>
@@ -1164,18 +1171,18 @@
 </tbody>
 </table>
 <p>Uniform Length会将路径裁剪成每段相等线段，线段的最大长度取决于Max Segment Length，Max Segment Length越大路径越简单，同时也容易<strong>穿过不可走区域。</strong>我描述的可能不太清晰<strong>，</strong>看下面的例子或者自己尝试调节下参数很容易明白这两个属性的意义。</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011545993237.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011545993237.png" alt="Image 0011545993237.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011545993237.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011545993237.png" alt="Image 0011545993237.png"></a></p>
 <p>未开启SimpleSmooth</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011545993249.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011545993249.png" alt="Image 0011545993249.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011545993249.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011545993249.png" alt="Image 0011545993249.png"></a></p>
 <p>开启SimpleSmooth，但Uniform Length未开启。</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011545993261.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011545993261.png" alt="Image 0011545993261.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011545993261.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011545993261.png" alt="Image 0011545993261.png"></a></p>
 <p>开启Uniform Length</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011545994656.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011545994656.png" alt="Image 0011545994656.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011545994656.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011545994656.png" alt="Image 0011545994656.png"></a></p>
 <p>Max Segment Length = 20</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011545994680.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011545994680.png" alt="Image 0011545994680.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011545994680.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011545994680.png" alt="Image 0011545994680.png"></a></p>
 <p>Max Segment Length = 100</p>
 <h4 id="2-Bezier"><a href="#2-Bezier" class="headerlink" title="2.Bezier"></a>2.Bezier</h4><p>通过贝塞尔曲线实现平滑，注意贝塞尔曲线处理过的路径总会通过所有的顶点（看下面的图就明白什么意思了），所以注意不要拐弯拐的太过。</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011545992326.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011545992326.png" alt="Image 0011545992326.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011545992326.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011545992326.png" alt="Image 0011545992326.png"></a></p>
 <table>
 <thead>
 <tr>
@@ -1191,17 +1198,17 @@
 </tbody>
 </table>
 <p>Bezier Tangent Length值要注意，如图：</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011545996463.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011545996463.png" alt="Image 0011545996463.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011545996463.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011545996463.png" alt="Image 0011545996463.png"></a></p>
 <p>Bezier Tangent Length = 0</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011545996473.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011545996473.png" alt="Image 0011545996473.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011545996473.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011545996473.png" alt="Image 0011545996473.png"></a></p>
 <p>Bezier Tangent Length = 0.5</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011545996558.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011545996558.png" alt="Image 0011545996558.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011545996558.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011545996558.png" alt="Image 0011545996558.png"></a></p>
 <p>Bezier Tangent Length =3（挺好看的）</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011545996502.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011545996502.png" alt="Image 0011545996502.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011545996502.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011545996502.png" alt="Image 0011545996502.png"></a></p>
 <p>Bezier Tangent Length =10，曲线的曲率已经大的看不到了。</p>
 <p>关于贝塞尔曲线，自行查阅资料。</p>
 <h4 id="3-OffSet"><a href="#3-OffSet" class="headerlink" title="3.OffSet"></a>3.OffSet</h4><p>通过向外偏移路径，减少拐点角度来实现平滑，注意offset的值过大会非常乱。</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011545992330.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011545992330.png" alt="Image 0011545992330.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011545992330.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011545992330.png" alt="Image 0011545992330.png"></a></p>
 <table>
 <thead>
 <tr>
@@ -1216,23 +1223,23 @@
 </tr>
 </tbody>
 </table>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011545999588.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011545999588.png" alt="Image 0011545999588.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011545999588.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011545999588.png" alt="Image 0011545999588.png"></a></p>
 <p>offset = 2，可以看到该模式下致力于减少拐角处的角度实现平滑。</p>
 <h4 id="4-Curved-Non-Uniform"><a href="#4-Curved-Non-Uniform" class="headerlink" title="4.Curved Non Uniform"></a>4.Curved Non Uniform</h4><p>这个没什么好说的，平滑处理时曲线曲率是不相等的。</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011545992334.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011545992334.png" alt="Image 0011545992334.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011545992334.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011545992334.png" alt="Image 0011545992334.png"></a></p>
 <p>Factor：弧度系数</p>
 <h3 id="FunnelModifier"><a href="#FunnelModifier" class="headerlink" title="FunnelModifier"></a>FunnelModifier</h3><p>FunnelModifier使用漏斗算法，快速准确的对路径进行简化。但在Grid的中优化的效果可能不尽人意，因为它只简化了路径队列中节点内的路径。在RaycastModifier中效果会好一些。</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011546001697.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011546001697.png" alt="Image 0011546001697.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011546001697.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011546001697.png" alt="Image 0011546001697.png"></a></p>
 <p>Unwrap：开启后将在XY以及更复杂的空间支持简化路径。</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/funnel_unwrap_illustration.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/funnel_unwrap_illustration.png" alt="funnel_unwrap_illustration.png"></a></p>
-<h5 id="splitAtEveryPortal：每当通过一个节点就插入一个节点。"><a href="#splitAtEveryPortal：每当通过一个节点就插入一个节点。" class="headerlink" title="splitAtEveryPortal：每当通过一个节点就插入一个节点。"></a>splitAtEveryPortal：每当通过一个节点就插入一个节点。</h5><p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/funnel_split_at_every_portal.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/funnel_split_at_every_portal.png" alt="funnel_split_at_every_portal.png"></a></p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011550462938.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011550462938.png" alt="Image 0011550462938.png"></a></p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011550462920.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011550462920.png" alt="Image 0011550462920.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/funnel_unwrap_illustration.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/funnel_unwrap_illustration.png" alt="funnel_unwrap_illustration.png"></a></p>
+<h5 id="splitAtEveryPortal：每当通过一个节点就插入一个节点。"><a href="#splitAtEveryPortal：每当通过一个节点就插入一个节点。" class="headerlink" title="splitAtEveryPortal：每当通过一个节点就插入一个节点。"></a>splitAtEveryPortal：每当通过一个节点就插入一个节点。</h5><p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/funnel_split_at_every_portal.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/funnel_split_at_every_portal.png" alt="funnel_split_at_every_portal.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011550462938.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011550462938.png" alt="Image 0011550462938.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011550462920.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011550462920.png" alt="Image 0011550462920.png"></a></p>
 <p>Grid图中简化效果</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011550461435.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011550461435.png" alt="Image 0011550461435.png"></a></p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011550461454.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011550461454.png" alt="Image 0011550461454.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011550461435.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011550461435.png" alt="Image 0011550461435.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011550461454.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011550461454.png" alt="Image 0011550461454.png"></a></p>
 <p>NavMesh下简化效果</p>
-<p>官方文档：<a href="https://www.arongranberg.com/astar/docs/funnelmodifier.html" target="_blank" rel="noopener">https://www.arongranberg.com/astar/docs/funnelmodifier.html</a></p>
+<p>官方文档：<a href="https://www.arongranberg.com/astar/docs/funnelmodifier.html">https://www.arongranberg.com/astar/docs/funnelmodifier.html</a></p>
 <h3 id="Raycast-Modifier"><a href="#Raycast-Modifier" class="headerlink" title="Raycast Modifier"></a>Raycast Modifier</h3><p>Raycast Modifier将尝试使用光线检测（linecasting）从路径中删除尽可能多的节点。可以使用图的内置光线检测，也可以用Unity的Physics.Raycast完成光线检测。该组件主要应用于grid graphs 和 layered grid graphs。point graphs也可以使用Raycast Modifier，但point graphs并没有内置的光线检测系统，所以需要使用Unity的Physics.Raycast实现光线检测。</p>
 <p>navmesh/recast图最好使用FunnelModifier。</p>
 <p>在grid图中，Raycast Modifier和FunnelModifier可以同时使用。但混合使用可能不会简化出最优的路径，甚至可能带来不好的结果。当两者都被使用时，通常路径会紧密的贴在图的边界，而错失了简化路径的机会，并且混合使用时FunnelModifier会先运行简化路径，然后将简化结果传给Raycast Modifier进一步优化。</p>
@@ -1243,7 +1250,7 @@
 <li>High：使用动态规划迭代一次</li>
 <li>Highest：使用动态规划迭代三次</li>
 </ol>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/raycast_modifier_quality.gif" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/raycast_modifier_quality.gif" alt="raycast_modifier_quality.gif"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/raycast_modifier_quality.gif"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/raycast_modifier_quality.gif" alt="raycast_modifier_quality.gif"></a></p>
 <h2 id="手动编写寻路"><a href="#手动编写寻路" class="headerlink" title="手动编写寻路"></a>手动编写寻路</h2><p>虽然可以使用插件自带的组件来完成寻路移动，但是手写可以理解插件的工作原理。</p>
 <p>上面的热身已经写过一个简单的寻路调用了，下面把它强化一下：<strong>（备注没写）</strong></p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">using UnityEngine;</span><br><span class="line">// Note this line, if it is left out, the script won&apos;t know that the class &apos;Path&apos; exists and it will throw compiler errors</span><br><span class="line">// This line should always be present at the top of scripts which use pathfinding</span><br><span class="line">using Pathfinding;</span><br><span class="line"></span><br><span class="line">public class AstarAI : MonoBehaviour &#123;</span><br><span class="line">public Transform targetPosition;</span><br><span class="line"></span><br><span class="line">private Seeker seeker;</span><br><span class="line">private CharacterController controller;</span><br><span class="line"></span><br><span class="line">public Path path;</span><br><span class="line"></span><br><span class="line">public float speed = 2;</span><br><span class="line"></span><br><span class="line">public float nextWaypointDistance = 3;</span><br><span class="line"></span><br><span class="line">private int currentWaypoint = 0;</span><br><span class="line"></span><br><span class="line">public bool reachedEndOfPath;</span><br><span class="line"></span><br><span class="line">public void Start () &#123;</span><br><span class="line">seeker = GetComponent&lt;Seeker&gt;();</span><br><span class="line">// If you are writing a 2D game you can remove this line</span><br><span class="line">// and use the alternative way to move sugggested further below.</span><br><span class="line">controller = GetComponent&lt;CharacterController&gt;();</span><br><span class="line"></span><br><span class="line">// Start a new path to the targetPosition, call the the OnPathComplete function</span><br><span class="line">// when the path has been calculated (which may take a few frames depending on the complexity)</span><br><span class="line">seeker.StartPath(transform.position, targetPosition.position, OnPathComplete);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public void OnPathComplete (Path p) &#123;</span><br><span class="line">Debug.Log(&quot;A path was calculated. Did it fail with an error? &quot; + p.error);</span><br><span class="line"></span><br><span class="line">if (!p.error) &#123;</span><br><span class="line">path = p;</span><br><span class="line">// Reset the waypoint counter so that we start to move towards the first point in the path</span><br><span class="line">currentWaypoint = 0;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public void Update () &#123;</span><br><span class="line">if (path == null) &#123;</span><br><span class="line">// We have no path to follow yet, so don&apos;t do anything</span><br><span class="line">return;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// Check in a loop if we are close enough to the current waypoint to switch to the next one.</span><br><span class="line">// We do this in a loop because many waypoints might be close to each other and we may reach</span><br><span class="line">// several of them in the same frame.</span><br><span class="line">reachedEndOfPath = false;</span><br><span class="line">// The distance to the next waypoint in the path</span><br><span class="line">float distanceToWaypoint;</span><br><span class="line">while (true) &#123;</span><br><span class="line">// If you want maximum performance you can check the squared distance instead to get rid of a</span><br><span class="line">// square root calculation. But that is outside the scope of this tutorial.</span><br><span class="line">distanceToWaypoint = Vector3.Distance(transform.position, path.vectorPath[currentWaypoint]);</span><br><span class="line">if (distanceToWaypoint &lt; nextWaypointDistance) &#123;</span><br><span class="line">// Check if there is another waypoint or if we have reached the end of the path</span><br><span class="line">if (currentWaypoint + 1 &lt; path.vectorPath.Count) &#123;</span><br><span class="line">currentWaypoint++;</span><br><span class="line">&#125; else &#123;</span><br><span class="line">// Set a status variable to indicate that the agent has reached the end of the path.</span><br><span class="line">// You can use this to trigger some special code if your game requires that.</span><br><span class="line">reachedEndOfPath = true;</span><br><span class="line">break;</span><br><span class="line">&#125;</span><br><span class="line">&#125; else &#123;</span><br><span class="line">break;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// Slow down smoothly upon approaching the end of the path</span><br><span class="line">// This value will smoothly go from 1 to 0 as the agent approaches the last waypoint in the path.</span><br><span class="line">var speedFactor = reachedEndOfPath ? Mathf.Sqrt(distanceToWaypoint/nextWaypointDistance) : 1f;</span><br><span class="line"></span><br><span class="line">// Direction to the next waypoint</span><br><span class="line">// Normalize it so that it has a length of 1 world unit</span><br><span class="line">Vector3 dir = (path.vectorPath[currentWaypoint] - transform.position).normalized;</span><br><span class="line">// Multiply the direction by our desired speed to get a velocity</span><br><span class="line">Vector3 velocity = dir * speed * speedFactor;</span><br><span class="line"></span><br><span class="line">// Move the agent using the CharacterController component</span><br><span class="line">// Note that SimpleMove takes a velocity in meters/second, so we should not multiply by Time.deltaTime</span><br><span class="line">controller.SimpleMove(velocity);</span><br><span class="line"></span><br><span class="line">// If you are writing a 2D game you may want to remove the CharacterController and instead use e.g transform.Translate</span><br><span class="line">// transform.position += velocity * Time.deltaTime;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -1255,11 +1262,11 @@
 <p>如果想获得在更多限定条件下，距离目标节点最近的点。可以自行设置限定条件：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var constraint = NNConstraint.None;</span><br><span class="line"></span><br><span class="line">// Constrain the search to walkable nodes only</span><br><span class="line">constraint.constrainWalkability = true;</span><br><span class="line">constraint.walkable = true;</span><br><span class="line"></span><br><span class="line">// Constrain the search to only nodes with tag 3 or tag 5</span><br><span class="line">// The &apos;tags&apos; field is a bitmask</span><br><span class="line">constraint.constrainTags = true;</span><br><span class="line">constraint.tags = (1 &lt;&lt; 3) | (1 &lt;&lt; 5);</span><br><span class="line"></span><br><span class="line">var info = AstarPath.active.GetNearest(transform.position, constraint);</span><br><span class="line">var node = info.node;</span><br><span class="line">var closestPoint = info.position;</span><br></pre></td></tr></table></figure>
 <p>需要注意的是，搜寻最近节点的距离受制与Max Nearest Node Distance属性（在A* Inspector -&gt; Settings -&gt; Max Nearest Node Distance可以设置）。也就是说如果最近的点距离目标节点的距离超过 Max Nearest Node Distance，GetNearest方法会返回Null值。</p>
-<p>GetNearest方法返回了一个<a href="https://arongranberg.com/astar/docs/nninfo.html" target="_blank" rel="noopener">NNInfo</a>对象，<a href="https://arongranberg.com/astar/docs/nninfo.html" target="_blank" rel="noopener">NNInfo</a>中包括两个属性，一是<a href="https://arongranberg.com/astar/docs/graphnode.html" target="_blank" rel="noopener">GraphNode</a>类型的，距离最近的节点信息node。二是<a href="https://docs.unity3d.com/ScriptReference/Vector3.html" target="_blank" rel="noopener">Vector3</a>类型的，node的位置信息position。在Grid图中每个节点都被视为正方形，所以position就是正方形。在navmesh中，position就是最近的三角形的中心点（因为NavMesh的节点是每个三角形的中心点）。</p>
+<p>GetNearest方法返回了一个<a href="https://arongranberg.com/astar/docs/nninfo.html">NNInfo</a>对象，<a href="https://arongranberg.com/astar/docs/nninfo.html">NNInfo</a>中包括两个属性，一是<a href="https://arongranberg.com/astar/docs/graphnode.html">GraphNode</a>类型的，距离最近的节点信息node。二是<a href="https://docs.unity3d.com/ScriptReference/Vector3.html">Vector3</a>类型的，node的位置信息position。在Grid图中每个节点都被视为正方形，所以position就是正方形。在navmesh中，position就是最近的三角形的中心点（因为NavMesh的节点是每个三角形的中心点）。</p>
 <p>所以同样的地图，Grid和NavMesh查找最近的点会有一些不同：</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011546422437.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011546422437.png" alt="Image 0011546422437.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011546422437.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011546422437.png" alt="Image 0011546422437.png"></a></p>
 <p>在NavMesh中，红色方块是距离白色小球最近的位置。</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011546422596.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011546422596.png" alt="Image 0011546422596.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011546422596.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011546422596.png" alt="Image 0011546422596.png"></a></p>
 <p>在Grid中，最近的节点位置就是最近的方块位置。</p>
 <h3 id="节点连接"><a href="#节点连接" class="headerlink" title="节点连接"></a>节点连接</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">GraphNode node = ...;</span><br><span class="line">// Draw a line to all nodes that this node is connected to</span><br><span class="line">node.GetConnections(otherNode =&gt; &#123;</span><br><span class="line">Debug.DrawLine((Vector3)node.position, (Vector3)otherNode.position);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 <p><strong>GraphNode node = …;什么意思</strong></p>
@@ -1271,7 +1278,7 @@
 <p>获取一个节点所在表面的随机点：</p>
 <p>Vector3 randomPoint = node.RandomPointOnSurface();（获取某位置的三角形）</p>
 <h3 id="可达性"><a href="#可达性" class="headerlink" title="可达性"></a>可达性</h3><p>通过Scene场景不同颜色的区域可以判断哪些区域是连通的，可以到达，如图：</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011546437009.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011546437009.png" alt="Image 0011546437009.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011546437009.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011546437009.png" alt="Image 0011546437009.png"></a></p>
 <p>绿色和蓝色是两个区域且不连通</p>
 <p>寻路系统通过计算图的连通分量来预先计算哪些节点可从哪些节点到达。不连通的两个区域（节点）会被标记为不同的颜色。每个节点的Area字段都设置为其连接组件的索引。如果2个节点具有相同的区域，则意味着它们之间存在有效路径。您也可以使用PathUtilities.IsPathPossible方法进行检查。计算这些区域或连接组件的过程被称为“洪水填充”。</p>
 <p>通过代码判断两点之间的可达性：</p>
@@ -1282,21 +1289,21 @@
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">IEnumerator Start () &#123;</span><br><span class="line">var path = seeker.StartPath (transform.position, transform.position+transform.forward*10, OnPathComplete);</span><br><span class="line">// Wait... (may take some time depending on how complex the path is)</span><br><span class="line">// The rest of the game will continue to run while waiting</span><br><span class="line">yield return StartCoroutine (path.WaitForPath());</span><br><span class="line">// The path is calculated now</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>也可以创建自己的路径对象，而不是使用seeker的方法，并能够在计算路径对象之前更改其设置。代码：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">// Create a new path object, the last parameter is a callback function</span><br><span class="line">// but it will be used internally by the seeker, so we will set it to null here</span><br><span class="line">// Paths are created using the static Construct call because then it can use</span><br><span class="line">// pooled paths instead of creating a new path object all the time</span><br><span class="line">// which is a nice way to avoid frequent GC spikes.</span><br><span class="line">var p = ABPath.Construct (transform.position, transform.position+transform.forward*10, null);</span><br><span class="line"></span><br><span class="line">// By default, a search for the closest walkable nodes to the start and end nodes will be carried out</span><br><span class="line">// but for example in a turn based game, you might not want it to search for the closest walkable node, but return an error if the target point</span><br><span class="line">// was at an unwalkable node. Setting the NNConstraint to None will disable the nearest walkable node search</span><br><span class="line">p.nnConstraint = NNConstraint.None;</span><br><span class="line"></span><br><span class="line">// Start the path by sending it to the Seeker</span><br><span class="line">seeker.StartPath (p, OnPathComplete);</span><br></pre></td></tr></table></figure>
-<h3 id="多目标路径"><a href="#多目标路径" class="headerlink" title="多目标路径"></a>多目标路径</h3><h3 id="直接使用AstarPath类"><a href="#直接使用AstarPath类" class="headerlink" title="直接使用AstarPath类"></a>直接使用AstarPath类</h3><p>如果需要对路径进行更多控制，可以直接调用<a href="https://www.arongranberg.com/astar/docs/astarpath.html" target="_blank" rel="noopener">AstarPath</a>组件。<a href="https://www.arongranberg.com/astar/docs/astarpath.html" target="_blank" rel="noopener">AstarPath</a>组件的主要功能是<a href="https://www.arongranberg.com/astar/docs/astarpath.html#StartPath" target="_blank" rel="noopener">AstarPath.StartPath</a>。如果要同时计算大量路径。搜索者适用于一次只有一个活动路径的代理，如果您尝试同时请求多个路径，它将只计算最后一个路径并取消其余路径。</p>
-<p>注：使用<a href="https://www.arongranberg.com/astar/docs/astarpath.html#StartPath" target="_blank" rel="noopener">AstarPath.StartPath</a>计算的路径不会进行后处理。但是，您可以在计算路径后使用附加到特定搜索器的修改器对其进行后处理，从而调用<a href="https://www.arongranberg.com/astar/docs/seeker.html#PostProcess" target="_blank" rel="noopener">Seeker.PostProcess</a>。</p>
+<h3 id="多目标路径"><a href="#多目标路径" class="headerlink" title="多目标路径"></a>多目标路径</h3><h3 id="直接使用AstarPath类"><a href="#直接使用AstarPath类" class="headerlink" title="直接使用AstarPath类"></a>直接使用AstarPath类</h3><p>如果需要对路径进行更多控制，可以直接调用<a href="https://www.arongranberg.com/astar/docs/astarpath.html">AstarPath</a>组件。<a href="https://www.arongranberg.com/astar/docs/astarpath.html">AstarPath</a>组件的主要功能是<a href="https://www.arongranberg.com/astar/docs/astarpath.html#StartPath">AstarPath.StartPath</a>。如果要同时计算大量路径。搜索者适用于一次只有一个活动路径的代理，如果您尝试同时请求多个路径，它将只计算最后一个路径并取消其余路径。</p>
+<p>注：使用<a href="https://www.arongranberg.com/astar/docs/astarpath.html#StartPath">AstarPath.StartPath</a>计算的路径不会进行后处理。但是，您可以在计算路径后使用附加到特定搜索器的修改器对其进行后处理，从而调用<a href="https://www.arongranberg.com/astar/docs/seeker.html#PostProcess">Seeker.PostProcess</a>。</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">// There must be an AstarPath instance in the scene</span><br><span class="line">if (AstarPath.active == null) return;</span><br><span class="line"></span><br><span class="line">// We can calculate multiple paths asynchronously</span><br><span class="line">for (int i = 0; i &lt; 10; i++) &#123;</span><br><span class="line">// As there is not Seeker to keep track of the callbacks, we now need to specify the callback every time again</span><br><span class="line">var p = ABPath.Construct(transform.position, transform.position+transform.forward*i*10, OnPathComplete);</span><br><span class="line"></span><br><span class="line">// Start the path by calling the AstarPath component directly</span><br><span class="line">// AstarPath.active is the active AstarPath instance in the scene</span><br><span class="line">AstarPath.StartPath (p);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="NavMesh生成"><a href="#NavMesh生成" class="headerlink" title="NavMesh生成"></a>NavMesh生成</h2><p>生成NavMesh有两种方法，一是通过一些软件手动生成（<a href="https://www.blender.org/" target="_blank" rel="noopener">Blender</a> 等等），二是使用 Recast Graph自动生成（付费）。</p>
-<p>手动生成就不做介绍了，可以看文档：<a href="https://arongranberg.com/astar/docs/createnavmesh.html" target="_blank" rel="noopener">https://arongranberg.com/astar/docs/createnavmesh.html</a></p>
+<h2 id="NavMesh生成"><a href="#NavMesh生成" class="headerlink" title="NavMesh生成"></a>NavMesh生成</h2><p>生成NavMesh有两种方法，一是通过一些软件手动生成（<a href="https://www.blender.org/">Blender</a> 等等），二是使用 Recast Graph自动生成（付费）。</p>
+<p>手动生成就不做介绍了，可以看文档：<a href="https://arongranberg.com/astar/docs/createnavmesh.html">https://arongranberg.com/astar/docs/createnavmesh.html</a></p>
 <p>关于NavMesh的生成原理：</p>
 <p>Recast Graph是付费版才有的图，功能强大，可以自动识别到地板以及障碍信息，使用Recast Graph生成Navmesh分为如下几步：</p>
 <p>1.在Astar面板点击创建Recast Graph</p>
 <p>2.点击Snap Bounds To Scene按钮</p>
 <p>Snap Bounds To Scene会自动识别场景中的轮廓，如图：</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011546500422.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011546500422.png" alt="Image 0011546500422.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011546500422.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011546500422.png" alt="Image 0011546500422.png"></a></p>
 <p>白色的边框就是被识别出的轮廓</p>
 <p>3.调整参数</p>
 <p>Recast Graph生成NavMesh时，面板上的Width和Depth是无法直接修改的。必须要通过控制Cell（每个体素的大小）的大小来调节Width和Depth。</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011546500981.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011546500981.png" alt="Image 0011546500981.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011546500981.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011546500981.png" alt="Image 0011546500981.png"></a></p>
 <p>可以按图中设置为0.1</p>
 <p>同时还有一个很关键的属性，<strong>tiles。</strong>recast graph使用tiles将图划分成一个个正方形区域。tile值的大小没有最佳，一般维持在 64至256。将Use tiles选项设置为Dont Use Tiles可以禁止使用tiles划分地图，但是Tiles有几个好处：</p>
 <ol>
@@ -1312,17 +1319,17 @@
 <li>navmesh cutting operates on a tile by tile basis and updating a smaller part of the graph is faster.</li>
 <li>It breaks up very large polygons which reduces the risk of very suboptimal paths (more about this in Using navmeshes).</li>
 </ol>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011546501191.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011546501191.png" alt="Image 0011546501191.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011546501191.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011546501191.png" alt="Image 0011546501191.png"></a></p>
 <p>不适用Tiles</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011546501197.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011546501197.png" alt="Image 0011546501197.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011546501197.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011546501197.png" alt="Image 0011546501197.png"></a></p>
 <p>使用Tiles</p>
 <p>4.将代理物体从NavMesh中分离：</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011546503590.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011546503590.png" alt="Image 0011546503590.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011546503590.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011546503590.png" alt="Image 0011546503590.png"></a></p>
 <p>5.设置好参数后，点击扫描。注意点击Show Outline’ 和 ‘Show Surface’选项以便观察生成的NavMesh。</p>
 <p><strong>细节</strong></p>
 <p>recast graph的分辨率（width/depth）会很明显的影响navmesh，如图：</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/cell_size.gif" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/cell_size.gif" alt="cell_size.gif"></a></p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/recast_resolution.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/recast_resolution.png" alt="recast_resolution.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/cell_size.gif"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/cell_size.gif" alt="cell_size.gif"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/recast_resolution.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/recast_resolution.png" alt="recast_resolution.png"></a></p>
 <p>（有一个不可走的）</p>
 <p>注意：（光栅化）分辨率对图的生成时间有很大影响，对运行时的性能没有直接影响（在游戏中完整更新一次图除外），但会微弱的影响性能，因为高分辨率意味着地图也会有更多的细节。</p>
 <p>原文：</p>
@@ -1462,8 +1469,8 @@
         <category>Program</category>
       </categories>
       <tags>
-        <tag>Lua</tag>
         <tag>Unity</tag>
+        <tag>Lua</tag>
         <tag>iOS</tag>
         <tag>SDK</tag>
       </tags>
@@ -1739,7 +1746,7 @@
 <hr>
 <h4 id="4-Navigation面板（window栏-Navigation）"><a href="#4-Navigation面板（window栏-Navigation）" class="headerlink" title="4.Navigation面板（window栏-Navigation）"></a>4.Navigation面板（window栏-Navigation）</h4><p><img src="/2019/12/11/Unity NavMesh和寻路插件使用/84206917.jpg" alt="@Navigation-Agents面板"></p>
 <p>Agents面板用于代理和代理之间的躲避，该页的参数不参与Bake，只用于处理代理与代理，代理与障碍之间的躲避。<br>在使用章节有关于该面板如何使用的介绍。</p>
-<p>关于此Tab，unity社区的问答：<a href="https://answers.unity.com/questions/1376465/what-is-the-difference-between-configuration-of-ag.html" target="_blank" rel="noopener">https://answers.unity.com/questions/1376465/what-is-the-difference-between-configuration-of-ag.html</a></p>
+<p>关于此Tab，unity社区的问答：<a href="https://answers.unity.com/questions/1376465/what-is-the-difference-between-configuration-of-ag.html">https://answers.unity.com/questions/1376465/what-is-the-difference-between-configuration-of-ag.html</a></p>
 <hr>
 <p><img src="/2019/12/11/Unity NavMesh和寻路插件使用/16669861.jpg" alt="@Navigation-Areas面板"></p>
 <p>Areas代表烘焙网格所在的图层， 有29种自定义类型和3种内置类型：Walkable，Not Walkable和Jump。<br>\1. Walkable是通用区域类型，可以在该区域上行走。<br>\2. Not Walkable是阻止导航的区域类型。<br>\3. Jump是分配给自动生成的离网链接的区域类型。<br>另外，每个NavMesh代理都有一个Area Mask，用于指定代理可以移动的区域。<br>Cost是寻路的代价（成本），比如角色可以选择两条路，一条是过河，一条是草地。这两种寻路方式可能消耗的成本不一样。或是一扇门，人类可以通过但是其他怪物不能通过。都需要通过控制cost和area来实现。具体使用看下面的寻路导航章节。</p>
@@ -1864,7 +1871,7 @@
 <li>设置较小的Agent Radius，因为已经开启了手动修改体素大小，所以大小不会改变。</li>
 </ol>
 <p><img src="/2019/12/11/Unity NavMesh和寻路插件使用/./Image 0011544708028.png" alt="@提示voxel size和代理半径关系的文本，较好的倍数是2-8倍| center|"></p>
-<p>官方文档：<br><a href="https://docs.unity3d.com/2017.4/Documentation/Manual/nav-AdvancedSettings.html" target="_blank" rel="noopener">https://docs.unity3d.com/2017.4/Documentation/Manual/nav-AdvancedSettings.html</a></p>
+<p>官方文档：<br><a href="https://docs.unity3d.com/2017.4/Documentation/Manual/nav-AdvancedSettings.html">https://docs.unity3d.com/2017.4/Documentation/Manual/nav-AdvancedSettings.html</a></p>
 <hr>
 <h4 id="寻路代价"><a href="#寻路代价" class="headerlink" title="寻路代价*"></a>寻路代价*</h4><p>通过cost可以定义通过该区域的困难程度(代价)，，成本更低的地方在寻路过程中优先级更高，cost可以控制角色寻路时偏好的区域。例如走草地要比走水路要快一些，就可以通过设置cost来实现。具体例子可以看<strong>演示章节</strong>。</p>
 <p>在进一步了解之前，首先先了解一下A<em> 寻路的工作原理：Unity使用A</em>算法来寻找导航的最短路径，其核心数据结构为图。算法从离寻路实体最近的网格进行遍历，接着不停地访问相邻网格节点，直到搜寻到终点所在的网格区域(起点到终点的网格连线就是导航路径（此时未带入估价函数，即非最短路径）)。</p>
@@ -1874,7 +1881,7 @@
 <p>有时候可能会感觉在某些地方，寻路实体好像不会直接走最短路径。究其原因在于网格结点的放置位置。在空旷的地方有一个非常小的障碍物，这就会导致产生一大一小的网格。在这种情况下，网格结点可以放置在网格的任何地方，所以在我们看来，寻路实体好像并没有走最短路径。</p>
 <p><img src="/2019/12/11/Unity NavMesh和寻路插件使用/22999412.jpg" alt="@看起来黄线并没有规划出最短路径"></p>
 <p>当某区域网格有多种寻路代价时，寻路网格一般优先使用寻路代价最低的那种。当然也有例外，不可行区域的寻路代价虽然为1，但优先使用该种区域，用于阻挡寻路实体移动**。</p>
-<p>官网文档：<a href="https://docs.unity3d.com/2017.4/Documentation/Manual/nav-AreasAndCosts.html" target="_blank" rel="noopener">https://docs.unity3d.com/2017.4/Documentation/Manual/nav-AreasAndCosts.html</a></p>
+<p>官网文档：<a href="https://docs.unity3d.com/2017.4/Documentation/Manual/nav-AreasAndCosts.html">https://docs.unity3d.com/2017.4/Documentation/Manual/nav-AreasAndCosts.html</a></p>
 <p><em>注：图中的寻路路径绘图（黄线）的显示方法是在hierarchy面板点击寻路角色，在Scene场景勾选如上图几项即可。</em></p>
 <hr>
 <h4 id="自动生成离网链接"><a href="#自动生成离网链接" class="headerlink" title="自动生成离网链接"></a>自动生成离网链接</h4><p>有些时候我们需要自动生成离网格链接。链接的类型有两种：爬梯跳台式和跳跃跨栏式。</p>
@@ -1892,16 +1899,16 @@
 </ol>
 <p><img src="/2019/12/11/Unity NavMesh和寻路插件使用/65051244.jpg" alt="@没有黑圈代表离网链接没有构建成功"></p>
 <p><em>注：生成的分离网格链接只能从上往下移动，如果需要从下往上则需要使用手动分离网格链接。</em></p>
-<p>官网链接：<a href="https://docs.unity3d.com/2017.4/Documentation/Manual/nav-BuildingOffMeshLinksAutomatically.html" target="_blank" rel="noopener">https://docs.unity3d.com/2017.4/Documentation/Manual/nav-BuildingOffMeshLinksAutomatically.html</a></p>
+<p>官网链接：<a href="https://docs.unity3d.com/2017.4/Documentation/Manual/nav-BuildingOffMeshLinksAutomatically.html">https://docs.unity3d.com/2017.4/Documentation/Manual/nav-BuildingOffMeshLinksAutomatically.html</a></p>
 <hr>
-<h4 id="离网链接与动画系统"><a href="#离网链接与动画系统" class="headerlink" title="离网链接与动画系统"></a>离网链接与动画系统</h4><p>可以注意到，当演示中的胶囊体/Cube通过离网链接时都是一瞬间完成的，但在实际游戏中，人物的攀爬和跳跃都是有动作的，如果需要在通过离网链接点的时候有人物动作，需要把人物的Auto Traverse Off Mesh Link选项关掉，然后写对应的控制人物状态的脚本，具体可以看：<br><a href="https://blog.csdn.net/elyxiao/article/details/51281602" target="_blank" rel="noopener">https://blog.csdn.net/elyxiao/article/details/51281602</a> ，在文章最后作者介绍了如何在通过离网链接点时执行动画。</p>
+<h4 id="离网链接与动画系统"><a href="#离网链接与动画系统" class="headerlink" title="离网链接与动画系统"></a>离网链接与动画系统</h4><p>可以注意到，当演示中的胶囊体/Cube通过离网链接时都是一瞬间完成的，但在实际游戏中，人物的攀爬和跳跃都是有动作的，如果需要在通过离网链接点的时候有人物动作，需要把人物的Auto Traverse Off Mesh Link选项关掉，然后写对应的控制人物状态的脚本，具体可以看：<br><a href="https://blog.csdn.net/elyxiao/article/details/51281602">https://blog.csdn.net/elyxiao/article/details/51281602</a> ，在文章最后作者介绍了如何在通过离网链接点时执行动画。</p>
 <hr>
 <h4 id="Hight-mesh"><a href="#Hight-mesh" class="headerlink" title="Hight mesh"></a>Hight mesh</h4><p>由于NavMesh是可行走空间的近似值，因此会忽略一些细节。例如，人物在通过楼梯时并不会出现上下颠簸的感觉，如果需要增加NavMesh的真实度，需要将<strong>Navigation-Bake-Advanced settings</strong>下的<strong>Hight mesh</strong>选项打开，当然开启Hight mesh会增加CPU和内存的开销，并且烘焙时间会变长。</p>
 <p>原文：</p>
 <blockquote>
 <p>While navigating, the NavMesh Agent is constrained on the surface of the NavMesh. Since the NavMesh is an approximation of the walkable space, some features are evened out when the NavMesh is being built. For example, stairs may appear as a slope in the NavMesh. If your game requires accurate placement of the agent, you should enable Height Mesh building when you bake the NavMesh. The setting can be found under the Advanced settings in Navigation window. Note that building Height Mesh will take up memory and processing at runtime, and it will take a little longer to bake the NavMesh.</p>
 </blockquote>
-<p>官方文档：<a href="https://docs.unity3d.com/2017.4/Documentation/Manual/nav-HeightMesh.html" target="_blank" rel="noopener">https://docs.unity3d.com/2017.4/Documentation/Manual/nav-HeightMesh.html</a></p>
+<p>官方文档：<a href="https://docs.unity3d.com/2017.4/Documentation/Manual/nav-HeightMesh.html">https://docs.unity3d.com/2017.4/Documentation/Manual/nav-HeightMesh.html</a></p>
 <p><img src="/2019/12/11/Unity NavMesh和寻路插件使用/32907915.jpg" alt="@开启前"></p>
 <p><img src="/2019/12/11/Unity NavMesh和寻路插件使用/48197356.jpg" alt="@开启后"></p>
 <hr>
@@ -1910,10 +1917,10 @@
 <h4 id="效率"><a href="#效率" class="headerlink" title="效率"></a>效率</h4><p>//</p>
 <hr>
 <h4 id="high-level-NavMesh-building-components"><a href="#high-level-NavMesh-building-components" class="headerlink" title="high-level NavMesh building components"></a>high-level NavMesh building components</h4><p>//</p>
-<p>官方文档：<a href="https://docs.unity3d.com/2017.4/Documentation/Manual/NavMesh-BuildingComponents.html" target="_blank" rel="noopener">https://docs.unity3d.com/2017.4/Documentation/Manual/NavMesh-BuildingComponents.html</a></p>
+<p>官方文档：<a href="https://docs.unity3d.com/2017.4/Documentation/Manual/NavMesh-BuildingComponents.html">https://docs.unity3d.com/2017.4/Documentation/Manual/NavMesh-BuildingComponents.html</a></p>
 <hr>
 <h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><p>下面的几个例子是我作为熟悉导航系统练习写的，想看标准的演示可以点击Windows-Navigation-Bake面板中的蓝色文本下载官方Demo。<br><img src="/2019/12/11/Unity NavMesh和寻路插件使用/43707615.jpg" alt="@点击蓝色链接可跳转至下载Demo网页"></p>
-<p>链接：<a href="https://github.com/Unity-Technologies/NavMeshComponents" target="_blank" rel="noopener">https://github.com/Unity-Technologies/NavMeshComponents</a></p>
+<p>链接：<a href="https://github.com/Unity-Technologies/NavMeshComponents">https://github.com/Unity-Technologies/NavMeshComponents</a></p>
 <h4 id="静态场景："><a href="#静态场景：" class="headerlink" title="静态场景："></a>静态场景：</h4><p><strong>（1）</strong>首先将场景内的障碍物包括地板设置为Static（如图中的四面墙，黄色的cube以及绿色的地板）：</p>
 <p><img src="/2019/12/11/Unity NavMesh和寻路插件使用/24937663.jpg" alt="img"></p>
 <p>注意NAvigation Static要确定被勾选：</p>
@@ -1953,9 +1960,9 @@
     <title>LuaInterface简介</title>
     <url>/2019/12/11/C%E5%92%8CLua%E4%BA%A4%E4%BA%92/</url>
     <content><![CDATA[<p>LuaInterface</p>
-<p><a href="https://www.cnblogs.com/sifenkesi/p/3901831.html" target="_blank" rel="noopener">https://www.cnblogs.com/sifenkesi/p/3901831.html</a></p>
+<p><a href="https://www.cnblogs.com/sifenkesi/p/3901831.html">https://www.cnblogs.com/sifenkesi/p/3901831.html</a></p>
 <a id="more"></a>
-<h1 id="一-介绍"><a href="#一-介绍" class="headerlink" title="一 介绍"></a>一 介绍</h1><h1 id="二-使用"><a href="#二-使用" class="headerlink" title="二 使用"></a>二 使用</h1><h2 id="1-C-中调用Lua"><a href="#1-C-中调用Lua" class="headerlink" title="1.C#中调用Lua"></a>1.C#中调用Lua</h2><p>下载LuaInterface。<a href="http://luaforge.net/projects/luainterface/" target="_blank" rel="noopener">下载地址</a></p>
+<h1 id="一-介绍"><a href="#一-介绍" class="headerlink" title="一 介绍"></a>一 介绍</h1><h1 id="二-使用"><a href="#二-使用" class="headerlink" title="二 使用"></a>二 使用</h1><h2 id="1-C-中调用Lua"><a href="#1-C-中调用Lua" class="headerlink" title="1.C#中调用Lua"></a>1.C#中调用Lua</h2><p>下载LuaInterface。<a href="http://luaforge.net/projects/luainterface/">下载地址</a></p>
 <p>里面有两个文件：<code>lua51.dll</code>，<code>LuaInterface.dll</code></p>
 <p>新建c#控制台，添加引用（引用右键-添加引用）：</p>
 <p><img src="/2019/12/11/C和Lua交互/Image 0011557124613.png" alt="Image 0011557124613"></p>
@@ -2029,7 +2036,7 @@
 <p>差一个c#调lua方法</p>
 <p>lua报错输出</p>
 <p><em>Lua中button.Text… button[“Text”]的区别</em></p>
-<p>vscode控制台中文乱码<a href="https://blog.csdn.net/xjk2017/article/details/81388493" target="_blank" rel="noopener">https://blog.csdn.net/xjk2017/article/details/81388493</a></p>
+<p>vscode控制台中文乱码<a href="https://blog.csdn.net/xjk2017/article/details/81388493">https://blog.csdn.net/xjk2017/article/details/81388493</a></p>
 <p>CLR</p>
 <p>构造方法</p>
 <p><img src="/2019/12/11/C和Lua交互/Image 0011555992894.png" alt="Image 0011555992894"></p>
@@ -2038,8 +2045,8 @@
         <category>Program</category>
       </categories>
       <tags>
-        <tag>Lua</tag>
         <tag>CSharp</tag>
+        <tag>Lua</tag>
       </tags>
   </entry>
   <entry>
@@ -2075,14 +2082,14 @@
 <li>Cygwin更像一个平台，它<strong>相对完整地模拟了LInux</strong>，提供了一个接近2M的Cygwin1.dll的文件作为目标库，来模拟Linux系统的接口，但是相对来说编译的速度就要慢一些。如果想要在Windows上开发可以运行在LInux上的程序，应该选用Cygwin。</li>
 </ul>
 </blockquote>
-<p>资料:<a href="https://www.cnblogs.com/zoe-mine/p/7056369.html" target="_blank" rel="noopener">https://www.cnblogs.com/zoe-mine/p/7056369.html</a></p>
+<p>资料:<a href="https://www.cnblogs.com/zoe-mine/p/7056369.html">https://www.cnblogs.com/zoe-mine/p/7056369.html</a></p>
 <p>MinGW和Cygwin的安装请自行查看资料</p>
-<h1 id="二-Windows下的链接库调用"><a href="#二-Windows下的链接库调用" class="headerlink" title="二 Windows下的链接库调用"></a>二 Windows下的链接库调用</h1><h2 id="2-0-准备环境"><a href="#2-0-准备环境" class="headerlink" title="2.0 准备环境"></a>2.0 准备环境</h2><p>VS2015，<a href="http://www.dependencywalker.com/" target="_blank" rel="noopener">Dependency Walker</a>（用于查看DLL中是否有写好的方法）</p>
-<h2 id="2-1-DLL项目"><a href="#2-1-DLL项目" class="headerlink" title="2.1 DLL项目"></a>2.1 DLL项目</h2><h3 id="2-1-1建立DLL项目"><a href="#2-1-1建立DLL项目" class="headerlink" title="2.1.1建立DLL项目"></a>2.1.1建立DLL项目</h3><p><a href="http://img.dongbeigtl.top/A文章需要的截图/CSharp调用C动态链接库DLL/Image 0011554868057.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/CSharp%E8%B0%83%E7%94%A8C%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93DLL/Image%200011554868057.png" alt="Image 0011554868057.png"></a></p>
+<h1 id="二-Windows下的链接库调用"><a href="#二-Windows下的链接库调用" class="headerlink" title="二 Windows下的链接库调用"></a>二 Windows下的链接库调用</h1><h2 id="2-0-准备环境"><a href="#2-0-准备环境" class="headerlink" title="2.0 准备环境"></a>2.0 准备环境</h2><p>VS2015，<a href="http://www.dependencywalker.com/">Dependency Walker</a>（用于查看DLL中是否有写好的方法）</p>
+<h2 id="2-1-DLL项目"><a href="#2-1-DLL项目" class="headerlink" title="2.1 DLL项目"></a>2.1 DLL项目</h2><h3 id="2-1-1建立DLL项目"><a href="#2-1-1建立DLL项目" class="headerlink" title="2.1.1建立DLL项目"></a>2.1.1建立DLL项目</h3><p><a href="http://img.dongbeigtl.top/A文章需要的截图/CSharp调用C动态链接库DLL/Image 0011554868057.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/CSharp%E8%B0%83%E7%94%A8C%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93DLL/Image%200011554868057.png" alt="Image 0011554868057.png"></a></p>
 <p>如果没有Win32，则需要下载模板</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/CSharp调用C动态链接库DLL/Image 0011554869322.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/CSharp%E8%B0%83%E7%94%A8C%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93DLL/Image%200011554869322.png" alt="Image 0011554869322.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/CSharp调用C动态链接库DLL/Image 0011554869322.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/CSharp%E8%B0%83%E7%94%A8C%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93DLL/Image%200011554869322.png" alt="Image 0011554869322.png"></a></p>
 <h3 id="2-1-2文件介绍"><a href="#2-1-2文件介绍" class="headerlink" title="2.1.2文件介绍"></a>2.1.2文件介绍</h3><p>新建项目完成后，会有如下几个文件：</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/CSharp调用C动态链接库DLL/Image 0011554869544.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/CSharp%E8%B0%83%E7%94%A8C%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93DLL/Image%200011554869544.png" alt="Image 0011554869544.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/CSharp调用C动态链接库DLL/Image 0011554869544.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/CSharp%E8%B0%83%E7%94%A8C%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93DLL/Image%200011554869544.png" alt="Image 0011554869544.png"></a></p>
 <ul>
 <li><p>（1）stdafx.h：用于包含标准系统包含的头文件，用户需要的其他标准头文件也写在这里。</p>
 </li>
@@ -2092,17 +2099,17 @@
 </li>
 <li><p>（4） <strong>dllmain.cpp：</strong>dll的程序入口点。</p>
 </li>
-<li><p><a href="http://img.dongbeigtl.top/A文章需要的截图/CSharp调用C动态链接库DLL/Image 0011555668421.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/CSharp%E8%B0%83%E7%94%A8C%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93DLL/Image%200011555668421.png" alt="Image 0011555668421.png"></a></p>
+<li><p><a href="http://img.dongbeigtl.top/A文章需要的截图/CSharp调用C动态链接库DLL/Image 0011555668421.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/CSharp%E8%B0%83%E7%94%A8C%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93DLL/Image%200011555668421.png" alt="Image 0011555668421.png"></a></p>
 </li>
 <li><p>| DLL_PROCESS_ATTACH | 进程被调用，DLL被连接到当前进程并被初始化   |<br>| —————— | ——————————————- |<br>| DLL_THREAD_ATTACH  | 当前进程创建一个新线程，DLL在新线程内被调用 |<br>| DLL_PROCESS_DETACH | 调用DLL的进程被终止，DLL被卸载              |<br>| DLL_THREAD_DETACH  | 调用DLL的线程被终止，DLL被卸载              |</p>
 </li>
 </ul>
 <h3 id="2-1-3-将DLL项目修改为C"><a href="#2-1-3-将DLL项目修改为C" class="headerlink" title="2.1.3 将DLL项目修改为C"></a>2.1.3 将DLL项目修改为C</h3><p>此时项目需要做一些操作，才能修改为纯C的DLL库。</p>
 <p>（1）.将预编译头修改为：创建<strong>(/YC)</strong></p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/CSharp调用C动态链接库DLL/Image 0011554870532.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/CSharp%E8%B0%83%E7%94%A8C%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93DLL/Image%200011554870532.png" alt="Image 0011554870532.png"></a></p>
-<p>（2）.修改为：编译为C代码<strong>（/TC）</strong><a href="http://img.dongbeigtl.top/A文章需要的截图/CSharp调用C动态链接库DLL/Image 0011554870620.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/CSharp%E8%B0%83%E7%94%A8C%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93DLL/Image%200011554870620.png" alt="Image 0011554870620.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/CSharp调用C动态链接库DLL/Image 0011554870532.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/CSharp%E8%B0%83%E7%94%A8C%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93DLL/Image%200011554870532.png" alt="Image 0011554870532.png"></a></p>
+<p>（2）.修改为：编译为C代码<strong>（/TC）</strong><a href="http://img.dongbeigtl.top/A文章需要的截图/CSharp调用C动态链接库DLL/Image 0011554870620.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/CSharp%E8%B0%83%E7%94%A8C%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93DLL/Image%200011554870620.png" alt="Image 0011554870620.png"></a></p>
 <p>（3）.删除stdafx.cpp，将其他cpp文件后缀修改为.c。修改完如图（Ccallback，CFunction，Cstruct是我写好的.c，可忽略）：</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/CSharp调用C动态链接库DLL/Image 0011555056920.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/CSharp%E8%B0%83%E7%94%A8C%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93DLL/Image%200011555056920.png" alt="Image 0011555056920.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/CSharp调用C动态链接库DLL/Image 0011555056920.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/CSharp%E8%B0%83%E7%94%A8C%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93DLL/Image%200011555056920.png" alt="Image 0011555056920.png"></a></p>
 <h3 id="2-1-4-编写C代码"><a href="#2-1-4-编写C代码" class="headerlink" title="2.1.4 编写C代码"></a>2.1.4 编写C代码</h3><p>（1）编写方法，命名为CFunction.c</p>
 <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// CFunction.cpp : 定义 DLL 应用程序的导出函数。</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"stdafx.h"</span></span></span><br><span class="line"></span><br><span class="line">__declspec(dllexport) <span class="function"><span class="keyword">int</span> <span class="title">NoArgReturnSth</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"NoArgReturnSth()调用:\n"</span>);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">99999</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">__declspec(dllexport) <span class="function"><span class="keyword">int</span> <span class="title">Sum</span><span class="params">(<span class="keyword">int</span> a , <span class="keyword">int</span> b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"Sum(int a , int b)调用:\n"</span>);</span><br><span class="line">  <span class="keyword">return</span> a + b;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">__declspec(dllexport) <span class="function"><span class="keyword">int</span> <span class="title">SetNumZero</span><span class="params">(<span class="keyword">int</span>* a)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"int SetNumZero(int *a)调用：\n"</span>);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"int SetNumZero(int *a)调用,int a的内存位置：%d\n"</span>,a);</span><br><span class="line">  *a = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"> __declspec(dllexport) <span class="function"><span class="keyword">int</span> <span class="title">sendMessage</span><span class="params">(<span class="keyword">char</span>* msg)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="built_in">printf</span>(<span class="string">"int sendMessage(char* msg)调用：\n"</span>);</span><br><span class="line">   <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">   <span class="keyword">for</span>(;*(msg + i) != <span class="literal">NULL</span>;i++ )</span><br><span class="line">   &#123; </span><br><span class="line">    *(msg + i) = *(msg + i) - <span class="number">32</span>;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>（2）编写方法，命名为CStruct.c</p>
@@ -2111,9 +2118,9 @@
 <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"stdafx.h"</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">typedef</span> <span class="title">int</span><span class="params">(*pfCallBack)</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">char</span> b[])</span></span>;</span><br><span class="line"></span><br><span class="line">pfCallBack CallBackfun = <span class="literal">NULL</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">char</span> ch[<span class="number">100</span>];</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">__declspec(dllexport) <span class="function"><span class="keyword">void</span> <span class="title">SetCB</span><span class="params">(<span class="keyword">int</span>(*pfCallBack)(<span class="keyword">int</span> a, <span class="keyword">char</span> b[]))</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  CallBackfun = pfCallBack;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"> __declspec(dllexport) <span class="function"><span class="keyword">void</span> <span class="title">callTheCB</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">int</span> a = <span class="number">4</span>;</span><br><span class="line">  <span class="built_in">memset</span>(ch, <span class="string">'\0'</span>, <span class="number">100</span>);</span><br><span class="line">  <span class="built_in">strcpy</span>(ch, <span class="string">"aabbcc"</span>);</span><br><span class="line">  CallBackfun(a, ch);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>注：printf方法需要在stdafx.h文件中添加#include “stdio.h”。</p>
 <h3 id="2-1-5-导出DLL"><a href="#2-1-5-导出DLL" class="headerlink" title="2.1.5 导出DLL"></a>2.1.5 导出DLL</h3><p>（1）编译，编译成功后在项目的Debug目录下会有如下几个文件，（我的项目名字叫CFunctionw，所以生成的叫CFunction）：</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/CSharp调用C动态链接库DLL/Image 0011555058072.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/CSharp%E8%B0%83%E7%94%A8C%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93DLL/Image%200011555058072.png" alt="Image 0011555058072.png"></a></p>
-<p>（2）检查DLL是否存在需调用的方法，下载<a href="http://www.dependencywalker.com/" target="_blank" rel="noopener">Dependency Walker</a>，安装后打开CFunction.dll：</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/CSharp调用C动态链接库DLL/Image 0011555058152.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/CSharp%E8%B0%83%E7%94%A8C%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93DLL/Image%200011555058152.png" alt="Image 0011555058152.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/CSharp调用C动态链接库DLL/Image 0011555058072.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/CSharp%E8%B0%83%E7%94%A8C%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93DLL/Image%200011555058072.png" alt="Image 0011555058072.png"></a></p>
+<p>（2）检查DLL是否存在需调用的方法，下载<a href="http://www.dependencywalker.com/">Dependency Walker</a>，安装后打开CFunction.dll：</p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/CSharp调用C动态链接库DLL/Image 0011555058152.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/CSharp%E8%B0%83%E7%94%A8C%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93DLL/Image%200011555058152.png" alt="Image 0011555058152.png"></a></p>
 <p>可以看到有写好的方法，至此，DLL编写完成。</p>
 <h2 id="2-2-C-调用DLL库（简单的控制台Demo）"><a href="#2-2-C-调用DLL库（简单的控制台Demo）" class="headerlink" title="2.2 C#调用DLL库（简单的控制台Demo）"></a>2.2 C#调用DLL库（简单的控制台Demo）</h2><hr>
 <p>（1）新建一个C#控制台项目。</p>
@@ -2129,23 +2136,23 @@
 <blockquote>
 <p>CallingConvention.Cdecl：C调用约定（即用<strong>cdecl关键字说明）按从右至左的顺序压参数入栈，由调用者把参数弹出栈。对于传送参数的内存栈是由调用者来维护的（正因为如此，实现可变参数的函数只能使用该调用约定）。另外，在函数名修饰约定方面也有所不同。_cdecl是C和C＋＋程序的缺省调用方式。每一个调用它的函数都包含清空堆栈的代码，所以产生的可执行文件大小会比调用_stdcall函数的大。函数采用从右到左的压栈方式。VC将函数编译后会在函数名前面加上下划线前缀，是MFC缺省调用约定；<br>CallingConvention.StdDecl：</strong>stdcall调用约定相当于16位动态库中经常使用的PASCAL调用约定。在32位的VC++5.0中PASCAL调用约定不再被支持（实际上它已被定义为<strong>stdcall。除了</strong>pascal外，<strong>fortran和</strong>syscall也不被支持），取而代之的是__stdcall调用约定。两者实质上是一致的，即函数的参数自右向左通过栈传递，被调用的函数在返回前清理传送参数的内存栈，但不同的是函数名的修饰部分（关于函数名的修饰部分在后面将详细说明）。_stdcall是Pascal程序的缺省调用方式，通常用于Win32Api中，函数采用从右到左的压栈方式，自己在退出时清空堆栈。VC将函数编译后会在函数名前面加上下划线前缀，在函数名后加上”@”和参数的字节数；</p>
 </blockquote>
-<p>还有一些其他的属性，详情看：<a href="https://blog.csdn.net/sdl2005lyx/article/details/6796037" target="_blank" rel="noopener">平台调用P-INVOKE(一)–(基础篇)</a></p>
+<p>还有一些其他的属性，详情看：<a href="https://blog.csdn.net/sdl2005lyx/article/details/6796037">平台调用P-INVOKE(一)–(基础篇)</a></p>
 <p>注意C#和DLL中的方法的返回值，参数个数、类型、顺序必须一致。方法名可以不一致。</p>
 <p>（3）运行代码，控制台会输出对应方法及其返回值：</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/CSharp调用C动态链接库DLL/Image 0011555059881.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/CSharp%E8%B0%83%E7%94%A8C%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93DLL/Image%200011555059881.png" alt="Image 0011555059881.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/CSharp调用C动态链接库DLL/Image 0011555059881.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/CSharp%E8%B0%83%E7%94%A8C%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93DLL/Image%200011555059881.png" alt="Image 0011555059881.png"></a></p>
 <p>注：将DLL和用于调试的控制的控制台项目放入同一解决方案内，修改DLL的生成路径可以简化调试过程，避免每次生成DLL在拷贝到Debug目录中。</p>
 <h2 id="2-3在Unity下使用DLL"><a href="#2-3在Unity下使用DLL" class="headerlink" title="2.3在Unity下使用DLL"></a>2.3在Unity下使用DLL</h2><hr>
 <p>（1）将DLL编译为64位，不然在Unity中会有关于32/64位的问题。为了测试方便，统一调整为64位。</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/CSharp调用C动态链接库DLL/Image 0011555061641.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/CSharp%E8%B0%83%E7%94%A8C%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93DLL/Image%200011555061641.png" alt="Image 0011555061641.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/CSharp调用C动态链接库DLL/Image 0011555061641.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/CSharp%E8%B0%83%E7%94%A8C%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93DLL/Image%200011555061641.png" alt="Image 0011555061641.png"></a></p>
 <p>（2）新建Unity项目，在Assets目录下新建Plugins文件夹，在Plugins文件夹下建立x86，x86_64文件夹。如图（忽略Android）：</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/CSharp调用C动态链接库DLL/Image 0011555061782.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/CSharp%E8%B0%83%E7%94%A8C%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93DLL/Image%200011555061782.png" alt="Image 0011555061782.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/CSharp调用C动态链接库DLL/Image 0011555061782.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/CSharp%E8%B0%83%E7%94%A8C%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93DLL/Image%200011555061782.png" alt="Image 0011555061782.png"></a></p>
 <p>之所以新建x86，x86_64文件夹是为了区分32/64位的DLL，直接拖到Plugins也可以。Plugins文件夹中若存在这两个文件夹，则dll必须放到两个文件夹中，否则会出现找不到dll的情况。（我的2017.4.16f1不存在这种情况。）</p>
 <p>（3）修改DLL的属性，将属性修改为和图片一致</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/CSharp调用C动态链接库DLL/Image 0011555062363.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/CSharp%E8%B0%83%E7%94%A8C%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93DLL/Image%200011555062363.png" alt="Image 0011555062363.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/CSharp调用C动态链接库DLL/Image 0011555062363.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/CSharp%E8%B0%83%E7%94%A8C%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93DLL/Image%200011555062363.png" alt="Image 0011555062363.png"></a></p>
 <p>（4）编写C#脚本：</p>
 <figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"><span class="keyword">using</span> System.Runtime.InteropServices;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">NewBehaviourScript</span> :</span> MonoBehaviour &#123;</span><br><span class="line">    [DllImport(<span class="string">"CFunction"</span>)]</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">extern</span> <span class="keyword">int</span> <span class="title">NoArgReturnSth</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="keyword">int</span> i = NoArgReturnSth();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">OnGUI</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        GUI.Button(<span class="keyword">new</span> Rect(<span class="number">1</span>, <span class="number">1</span>, <span class="number">200</span>, <span class="number">100</span>), i.ToString());</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>csharpcsharp随便拖到一个GameObject上，运行：</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/CSharp调用C动态链接库DLL/Image 0011555062503.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/CSharp%E8%B0%83%E7%94%A8C%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93DLL/Image%200011555062503.png" alt="Image 0011555062503.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/CSharp调用C动态链接库DLL/Image 0011555062503.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/CSharp%E8%B0%83%E7%94%A8C%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93DLL/Image%200011555062503.png" alt="Image 0011555062503.png"></a></p>
 <h3 id="异常信息"><a href="#异常信息" class="headerlink" title="异常信息"></a>异常信息</h3><p>此报错只针对Windows，后面会有其他平台的异常信息。</p>
 <p>（1）DllNotFoundException: 64位运行32位的DLL会报这个错。</p>
 <p>（2）Failed to load ‘Assets/Plugins/xxx.dll’, expected x64 architecture, but was x86 architecture. You must recompile your plugin for x64 architecture.：DLL文件没有选择对应的CPU</p>
@@ -2153,10 +2160,10 @@
 <h1 id="三-Android下的链接库调用"><a href="#三-Android下的链接库调用" class="headerlink" title="三 Android下的链接库调用"></a>三 Android下的链接库调用</h1><p>下面介绍三种我用的，在windows下生成.so的方法。</p>
 <h2 id="3-1-通过NDK生成-so文件"><a href="#3-1-通过NDK生成-so文件" class="headerlink" title="3.1 通过NDK生成.so文件"></a>3.1 通过NDK生成.so文件</h2><h3 id="3-1-1-准备环境"><a href="#3-1-1-准备环境" class="headerlink" title="3.1.1 准备环境"></a>3.1.1 准备环境</h3><p>（1）配置好NDK，SDK，JDK以及环境变量。</p>
 <p>（2）新建一个文件夹，将写好的.c，.h放入。新建Android.mk，Application.mk文件。</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/CSharp调用C动态链接库DLL/Image 0011555065573.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/CSharp%E8%B0%83%E7%94%A8C%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93DLL/Image%200011555065573.png" alt="Image 0011555065573.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/CSharp调用C动态链接库DLL/Image 0011555065573.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/CSharp%E8%B0%83%E7%94%A8C%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93DLL/Image%200011555065573.png" alt="Image 0011555065573.png"></a></p>
 <p><em>注：.c文件和.h文件的写法与DLL中稍有不同。</em></p>
 <p>文件介绍：</p>
-<p><a href="https://developer.android.com/ndk/guides/android_mk" target="_blank" rel="noopener">https://developer.android.com/ndk/guides/android_mk</a></p>
+<p><a href="https://developer.android.com/ndk/guides/android_mk">https://developer.android.com/ndk/guides/android_mk</a></p>
 <p><strong>Android.mk：</strong>Android提供的一种makefile文件，用于引导生成.so。</p>
 <p><strong>Application.mk：</strong>androidNDK构建系统使用的一个可选构建文件，用于描述native模块。</p>
 <h3 id="3-1-2-配置文件"><a href="#3-1-2-配置文件" class="headerlink" title="3.1.2 配置文件"></a>3.1.2 配置文件</h3><p>（3）配置<strong>Android.mk：</strong></p>
@@ -2166,38 +2173,38 @@
 <p>注：如果提示APP_PLATFORM版本过低，对应调高即可。</p>
 <h3 id="3-1-3-编译"><a href="#3-1-3-编译" class="headerlink" title="3.1.3 编译"></a>3.1.3 编译</h3><p>（5）打开命令行，cd到文件目录编译。</p>
 <p>编译指令：<code>ndk-build NDK_PROJECT_PATH=. NDK_APPLICATION_MK=Application.mk</code></p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/CSharp调用C动态链接库DLL/Image 0011555068565.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/CSharp%E8%B0%83%E7%94%A8C%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93DLL/Image%200011555068565.png" alt="Image 0011555068565.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/CSharp调用C动态链接库DLL/Image 0011555068565.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/CSharp%E8%B0%83%E7%94%A8C%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93DLL/Image%200011555068565.png" alt="Image 0011555068565.png"></a></p>
 <p>编译后目录内会产生两个文件夹libs和obj，在libs的armeabi-v7a文件夹下会有我们编译好的libnative.so。</p>
 <h2 id="3-2-通过Cmake生成-so文件"><a href="#3-2-通过Cmake生成-so文件" class="headerlink" title="3.2 通过Cmake生成.so文件"></a>3.2 通过Cmake生成.so文件</h2><hr>
 <h3 id="3-2-1-准备环境"><a href="#3-2-1-准备环境" class="headerlink" title="3.2.1 准备环境"></a>3.2.1 准备环境</h3><p>我是通过装Android Studio来安装的以下配置，但实际上编译用不到AS。</p>
 <p>（1）在Android Studio安装好LLDB，CMake，NDK。（NDK如果之前装过可以自行配置），LLDB，CMake也可以在官网下载单独安装。</p>
 <p>（2）打开settings查看SDK和NDK的所在位置：</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/CSharp调用C动态链接库DLL/Image 0011555295955.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/CSharp%E8%B0%83%E7%94%A8C%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93DLL/Image%200011555295955.png" alt="Image 0011555295955.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/CSharp调用C动态链接库DLL/Image 0011555295955.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/CSharp%E8%B0%83%E7%94%A8C%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93DLL/Image%200011555295955.png" alt="Image 0011555295955.png"></a></p>
 <p>打开位置，我的是C:\Users\usename\AppData\Local\Android\Sdk，然后找到如下文件夹：</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/CSharp调用C动态链接库DLL/Image 0011555296277.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/CSharp%E8%B0%83%E7%94%A8C%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93DLL/Image%200011555296277.png" alt="Image 0011555296277.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/CSharp调用C动态链接库DLL/Image 0011555296277.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/CSharp%E8%B0%83%E7%94%A8C%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93DLL/Image%200011555296277.png" alt="Image 0011555296277.png"></a></p>
 <p><strong>配置cmake和ninja的环境变量：</strong></p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/CSharp调用C动态链接库DLL/Image 0011555296407.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/CSharp%E8%B0%83%E7%94%A8C%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93DLL/Image%200011555296407.png" alt="Image 0011555296407.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/CSharp调用C动态链接库DLL/Image 0011555296407.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/CSharp%E8%B0%83%E7%94%A8C%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93DLL/Image%200011555296407.png" alt="Image 0011555296407.png"></a></p>
 <p><strong>验证是否配置成功：</strong></p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/CSharp调用C动态链接库DLL/Image 0011555296521.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/CSharp%E8%B0%83%E7%94%A8C%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93DLL/Image%200011555296521.png" alt="Image 0011555296521.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/CSharp调用C动态链接库DLL/Image 0011555296521.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/CSharp%E8%B0%83%E7%94%A8C%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93DLL/Image%200011555296521.png" alt="Image 0011555296521.png"></a></p>
 <p>如图就是配置成功了。</p>
-<p>（3）查看<strong>android.toolchain.cmake文件</strong>：在ndk所在的文件夹下，build-cmake-android.toolchain.cmake。该文件很重要，如果cmake目录下没有此文件，就去<a href="https://developer.android.com/ndk/guides/cmake.html下载。" target="_blank" rel="noopener">https://developer.android.com/ndk/guides/cmake.html下载。</a></p>
+<p>（3）查看<strong>android.toolchain.cmake文件</strong>：在ndk所在的文件夹下，build-cmake-android.toolchain.cmake。该文件很重要，如果cmake目录下没有此文件，就去<a href="https://developer.android.com/ndk/guides/cmake.html下载。">https://developer.android.com/ndk/guides/cmake.html下载。</a></p>
 <p>（4）准备代码：随便找个地方新建一个文件夹，新建build，include，src文件夹，将.c放入src，.h放入include：</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/CSharp调用C动态链接库DLL/Image 0011555297411.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/CSharp%E8%B0%83%E7%94%A8C%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93DLL/Image%200011555297411.png" alt="Image 0011555297411.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/CSharp调用C动态链接库DLL/Image 0011555297411.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/CSharp%E8%B0%83%E7%94%A8C%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93DLL/Image%200011555297411.png" alt="Image 0011555297411.png"></a></p>
 <p>（5）新建CMakeLists.txt，并输入如下内容：</p>
 <figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">cmake_minimum_required</span>(<span class="selector-tag">VERSION</span> 3<span class="selector-class">.6</span>)</span><br><span class="line">file(GLOB native_srcs "$&#123;CMAKE_SOURCE_DIR&#125;/src/*.c")</span><br><span class="line">include_directories($&#123;CMAKE_SOURCE_DIR&#125;/include)</span><br><span class="line"></span><br><span class="line"><span class="selector-id">#STATIC</span>表示编译结果为静态库<span class="selector-class">.a</span>,如果想为动态库<span class="selector-class">.so</span>,可改为<span class="selector-tag">SHARED</span></span><br><span class="line"></span><br><span class="line">add_library(Add SHARED $&#123;native_srcs&#125;) </span><br><span class="line"><span class="selector-tag">target_link_libraries</span>(<span class="selector-tag">Add</span>)</span><br></pre></td></tr></table></figure>
 <p>（6）在build文件夹下新建批处理文件build.bat，内容如下：</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">set toolchain=C:/Users/wenmai/AppData/Local/Android/Sdk/ndk-bundle/build/cmake/android.toolchain.cmake</span><br><span class="line">set android_ndk=C:/Users/wenmai/AppData/Local/Android/Sdk/ndk-bundle</span><br><span class="line">set build_type=Release</span><br><span class="line">set gernerator="Ninja"</span><br><span class="line">if not exist %1 md %1</span><br><span class="line">cd %1</span><br><span class="line">cmake ../.. -DCMAKE_TOOLCHAIN_FILE=%toolchain% -DANDROID_NDK=%android_ndk% -DCMAKE_BUILD_TYPE=%build_type% -DANDROID_ABI="%1" -DCMAKE_GENERATOR=%gernerator%</span><br><span class="line">ninja</span><br></pre></td></tr></table></figure>
 <p>cmake ../..的意思是使用cmake交叉编译当前工程，并将-DCMAKE_GENERATOR指向了ninja.exe。%1运行.bat要传的参数,需要传Android ABI名称，如：arm64-v8a,armeabi armeabi-v7a mips,mips64,x86,x86_64。</p>
 <p>（7）打开命令行，cd到build目录，输入：build.bat armeabi-v7a：</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/CSharp调用C动态链接库DLL/Image 0011555298228.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/CSharp%E8%B0%83%E7%94%A8C%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93DLL/Image%200011555298228.png" alt="Image 0011555298228.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/CSharp调用C动态链接库DLL/Image 0011555298228.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/CSharp%E8%B0%83%E7%94%A8C%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93DLL/Image%200011555298228.png" alt="Image 0011555298228.png"></a></p>
 <p>可以在 armeabi-v7a目录下看到生成了libAdd.so文件。</p>
 <p>如果出现如下图所示的错误，可以先仔细检查配置文件是否写对，并且build.bat传入的参数是否正确：</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/CSharp调用C动态链接库DLL/Image 0011555153592.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/CSharp%E8%B0%83%E7%94%A8C%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93DLL/Image%200011555153592.png" alt="Image 0011555153592.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/CSharp调用C动态链接库DLL/Image 0011555153592.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/CSharp%E8%B0%83%E7%94%A8C%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93DLL/Image%200011555153592.png" alt="Image 0011555153592.png"></a></p>
 <h2 id="3-3-使用Android-Studio生成-so"><a href="#3-3-使用Android-Studio生成-so" class="headerlink" title="3.3 使用Android Studio生成.so"></a>3.3 使用Android Studio生成.so</h2><p><em>注：Android Studio在最近的版本中弃用了使用gcc编译器，改为使用Clang代替。</em></p>
 <p>下面利用AS和NDK来生成so，Cmake也可以使用此方法，文字不再做介绍。</p>
 <h3 id="3-3-1-准备环境"><a href="#3-3-1-准备环境" class="headerlink" title="3.3.1 准备环境"></a>3.3.1 准备环境</h3><hr>
 <p>（1）安装好Android Studio，确保可以正常运行。</p>
-<p>（2）<a href="http://img.dongbeigtl.top/A文章需要的截图/CSharp调用C动态链接库DLL/Image 0011555137646.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/CSharp%E8%B0%83%E7%94%A8C%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93DLL/Image%200011555137646.png" alt="Image 0011555137646.png"></a></p>
+<p>（2）<a href="http://img.dongbeigtl.top/A文章需要的截图/CSharp调用C动态链接库DLL/Image 0011555137646.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/CSharp%E8%B0%83%E7%94%A8C%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93DLL/Image%200011555137646.png" alt="Image 0011555137646.png"></a></p>
 <p>界面位置：File-Settings-System Settings-Android-SDKTools</p>
 <p>在AS中下载这些东西似乎需要翻墙，没有验证过。</p>
 <p>文件介绍：</p>
@@ -2206,15 +2213,15 @@
 <li>LLDB：一种调试程序，Android Studio 使用它来调试原生代码。</li>
 </ul>
 <h3 id="3-3-2-项目配置"><a href="#3-3-2-项目配置" class="headerlink" title="3.3.2 项目配置"></a>3.3.2 项目配置</h3><p>（1）先新建一个项目，（我的叫FuckSO）。然后切换工程目录为Project，（默认是Android），然后打开Project Structure-SDK Location，确认ndk已经配置好。</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/CSharp调用C动态链接库DLL/Honeycam 2019-04-13 15-11-35.gif" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/CSharp%E8%B0%83%E7%94%A8C%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93DLL/Honeycam%202019-04-13%2015-11-35.gif" alt="Honeycam 2019-04-13 15-11-35.gif"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/CSharp调用C动态链接库DLL/Honeycam 2019-04-13 15-11-35.gif"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/CSharp%E8%B0%83%E7%94%A8C%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93DLL/Honeycam%202019-04-13%2015-11-35.gif" alt="Honeycam 2019-04-13 15-11-35.gif"></a></p>
 <p>（2）在gradle.properties中添加一句：<strong>android.useDeprecatedNdk=true</strong>。为了向后兼容</p>
 <p>（3）在build.gradle文件下添加ndk，CMake节点：</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/CSharp调用C动态链接库DLL/Image 0011555140513.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/CSharp%E8%B0%83%E7%94%A8C%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93DLL/Image%200011555140513.png" alt="Image 0011555140513.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/CSharp调用C动态链接库DLL/Image 0011555140513.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/CSharp%E8%B0%83%E7%94%A8C%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93DLL/Image%200011555140513.png" alt="Image 0011555140513.png"></a></p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">apply plugin: &apos;com.android.application&apos;</span><br><span class="line"></span><br><span class="line">android &#123;</span><br><span class="line">    compileSdkVersion 28</span><br><span class="line">    defaultConfig &#123;</span><br><span class="line">        applicationId &apos;com.example.hellojni&apos;</span><br><span class="line">        minSdkVersion 23</span><br><span class="line">        targetSdkVersion 28</span><br><span class="line">        versionCode 1</span><br><span class="line">        versionName &quot;1.0&quot;</span><br><span class="line">    &#125;</span><br><span class="line">    buildTypes &#123;</span><br><span class="line">        release &#123;</span><br><span class="line">            minifyEnabled false</span><br><span class="line">            proguardFiles getDefaultProguardFile(&apos;proguard-android.txt&apos;),</span><br><span class="line">                    &apos;proguard-rules.pro&apos;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    externalNativeBuild &#123;</span><br><span class="line">        cmake &#123;</span><br><span class="line">            version &apos;3.10.2&apos;</span><br><span class="line">            path &quot;src/main/cpp/CMakeLists.txt&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    flavorDimensions &apos;cpuArch&apos;</span><br><span class="line">    productFlavors &#123;</span><br><span class="line">        arm7 &#123;</span><br><span class="line">            dimension &apos;cpuArch&apos;</span><br><span class="line">            ndk &#123;</span><br><span class="line">                abiFilter &apos;armeabi-v7a&apos;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        arm8 &#123;</span><br><span class="line">            dimension &apos;cpuArch&apos;</span><br><span class="line">            ndk &#123;</span><br><span class="line">                abiFilters &apos;arm64-v8a&apos;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        x86 &#123;</span><br><span class="line">            dimension &apos;cpuArch&apos;</span><br><span class="line">            ndk &#123;</span><br><span class="line">                abiFilter &apos;x86&apos;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        x86_64 &#123;</span><br><span class="line">            dimension &apos;cpuArch&apos;</span><br><span class="line">            ndk &#123;</span><br><span class="line">                abiFilter &apos;x86_64&apos;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        universal &#123;</span><br><span class="line">            dimension &apos;cpuArch&apos;</span><br><span class="line">            // include all default ABIs. with NDK-r16,  it is:</span><br><span class="line">            //   armeabi-v7a, arm64-v8a, x86, x86_64</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">dependencies &#123;</span><br><span class="line">    implementation fileTree(dir: &apos;libs&apos;, include: [&apos;*.jar&apos;])</span><br><span class="line">    implementation &apos;com.android.support:appcompat-v7:28.0.0&apos;</span><br><span class="line">    implementation &apos;com.android.support.constraint:constraint-layout:1.1.3&apos;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>（4）（如果不需要在Android Studio中调试此步骤可以跳过）在java目录下新建一个类，<strong>CCodeHelper</strong>。在静态代码中加载.c文件，并定义一个方法用于链接.c中的方法。</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/CSharp调用C动态链接库DLL/Image 0011555141665.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/CSharp%E8%B0%83%E7%94%A8C%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93DLL/Image%200011555141665.png" alt="Image 0011555141665.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/CSharp调用C动态链接库DLL/Image 0011555141665.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/CSharp%E8%B0%83%E7%94%A8C%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93DLL/Image%200011555141665.png" alt="Image 0011555141665.png"></a></p>
 <p>（5）在项目文件夹-app-src-main下新建cpp文件夹，并新建.c文件：</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/CSharp调用C动态链接库DLL/Image 0011555141480.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/CSharp%E8%B0%83%E7%94%A8C%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93DLL/Image%200011555141480.png" alt="Image 0011555141480.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/CSharp调用C动态链接库DLL/Image 0011555141480.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/CSharp%E8%B0%83%E7%94%A8C%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93DLL/Image%200011555141480.png" alt="Image 0011555141480.png"></a></p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#include  &lt;jni.h&gt;</span><br><span class="line">#include &lt;string.h&gt;</span><br><span class="line">int  Java_com_example_fuckso_CCodeHelper_magicMethod()</span><br><span class="line">&#123;</span><br><span class="line">#if defined(__arm__)</span><br><span class="line">    #if defined(__ARM_ARCH_7A__)</span><br><span class="line">    #if defined(__ARM_NEON__)</span><br><span class="line">      #if defined(__ARM_PCS_VFP)</span><br><span class="line">        #define ABI &quot;armeabi-v7a/NEON (hard-float)&quot;</span><br><span class="line">      #else</span><br><span class="line">        #define ABI &quot;armeabi-v7a/NEON&quot;</span><br><span class="line">      #endif</span><br><span class="line">    #else</span><br><span class="line">      #if defined(__ARM_PCS_VFP)</span><br><span class="line">        #define ABI &quot;armeabi-v7a (hard-float)&quot;</span><br><span class="line">      #else</span><br><span class="line">        #define ABI &quot;armeabi-v7a&quot;</span><br><span class="line">      #endif</span><br><span class="line">    #endif</span><br><span class="line">  #else</span><br><span class="line">   #define ABI &quot;armeabi&quot;</span><br><span class="line">  #endif</span><br><span class="line">#elif defined(__i386__)</span><br><span class="line">#define ABI &quot;x86&quot;</span><br><span class="line">#elif defined(__x86_64__)</span><br><span class="line">#define ABI &quot;x86_64&quot;</span><br><span class="line">#elif defined(__mips64)  /* mips64el-* toolchain defines __mips__ too */</span><br><span class="line">#define ABI &quot;mips64&quot;</span><br><span class="line">#elif defined(__mips__)</span><br><span class="line">#define ABI &quot;mips&quot;</span><br><span class="line">#elif defined(__aarch64__)</span><br><span class="line">#define ABI &quot;arm64-v8a&quot;</span><br><span class="line">#else</span><br><span class="line">#define ABI &quot;unknown&quot;</span><br><span class="line">#endif</span><br><span class="line"></span><br><span class="line">    return 999999999;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>注意方法的名字<strong>Java_com_example_fuckso_CCodeHelper_magicMethod，</strong>该方法与CCodeHelper中的方法对应。但多了Java_com_example_fuckso_CCodeHelper_，这是在Android项目中定义C/C++库方法的规则，规则为：“包名_类名_方法名”，在java类中直接使用方法名来进行调用。</p>
 <p>但把so拿给unity使用时，必须要使用全名也就是<strong>Java_com_example_fuckso_CCodeHelper_magicMethod</strong>才能调用。</p>
@@ -2223,15 +2230,15 @@
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cmake_minimum_required(VERSION 3.4.1)</span><br><span class="line">add_library(</span><br><span class="line">        CNativeFunction</span><br><span class="line">         SHARED</span><br><span class="line">        app/src/main/cpp/CNativeFunction.c</span><br><span class="line">)</span><br><span class="line">find_library(</span><br><span class="line">          log-lib</span><br><span class="line">          log</span><br><span class="line">)</span><br><span class="line">target_link_libraries(</span><br><span class="line">                   CNativeFunction</span><br><span class="line">                   $&#123;log-lib&#125;</span><br><span class="line"> )</span><br></pre></td></tr></table></figure>
 <p>（7）ctrl+F9 编译。编译成功后，会在FuckSO\app\build\intermediates\cmake\debug\obj下对应的cpu类型下找到.so文件。</p>
 <h2 id="3-3-Unity调用-so"><a href="#3-3-Unity调用-so" class="headerlink" title="3.3 Unity调用.so"></a>3.3 Unity调用.so</h2><p>使用<code>nm -D libNativeCode.so</code> 来查看so中是否包含了写好的方法：</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/CSharp调用C动态链接库DLL/Image 0011555068534.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/CSharp%E8%B0%83%E7%94%A8C%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93DLL/Image%200011555068534.png" alt="Image 0011555068534.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/CSharp调用C动态链接库DLL/Image 0011555068534.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/CSharp%E8%B0%83%E7%94%A8C%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93DLL/Image%200011555068534.png" alt="Image 0011555068534.png"></a></p>
 <p>将.so拖入Assets-Plugins-Android文件夹。在属性面板修改库的相关设置：</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/CSharp调用C动态链接库DLL/Image 0011555136600.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/CSharp%E8%B0%83%E7%94%A8C%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93DLL/Image%200011555136600.png" alt="Image 0011555136600.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/CSharp调用C动态链接库DLL/Image 0011555136600.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/CSharp%E8%B0%83%E7%94%A8C%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93DLL/Image%200011555136600.png" alt="Image 0011555136600.png"></a></p>
 <p>然后新建C#脚本：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">using UnityEngine;</span><br><span class="line">using System.Collections;</span><br><span class="line">using System.Runtime.InteropServices;</span><br><span class="line"></span><br><span class="line">public class CallNativeCode : MonoBehaviour &#123;</span><br><span class="line"></span><br><span class="line">  [DllImport(&quot;native&quot;)]</span><br><span class="line">  private static extern int NoArgReturnSth();</span><br><span class="line"> </span><br><span class="line">    int i = NoArgReturnSth();</span><br><span class="line">    void OnGUI ()</span><br><span class="line">  &#123;</span><br><span class="line">    float x = 3;</span><br><span class="line">    float y = 10;</span><br><span class="line">    //GUI.Label (new Rect (15, 125, 450, 100), &quot;adding &quot; + x  + &quot; and &quot; + y + &quot; in native code equals &quot; + add(x,y));</span><br><span class="line">        GUI.Label(new Rect(15, 225, 450, 100), i.ToString());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>拖拽到任意物体，这是Unity会报错：DllNotFoundException: native，此时不用理会，因为.so文件无论如何也无法在windows环境下调用。所以需要打包成apk在模拟器上运行，发布设置按图片中的对应即可：</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/CSharp调用C动态链接库DLL/Image 0011555136869.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/CSharp%E8%B0%83%E7%94%A8C%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93DLL/Image%200011555136869.png" alt="Image 0011555136869.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/CSharp调用C动态链接库DLL/Image 0011555136869.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/CSharp%E8%B0%83%E7%94%A8C%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93DLL/Image%200011555136869.png" alt="Image 0011555136869.png"></a></p>
 <p>安装APK运行，这时可以看到c#从.so调用了方法并返回了一个值：</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/CSharp调用C动态链接库DLL/Image 0011555136994.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/CSharp%E8%B0%83%E7%94%A8C%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93DLL/Image%200011555136994.png" alt="Image 0011555136994.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/CSharp调用C动态链接库DLL/Image 0011555136994.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/CSharp%E8%B0%83%E7%94%A8C%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93DLL/Image%200011555136994.png" alt="Image 0011555136994.png"></a></p>
 <p><strong>需要注意的几点：</strong></p>
 <ul>
 <li>[DllImport(“filename”)]，filename不要写lib前缀以及.so后缀，如例子中生成的.so叫libnative.so，DllImport引入时只需写native。（强制规定）</li>
@@ -2245,32 +2252,32 @@
 <p>适配代码如下：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">using System.Collections;</span><br><span class="line">using System.Collections.Generic;</span><br><span class="line">using UnityEngine;</span><br><span class="line">using System.Runtime.InteropServices;</span><br><span class="line"></span><br><span class="line">public class NewBehaviourScript : MonoBehaviour &#123;</span><br><span class="line">#if UNITY_STANDALONE_WIN</span><br><span class="line">    const string fcuk = &quot;CFunction&quot;;</span><br><span class="line">#else</span><br><span class="line">    const string fcuk = &quot;native&quot;;</span><br><span class="line">#endif</span><br><span class="line"></span><br><span class="line">    [DllImport(fcuk)]</span><br><span class="line">    private static extern int NoArgReturnSth();</span><br><span class="line"></span><br><span class="line">    void OnGUI()</span><br><span class="line">    &#123;</span><br><span class="line">        int i = NoArgReturnSth();</span><br><span class="line">        GUI.Button(new Rect(1, 1, 200, 100), i.ToString());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h1 id="五-备注"><a href="#五-备注" class="headerlink" title="五 备注"></a>五 备注</h1><p>文档中没有写关于如何生成静态库的方法，但其实和生成动态库是一样的只是参数不同。</p>
-<p>生成Android可以使用的.so文件的方法不止文中写的这些，但需要注意的是有些方法生产的so库只能在Linux下使用，如利用VisualGDB和Linux虚拟机交叉编译生成的.so库（<a href="https://visualgdb.com/tutorials/linux/libraries/" target="_blank" rel="noopener">使用Visual Studio创建Linux库</a>），以及在windows环境下利用gcc编译出obj再转化为.so库的方法。</p>
+<p>生成Android可以使用的.so文件的方法不止文中写的这些，但需要注意的是有些方法生产的so库只能在Linux下使用，如利用VisualGDB和Linux虚拟机交叉编译生成的.so库（<a href="https://visualgdb.com/tutorials/linux/libraries/">使用Visual Studio创建Linux库</a>），以及在windows环境下利用gcc编译出obj再转化为.so库的方法。</p>
 <p>C++的链接库生成，和语法以及一些细微的差别在文中没有介绍。</p>
 <p>.dll和.so的方法参数以及传参各有不同，具体区别下篇文档再做说明。可以先看看：</p>
 <ol>
-<li><a href="https://yq.aliyun.com/articles/678154" target="_blank" rel="noopener">C#调用C/C++ DLL 参数传递和回调函数的总结</a></li>
-<li><a href="https://www.cnblogs.com/stemon/p/4515522.html" target="_blank" rel="noopener">C#调用C/C++动态库 封送结构体，结构体数组</a></li>
+<li><a href="https://yq.aliyun.com/articles/678154">C#调用C/C++ DLL 参数传递和回调函数的总结</a></li>
+<li><a href="https://www.cnblogs.com/stemon/p/4515522.html">C#调用C/C++动态库 封送结构体，结构体数组</a></li>
 </ol>
 <p>文中部分资料摘自：</p>
 <ul>
-<li>微软官方资料：<a href="https://docs.microsoft.com/zh-cn/cpp/build/walkthrough-creating-and-using-a-dynamic-link-library-cpp?view=vs-2019" target="_blank" rel="noopener">创建和使用你自己动态链接库 （c + +）</a></li>
-<li>C语言中文网：<a href="http://c.biancheng.net/view/228.html" target="_blank" rel="noopener"> C中函数指针简介及其用法</a></li>
-<li>阿里云社区：<a href="https://yq.aliyun.com/articles/678154" target="_blank" rel="noopener">C#调用C/C++ DLL 参数传递和回调函数的总结</a></li>
-<li><a href="https://www.cnblogs.com/stemon/p/4515522.html" target="_blank" rel="noopener">C#调用C/C++动态库 封送结构体，结构体数组</a></li>
-<li><a href="https://blog.csdn.net/imfengyitong/article/details/51549010" target="_blank" rel="noopener">C#调用C函数(DLL)传递参数问题</a></li>
-<li><a href="https://blog.csdn.net/sdl2005lyx/article/details/6796037" target="_blank" rel="noopener">平台调用P-INVOKE(一)–(基础篇)</a></li>
-<li><a href="https://www.cnblogs.com/cg88/p/9143866.html" target="_blank" rel="noopener">CallingConvention理解</a></li>
-<li><a href="https://blog.csdn.net/yapingxin/article/details/7288325" target="_blank" rel="noopener">［科普小短文］在C#中调用C语言函数</a></li>
-<li><a href="https://blog.csdn.net/yapingxin/article/details/7288164" target="_blank" rel="noopener">Visual C++ 2010 Express Tips: 用 C 和 C++ 创建动态链接库</a></li>
-<li><a href="https://blog.csdn.net/bad_boy627056049/article/details/73658073" target="_blank" rel="noopener">动态库和静态库的区别</a></li>
-<li><a href="https://blog.csdn.net/qq21497936/article/details/83825098" target="_blank" rel="noopener">VS2017编写纯C库以及使用C#调用C库方法</a></li>
-<li><a href="https://www.cnblogs.com/EltonLiang/p/7392410.html" target="_blank" rel="noopener">VS2015_动态链接库学习</a></li>
-<li><a href="https://blog.csdn.net/leo9150285/article/details/8804705" target="_blank" rel="noopener">用VS2010将C程序做成动态链接库dll</a></li>
-<li><a href="https://blog.csdn.net/zt_xcyk/article/details/78006223" target="_blank" rel="noopener">VS2015设置DLL和LIB的输出目录</a></li>
+<li>微软官方资料：<a href="https://docs.microsoft.com/zh-cn/cpp/build/walkthrough-creating-and-using-a-dynamic-link-library-cpp?view=vs-2019">创建和使用你自己动态链接库 （c + +）</a></li>
+<li>C语言中文网：<a href="http://c.biancheng.net/view/228.html"> C中函数指针简介及其用法</a></li>
+<li>阿里云社区：<a href="https://yq.aliyun.com/articles/678154">C#调用C/C++ DLL 参数传递和回调函数的总结</a></li>
+<li><a href="https://www.cnblogs.com/stemon/p/4515522.html">C#调用C/C++动态库 封送结构体，结构体数组</a></li>
+<li><a href="https://blog.csdn.net/imfengyitong/article/details/51549010">C#调用C函数(DLL)传递参数问题</a></li>
+<li><a href="https://blog.csdn.net/sdl2005lyx/article/details/6796037">平台调用P-INVOKE(一)–(基础篇)</a></li>
+<li><a href="https://www.cnblogs.com/cg88/p/9143866.html">CallingConvention理解</a></li>
+<li><a href="https://blog.csdn.net/yapingxin/article/details/7288325">［科普小短文］在C#中调用C语言函数</a></li>
+<li><a href="https://blog.csdn.net/yapingxin/article/details/7288164">Visual C++ 2010 Express Tips: 用 C 和 C++ 创建动态链接库</a></li>
+<li><a href="https://blog.csdn.net/bad_boy627056049/article/details/73658073">动态库和静态库的区别</a></li>
+<li><a href="https://blog.csdn.net/qq21497936/article/details/83825098">VS2017编写纯C库以及使用C#调用C库方法</a></li>
+<li><a href="https://www.cnblogs.com/EltonLiang/p/7392410.html">VS2015_动态链接库学习</a></li>
+<li><a href="https://blog.csdn.net/leo9150285/article/details/8804705">用VS2010将C程序做成动态链接库dll</a></li>
+<li><a href="https://blog.csdn.net/zt_xcyk/article/details/78006223">VS2015设置DLL和LIB的输出目录</a></li>
 <li>Android中IDE、ADT、SDK、JDK、NDK的含义解释</li>
-<li><a href="https://blog.csdn.net/afei__/article/details/81272251" target="_blank" rel="noopener">ABI： abiFilters 详解</a></li>
-<li><a href="https://www.cnblogs.com/scotth/p/3977928.html" target="_blank" rel="noopener">介绍linux/windows OS下静态库（.a、.lib）和动态库（.so、.dll）的 link &amp; load</a></li>
+<li><a href="https://blog.csdn.net/afei__/article/details/81272251">ABI： abiFilters 详解</a></li>
+<li><a href="https://www.cnblogs.com/scotth/p/3977928.html">介绍linux/windows OS下静态库（.a、.lib）和动态库（.so、.dll）的 link &amp; load</a></li>
 </ul>
 ]]></content>
       <categories>
@@ -2291,7 +2298,14 @@
 <a id="more"></a>
 <h2 id="一-Net框架"><a href="#一-Net框架" class="headerlink" title="一 .Net框架"></a>一 .Net框架</h2><h3 id="1-2-net框架构成"><a href="#1-2-net框架构成" class="headerlink" title="1.2 .net框架构成"></a>1.2 .net框架构成</h3><p><img src="/2019/12/11/CSharp笔记/Image 0011559550021.png" alt="Image 0011559550021"></p>
 <p>eeee</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">graph LR</span><br><span class="line">A[方形] --&gt;B(圆角)</span><br><span class="line">    B --&gt; C&#123;条件a&#125;</span><br><span class="line">    C --&gt;|a=1| D[结果1]</span><br><span class="line">    C --&gt;|a=2| E[结果2]</span><br><span class="line">    F[横向流程图]</span><br></pre></td></tr></table></figure>
+<pre class="mermaid">graph TD;
+    A-->B;
+    A-->C;
+    B-->D;
+    C-->D;</pre>
+
+
+
 <p>eeeeee</p>
 <p>CLR：Common Language Runtime 公共语言运行库</p>
 <p>BCL：Base Class Library  基础类库</p>

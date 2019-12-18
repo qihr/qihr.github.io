@@ -395,6 +395,8 @@
                 
               
                 
+              
+                
                   
                 
               
@@ -418,7 +420,7 @@
             </div>
             <div class="tag-cloud-tags">
               
-                <a href="/tags/Android/" style="font-size: 12px; color: #ccc">Android</a> <a href="/tags/C/" style="font-size: 12px; color: #ccc">C</a> <a href="/tags/CSharp/" style="font-size: 21px; color: #6f6f6f">CSharp</a> <a href="/tags/Git/" style="font-size: 12px; color: #ccc">Git</a> <a href="/tags/Lua/" style="font-size: 16.5px; color: #9d9d9d">Lua</a> <a href="/tags/ObjectC-C/" style="font-size: 12px; color: #ccc">ObjectC-C</a> <a href="/tags/SDK/" style="font-size: 12px; color: #ccc">SDK</a> <a href="/tags/Unity/" style="font-size: 30px; color: #111">Unity</a> <a href="/tags/Untiy插件/" style="font-size: 25.5px; color: #404040">Untiy插件</a> <a href="/tags/iOS/" style="font-size: 12px; color: #ccc">iOS</a> <a href="/tags/游戏寻路/" style="font-size: 25.5px; color: #404040">游戏寻路</a>
+                <a href="/tags/Android/" style="font-size: 12px; color: #ccc">Android</a> <a href="/tags/C/" style="font-size: 12px; color: #ccc">C</a> <a href="/tags/CSharp/" style="font-size: 21px; color: #6f6f6f">CSharp</a> <a href="/tags/Hexo/" style="font-size: 12px; color: #ccc">Hexo</a> <a href="/tags/Lua/" style="font-size: 16.5px; color: #9d9d9d">Lua</a> <a href="/tags/ObjectC-C/" style="font-size: 12px; color: #ccc">ObjectC-C</a> <a href="/tags/SDK/" style="font-size: 12px; color: #ccc">SDK</a> <a href="/tags/Unity/" style="font-size: 30px; color: #111">Unity</a> <a href="/tags/Untiy插件/" style="font-size: 25.5px; color: #404040">Untiy插件</a> <a href="/tags/iOS/" style="font-size: 12px; color: #ccc">iOS</a> <a href="/tags/游戏寻路/" style="font-size: 25.5px; color: #404040">游戏寻路</a>
               
             </div>
           </div>
@@ -516,6 +518,8 @@
                     
                   
                     
+                    
+                      
                     
                       
                     
@@ -649,6 +653,15 @@
 
 
 
+
+
+
+  <script src="https://unpkg.com/mermaid@7.1.2/dist/mermaid.min.js"></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize("");
+    }
+  </script>
 
         
 
@@ -1091,6 +1104,26 @@
   
 
   
+<script>
+if ($('body').find('pre.mermaid').length) {
+  $.ajax({
+    type: 'GET',
+    url: '',
+    dataType: 'script',
+    cache: true,
+    success: function() {
+      mermaid.initialize({
+        theme: '',
+        logLevel: 3,
+        flowchart: { curve: 'linear' },
+        gantt: { axisFormat: '%m/%d/%Y' },
+        sequence: { actorMargin: 50 }
+      });
+    }
+  });
+}
+</script>
+
 
   
 

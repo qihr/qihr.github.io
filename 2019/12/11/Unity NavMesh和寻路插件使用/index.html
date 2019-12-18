@@ -759,7 +759,7 @@
 <hr>
 <h4 id="4-Navigation面板（window栏-Navigation）"><a href="#4-Navigation面板（window栏-Navigation）" class="headerlink" title="4.Navigation面板（window栏-Navigation）"></a>4.Navigation面板（window栏-Navigation）</h4><p><img src="/2019/12/11/Unity NavMesh和寻路插件使用/84206917.jpg" alt="@Navigation-Agents面板"></p>
 <p>Agents面板用于代理和代理之间的躲避，该页的参数不参与Bake，只用于处理代理与代理，代理与障碍之间的躲避。<br>在使用章节有关于该面板如何使用的介绍。</p>
-<p>关于此Tab，unity社区的问答：<a href="https://answers.unity.com/questions/1376465/what-is-the-difference-between-configuration-of-ag.html" target="_blank" rel="noopener">https://answers.unity.com/questions/1376465/what-is-the-difference-between-configuration-of-ag.html</a></p>
+<p>关于此Tab，unity社区的问答：<a href="https://answers.unity.com/questions/1376465/what-is-the-difference-between-configuration-of-ag.html">https://answers.unity.com/questions/1376465/what-is-the-difference-between-configuration-of-ag.html</a></p>
 <hr>
 <p><img src="/2019/12/11/Unity NavMesh和寻路插件使用/16669861.jpg" alt="@Navigation-Areas面板"></p>
 <p>Areas代表烘焙网格所在的图层， 有29种自定义类型和3种内置类型：Walkable，Not Walkable和Jump。<br>\1. Walkable是通用区域类型，可以在该区域上行走。<br>\2. Not Walkable是阻止导航的区域类型。<br>\3. Jump是分配给自动生成的离网链接的区域类型。<br>另外，每个NavMesh代理都有一个Area Mask，用于指定代理可以移动的区域。<br>Cost是寻路的代价（成本），比如角色可以选择两条路，一条是过河，一条是草地。这两种寻路方式可能消耗的成本不一样。或是一扇门，人类可以通过但是其他怪物不能通过。都需要通过控制cost和area来实现。具体使用看下面的寻路导航章节。</p>
@@ -884,7 +884,7 @@
 <li>设置较小的Agent Radius，因为已经开启了手动修改体素大小，所以大小不会改变。</li>
 </ol>
 <p><img src="/2019/12/11/Unity NavMesh和寻路插件使用/./Image 0011544708028.png" alt="@提示voxel size和代理半径关系的文本，较好的倍数是2-8倍| center|"></p>
-<p>官方文档：<br><a href="https://docs.unity3d.com/2017.4/Documentation/Manual/nav-AdvancedSettings.html" target="_blank" rel="noopener">https://docs.unity3d.com/2017.4/Documentation/Manual/nav-AdvancedSettings.html</a></p>
+<p>官方文档：<br><a href="https://docs.unity3d.com/2017.4/Documentation/Manual/nav-AdvancedSettings.html">https://docs.unity3d.com/2017.4/Documentation/Manual/nav-AdvancedSettings.html</a></p>
 <hr>
 <h4 id="寻路代价"><a href="#寻路代价" class="headerlink" title="寻路代价*"></a>寻路代价*</h4><p>通过cost可以定义通过该区域的困难程度(代价)，，成本更低的地方在寻路过程中优先级更高，cost可以控制角色寻路时偏好的区域。例如走草地要比走水路要快一些，就可以通过设置cost来实现。具体例子可以看<strong>演示章节</strong>。</p>
 <p>在进一步了解之前，首先先了解一下A<em> 寻路的工作原理：Unity使用A</em>算法来寻找导航的最短路径，其核心数据结构为图。算法从离寻路实体最近的网格进行遍历，接着不停地访问相邻网格节点，直到搜寻到终点所在的网格区域(起点到终点的网格连线就是导航路径（此时未带入估价函数，即非最短路径）)。</p>
@@ -894,7 +894,7 @@
 <p>有时候可能会感觉在某些地方，寻路实体好像不会直接走最短路径。究其原因在于网格结点的放置位置。在空旷的地方有一个非常小的障碍物，这就会导致产生一大一小的网格。在这种情况下，网格结点可以放置在网格的任何地方，所以在我们看来，寻路实体好像并没有走最短路径。</p>
 <p><img src="/2019/12/11/Unity NavMesh和寻路插件使用/22999412.jpg" alt="@看起来黄线并没有规划出最短路径"></p>
 <p>当某区域网格有多种寻路代价时，寻路网格一般优先使用寻路代价最低的那种。当然也有例外，不可行区域的寻路代价虽然为1，但优先使用该种区域，用于阻挡寻路实体移动**。</p>
-<p>官网文档：<a href="https://docs.unity3d.com/2017.4/Documentation/Manual/nav-AreasAndCosts.html" target="_blank" rel="noopener">https://docs.unity3d.com/2017.4/Documentation/Manual/nav-AreasAndCosts.html</a></p>
+<p>官网文档：<a href="https://docs.unity3d.com/2017.4/Documentation/Manual/nav-AreasAndCosts.html">https://docs.unity3d.com/2017.4/Documentation/Manual/nav-AreasAndCosts.html</a></p>
 <p><em>注：图中的寻路路径绘图（黄线）的显示方法是在hierarchy面板点击寻路角色，在Scene场景勾选如上图几项即可。</em></p>
 <hr>
 <h4 id="自动生成离网链接"><a href="#自动生成离网链接" class="headerlink" title="自动生成离网链接"></a>自动生成离网链接</h4><p>有些时候我们需要自动生成离网格链接。链接的类型有两种：爬梯跳台式和跳跃跨栏式。</p>
@@ -912,16 +912,16 @@
 </ol>
 <p><img src="/2019/12/11/Unity NavMesh和寻路插件使用/65051244.jpg" alt="@没有黑圈代表离网链接没有构建成功"></p>
 <p><em>注：生成的分离网格链接只能从上往下移动，如果需要从下往上则需要使用手动分离网格链接。</em></p>
-<p>官网链接：<a href="https://docs.unity3d.com/2017.4/Documentation/Manual/nav-BuildingOffMeshLinksAutomatically.html" target="_blank" rel="noopener">https://docs.unity3d.com/2017.4/Documentation/Manual/nav-BuildingOffMeshLinksAutomatically.html</a></p>
+<p>官网链接：<a href="https://docs.unity3d.com/2017.4/Documentation/Manual/nav-BuildingOffMeshLinksAutomatically.html">https://docs.unity3d.com/2017.4/Documentation/Manual/nav-BuildingOffMeshLinksAutomatically.html</a></p>
 <hr>
-<h4 id="离网链接与动画系统"><a href="#离网链接与动画系统" class="headerlink" title="离网链接与动画系统"></a>离网链接与动画系统</h4><p>可以注意到，当演示中的胶囊体/Cube通过离网链接时都是一瞬间完成的，但在实际游戏中，人物的攀爬和跳跃都是有动作的，如果需要在通过离网链接点的时候有人物动作，需要把人物的Auto Traverse Off Mesh Link选项关掉，然后写对应的控制人物状态的脚本，具体可以看：<br><a href="https://blog.csdn.net/elyxiao/article/details/51281602" target="_blank" rel="noopener">https://blog.csdn.net/elyxiao/article/details/51281602</a> ，在文章最后作者介绍了如何在通过离网链接点时执行动画。</p>
+<h4 id="离网链接与动画系统"><a href="#离网链接与动画系统" class="headerlink" title="离网链接与动画系统"></a>离网链接与动画系统</h4><p>可以注意到，当演示中的胶囊体/Cube通过离网链接时都是一瞬间完成的，但在实际游戏中，人物的攀爬和跳跃都是有动作的，如果需要在通过离网链接点的时候有人物动作，需要把人物的Auto Traverse Off Mesh Link选项关掉，然后写对应的控制人物状态的脚本，具体可以看：<br><a href="https://blog.csdn.net/elyxiao/article/details/51281602">https://blog.csdn.net/elyxiao/article/details/51281602</a> ，在文章最后作者介绍了如何在通过离网链接点时执行动画。</p>
 <hr>
 <h4 id="Hight-mesh"><a href="#Hight-mesh" class="headerlink" title="Hight mesh"></a>Hight mesh</h4><p>由于NavMesh是可行走空间的近似值，因此会忽略一些细节。例如，人物在通过楼梯时并不会出现上下颠簸的感觉，如果需要增加NavMesh的真实度，需要将<strong>Navigation-Bake-Advanced settings</strong>下的<strong>Hight mesh</strong>选项打开，当然开启Hight mesh会增加CPU和内存的开销，并且烘焙时间会变长。</p>
 <p>原文：</p>
 <blockquote>
 <p>While navigating, the NavMesh Agent is constrained on the surface of the NavMesh. Since the NavMesh is an approximation of the walkable space, some features are evened out when the NavMesh is being built. For example, stairs may appear as a slope in the NavMesh. If your game requires accurate placement of the agent, you should enable Height Mesh building when you bake the NavMesh. The setting can be found under the Advanced settings in Navigation window. Note that building Height Mesh will take up memory and processing at runtime, and it will take a little longer to bake the NavMesh.</p>
 </blockquote>
-<p>官方文档：<a href="https://docs.unity3d.com/2017.4/Documentation/Manual/nav-HeightMesh.html" target="_blank" rel="noopener">https://docs.unity3d.com/2017.4/Documentation/Manual/nav-HeightMesh.html</a></p>
+<p>官方文档：<a href="https://docs.unity3d.com/2017.4/Documentation/Manual/nav-HeightMesh.html">https://docs.unity3d.com/2017.4/Documentation/Manual/nav-HeightMesh.html</a></p>
 <p><img src="/2019/12/11/Unity NavMesh和寻路插件使用/32907915.jpg" alt="@开启前"></p>
 <p><img src="/2019/12/11/Unity NavMesh和寻路插件使用/48197356.jpg" alt="@开启后"></p>
 <hr>
@@ -930,10 +930,10 @@
 <h4 id="效率"><a href="#效率" class="headerlink" title="效率"></a>效率</h4><p>//</p>
 <hr>
 <h4 id="high-level-NavMesh-building-components"><a href="#high-level-NavMesh-building-components" class="headerlink" title="high-level NavMesh building components"></a>high-level NavMesh building components</h4><p>//</p>
-<p>官方文档：<a href="https://docs.unity3d.com/2017.4/Documentation/Manual/NavMesh-BuildingComponents.html" target="_blank" rel="noopener">https://docs.unity3d.com/2017.4/Documentation/Manual/NavMesh-BuildingComponents.html</a></p>
+<p>官方文档：<a href="https://docs.unity3d.com/2017.4/Documentation/Manual/NavMesh-BuildingComponents.html">https://docs.unity3d.com/2017.4/Documentation/Manual/NavMesh-BuildingComponents.html</a></p>
 <hr>
 <h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><p>下面的几个例子是我作为熟悉导航系统练习写的，想看标准的演示可以点击Windows-Navigation-Bake面板中的蓝色文本下载官方Demo。<br><img src="/2019/12/11/Unity NavMesh和寻路插件使用/43707615.jpg" alt="@点击蓝色链接可跳转至下载Demo网页"></p>
-<p>链接：<a href="https://github.com/Unity-Technologies/NavMeshComponents" target="_blank" rel="noopener">https://github.com/Unity-Technologies/NavMeshComponents</a></p>
+<p>链接：<a href="https://github.com/Unity-Technologies/NavMeshComponents">https://github.com/Unity-Technologies/NavMeshComponents</a></p>
 <h4 id="静态场景："><a href="#静态场景：" class="headerlink" title="静态场景："></a>静态场景：</h4><p><strong>（1）</strong>首先将场景内的障碍物包括地板设置为Static（如图中的四面墙，黄色的cube以及绿色的地板）：</p>
 <p><img src="/2019/12/11/Unity NavMesh和寻路插件使用/24937663.jpg" alt="img"></p>
 <p>注意NAvigation Static要确定被勾选：</p>
@@ -1140,6 +1140,8 @@
                     
                       
                     
+                      
+                    
                     <span class="site-state-item-count">11</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
@@ -1267,6 +1269,15 @@
 
 
 
+
+
+
+  <script src="https://unpkg.com/mermaid@7.1.2/dist/mermaid.min.js"></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize("");
+    }
+  </script>
 
         
 
@@ -1709,6 +1720,26 @@
   
 
   
+<script>
+if ($('body').find('pre.mermaid').length) {
+  $.ajax({
+    type: 'GET',
+    url: '',
+    dataType: 'script',
+    cache: true,
+    success: function() {
+      mermaid.initialize({
+        theme: '',
+        logLevel: 3,
+        flowchart: { curve: 'linear' },
+        gantt: { axisFormat: '%m/%d/%Y' },
+        sequence: { actorMargin: 50 }
+      });
+    }
+  });
+}
+</script>
+
 
   
 

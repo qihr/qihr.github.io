@@ -97,7 +97,7 @@
 
 
   <meta name="description" content="LuaInterface https://www.cnblogs.com/sifenkesi/p/3901831.html">
-<meta name="keywords" content="Lua,CSharp">
+<meta name="keywords" content="CSharp,Lua">
 <meta property="og:type" content="article">
 <meta property="og:title" content="LuaInterface简介">
 <meta property="og:url" content="http://yoursite.com/2019/12/11/C和Lua交互/index.html">
@@ -468,9 +468,9 @@
 
       
         <p>LuaInterface</p>
-<p><a href="https://www.cnblogs.com/sifenkesi/p/3901831.html" target="_blank" rel="noopener">https://www.cnblogs.com/sifenkesi/p/3901831.html</a></p>
+<p><a href="https://www.cnblogs.com/sifenkesi/p/3901831.html">https://www.cnblogs.com/sifenkesi/p/3901831.html</a></p>
 <a id="more"></a>
-<h1 id="一-介绍"><a href="#一-介绍" class="headerlink" title="一 介绍"></a>一 介绍</h1><h1 id="二-使用"><a href="#二-使用" class="headerlink" title="二 使用"></a>二 使用</h1><h2 id="1-C-中调用Lua"><a href="#1-C-中调用Lua" class="headerlink" title="1.C#中调用Lua"></a>1.C#中调用Lua</h2><p>下载LuaInterface。<a href="http://luaforge.net/projects/luainterface/" target="_blank" rel="noopener">下载地址</a></p>
+<h1 id="一-介绍"><a href="#一-介绍" class="headerlink" title="一 介绍"></a>一 介绍</h1><h1 id="二-使用"><a href="#二-使用" class="headerlink" title="二 使用"></a>二 使用</h1><h2 id="1-C-中调用Lua"><a href="#1-C-中调用Lua" class="headerlink" title="1.C#中调用Lua"></a>1.C#中调用Lua</h2><p>下载LuaInterface。<a href="http://luaforge.net/projects/luainterface/">下载地址</a></p>
 <p>里面有两个文件：<code>lua51.dll</code>，<code>LuaInterface.dll</code></p>
 <p>新建c#控制台，添加引用（引用右键-添加引用）：</p>
 <p><img src="/2019/12/11/C和Lua交互/Image 0011557124613.png" alt="Image 0011557124613"></p>
@@ -544,7 +544,7 @@
 <p>差一个c#调lua方法</p>
 <p>lua报错输出</p>
 <p><em>Lua中button.Text… button[“Text”]的区别</em></p>
-<p>vscode控制台中文乱码<a href="https://blog.csdn.net/xjk2017/article/details/81388493" target="_blank" rel="noopener">https://blog.csdn.net/xjk2017/article/details/81388493</a></p>
+<p>vscode控制台中文乱码<a href="https://blog.csdn.net/xjk2017/article/details/81388493">https://blog.csdn.net/xjk2017/article/details/81388493</a></p>
 <p>CLR</p>
 <p>构造方法</p>
 <p><img src="/2019/12/11/C和Lua交互/Image 0011555992894.png" alt="Image 0011555992894"></p>
@@ -571,9 +571,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Lua/" rel="tag"># Lua</a>
-          
             <a href="/tags/CSharp/" rel="tag"># CSharp</a>
+          
+            <a href="/tags/Lua/" rel="tag"># Lua</a>
           
         </div>
       
@@ -727,6 +727,8 @@
                     
                       
                     
+                      
+                    
                     <span class="site-state-item-count">11</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
@@ -854,6 +856,15 @@
 
 
 
+
+
+
+  <script src="https://unpkg.com/mermaid@7.1.2/dist/mermaid.min.js"></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize("");
+    }
+  </script>
 
         
 
@@ -1296,6 +1307,26 @@
   
 
   
+<script>
+if ($('body').find('pre.mermaid').length) {
+  $.ajax({
+    type: 'GET',
+    url: '',
+    dataType: 'script',
+    cache: true,
+    success: function() {
+      mermaid.initialize({
+        theme: '',
+        logLevel: 3,
+        flowchart: { curve: 'linear' },
+        gantt: { axisFormat: '%m/%d/%Y' },
+        sequence: { actorMargin: 50 }
+      });
+    }
+  });
+}
+</script>
+
 
   
 

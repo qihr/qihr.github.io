@@ -483,18 +483,18 @@
         <p>本文为AStarPathfinding插件的进阶内容，如果需要简单的使用寻路功能可以看上和中。</p>
 <p>AI漫游以及扩展系统暂时没有做介绍，感兴趣的可以去官网看。</p>
 <a id="more"></a>
-<h1 id="Navmesh-Cutting（付费功能）"><a href="#Navmesh-Cutting（付费功能）" class="headerlink" title="Navmesh Cutting（付费功能）"></a>Navmesh Cutting（付费功能）</h1><p><a href="https://arongranberg.com/astar/docs/navmeshcutting.html" target="_blank" rel="noopener">官方文档</a></p>
+<h1 id="Navmesh-Cutting（付费功能）"><a href="#Navmesh-Cutting（付费功能）" class="headerlink" title="Navmesh Cutting（付费功能）"></a>Navmesh Cutting（付费功能）</h1><p><a href="https://arongranberg.com/astar/docs/navmeshcutting.html">官方文档</a></p>
 <p>Navmesh Cutting用于动态添加一个物体时，移除（切割）Navmesh或Recast图中被障碍物阻挡的部分。Navmesh Cutting很适用于动态添加物体/障碍物的场景。（通常情况下Navmesh/Recast只允许更改现有的节点参数，不允许添加新内容或更改节点的位置）</p>
 <p>官方文档不知道为什么没有写如何使用Navmesh Cutting是如何使用的，下面给出我使用此功能的流程：</p>
 <p>1.首先新建一个具有Recast图并能正确使用的场景。</p>
 <p>2.添加一个空物体，命名为Helper，为Helper添加Tile Handler Helper组件。</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011546871877.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011546871877.png" alt="Image 0011546871877.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011546871877.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011546871877.png" alt="Image 0011546871877.png"></a></p>
 <p>（Tile Handler Helper组件干嘛用的）</p>
 <p>3.添加一个障碍物，并为其添加NavMesh Cut组件，并按下图中所示调整参数：</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding上/Image 0011546871977.png" target="_blank" rel="noopener"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（下）/Image 0011546871977.png" alt="Image 0011546871977.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding上/Image 0011546871977.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（下）/Image 0011546871977.png" alt="Image 0011546871977.png"></a></p>
 <p>4.运行游戏，拖动障碍物时NavMesh被遮挡的部分会不可用。</p>
 <p>需要注意的是，切割的形状是XZ轴投影到Navmeshi平面的2D图形，不是3D，但2D图形通过拉伸也形成了高度，高度用于判断物体距离平面多高就需要切割的高度：</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding上/Image 0011546931837.png" target="_blank" rel="noopener"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（下）/Image 0011546931837.png" alt="Image 0011546931837.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding上/Image 0011546931837.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（下）/Image 0011546931837.png" alt="Image 0011546931837.png"></a></p>
 <p>所以只有物体在navmeshcut组件中设置的图形与NavMesh的接触部分才会被切割，包括高度和半径。</p>
 <p>Is dual功能到底干嘛的</p>
 <p>在3.x中，navmesh切割只能与重铸图一起使用，但在4.x中，它们可以与重铸和导航网图一起使用。</p>
@@ -503,12 +503,12 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">// Schedule pending updates to be done as soon as the pathfinding threads</span><br><span class="line">// are done with what they are currently doing.</span><br><span class="line">AstarPath.active.navmeshUpdates.ForceUpdate();</span><br><span class="line">// Block until the updates have finished</span><br><span class="line">AstarPath.active.FlushGraphUpdates();</span><br><span class="line"></span><br><span class="line">也可以通过代码控制检查navmeshcut是否变化的时间:</span><br><span class="line"></span><br><span class="line">// Check every frame (the default)</span><br><span class="line">AstarPath.active.navmeshUpdates.updateInterval = 0;</span><br><span class="line"></span><br><span class="line">// Check every 0.1 seconds</span><br><span class="line">AstarPath.active.navmeshUpdates.updateInterval = 0.1f;</span><br><span class="line"></span><br><span class="line">// Never check for changes</span><br><span class="line">AstarPath.active.navmeshUpdates.updateInterval = -1;</span><br><span class="line">// You will have to schedule updates manually using</span><br><span class="line">AstarPath.active.navmeshUpdates.ForceUpdate();</span><br></pre></td></tr></table></figure>
 <p>（代码都不好使）</p>
 <p>也可以通过Update Interval来更改。（这个值的更改位置不对 版本不同？？ ）</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011546945990.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011546945990.png" alt="Image 0011546945990.png"></a></p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding上/Image 0011546943710.png" target="_blank" rel="noopener"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（下）/Image 0011546943710.png" alt="Image 0011546943710.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011546945990.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011546945990.png" alt="Image 0011546945990.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding上/Image 0011546943710.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（下）/Image 0011546943710.png" alt="Image 0011546943710.png"></a></p>
 <p>因为navmesh切割可以很好地修改navmesh中的三角形，所以在更新图形时不可能保留标签和惩罚。对于在应用更新时保持完全相同的节点，将保留标签和惩罚。</p>
 <p>如果您需要使用标记，唯一可靠的方法是保留它们是应用所有图形更新，每次完成导航网格剪切更新时都会设置它们。这当然相对较慢，但它至少会起作用。</p>
 <h1 id="RVO（付费）"><a href="#RVO（付费）" class="headerlink" title="RVO（付费）"></a>RVO（付费）</h1><h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><h3 id="概览"><a href="#概览" class="headerlink" title="概览"></a>概览</h3><p>到底躲的是谁  需不需要操作</p>
-<p>AStarPathfinding使用了基于RVO的局部回避系统（Low level），RVO的性能良好，根据开发者的测试，i7处理器的电脑上可以以50-100FPS模拟五千个具有RVO系统的Agent。关于本章节，以及压力测试请看：<a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/localavoidance.html" target="_blank" rel="noopener">https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/localavoidance.html</a></p>
+<p>AStarPathfinding使用了基于RVO的局部回避系统（Low level），RVO的性能良好，根据开发者的测试，i7处理器的电脑上可以以50-100FPS模拟五千个具有RVO系统的Agent。关于本章节，以及压力测试请看：<a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/localavoidance.html">https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/localavoidance.html</a></p>
 <p>RVO是路径规划中的Low level底层避障算法，用于躲避不可预估的障碍。具体看：</p>
 <p>RVO基于采样检测和gradient descent算法来找到最佳躲避方案。它非常适合于移动的类人代理。但不太适合不能快速变换速度的物体。</p>
 <p>RVO系统分为两个部分，一是完全独立不依赖Unity的核心代码，唯一使用到的Unity类是Math。核心代码控制着所有使用ROV的Agent。</p>
@@ -531,16 +531,16 @@
 <p>Often you want to have colliders on your agents, maybe to be able to hit them with bullets or something. However if you just add colliders (plus a rigidbody) to your agents you may see that the local avoidance quality goes down drastically in crowded scenarios. This is because when it is very crowded agents may overlap a tiny bit, the physics system will prevent that, but it will not do it in as nice a way as the local avoidance system, and this may lead to worse movement.</p>
 </blockquote>
 <p>如果Agent上有碰撞器，作者建议的解决办法是禁用代理之间的物理碰撞，将所有的代理放到一个单独的图层中，在Unity的物理系统设置中将该图层自身的碰撞关闭。</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding下/disable_collisions.png" target="_blank" rel="noopener"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（下）/disable_collisions.png" alt="disable_collisions.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding下/disable_collisions.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（下）/disable_collisions.png" alt="disable_collisions.png"></a></p>
 <h3 id="保持代理在图中"><a href="#保持代理在图中" class="headerlink" title="保持代理在图中"></a>保持代理在图中</h3><p>在局部躲避时，在拥挤的情况下会出现Agent将另一个Agent推出图外的情况。</p>
 <p>如果使用RichAI，则会自动处理被推出的情况。因为RichAI的移动需要它。如果使用AIPath，可以通过启用constrainInsideGraph来避免。</p>
 <p>还有一种办法是使用RVONavmesh 组件，组件会将图的边界转化为障碍物添加进RVO系统。RVONavmesh计算成本偏高，尤其是在图较大或者运行时更新图的时候，但它允许RVO系统更好地预测障碍，而不是当撞到时才找到墙壁。</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011547030156.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011547030156.png" alt="Image 0011547030156.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011547030156.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011547030156.png" alt="Image 0011547030156.png"></a></p>
 <p>如图所示，组件在图的边缘围一堵墙。但这样会增加一些性能开销（尤其是较大的图或者在运行期间更新图。）</p>
 <p>使用方法：在场景中的任意物体添加RVONavmesh组件即可，可以通过RVOSimulator组件中的Draw Obstacles显示如图橙色的线。</p>
 <h3 id="障碍"><a href="#障碍" class="headerlink" title="障碍"></a>障碍</h3><p>将障碍添加至本地躲避系统后，代理将不会通过并且会使用本地躲避系统躲开障碍。</p>
 <p>在Component-Pathfinding-Localavoidance中可以找到用于添加障碍物的组件，如图：</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011547032327.png" target="_blank" rel="noopener"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011547032327.png" alt="Image 0011547032327.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011547032327.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011547032327.png" alt="Image 0011547032327.png"></a></p>
 <p>也可以自己写碰撞器，看下章。</p>
 <p>内置的碰撞体可以移动，并且可以适当的更新。但因为可以在周围移动并不代表移动的内置碰撞体可以将代理推开。事实上移动的内置碰撞体并不擅长这样。当碰撞体移动很慢时可以实现推开，但移动很快时会导致代理卡住。</p>
 <p>内置的障碍物组件有一个属性很重要，Obstacle Mode，有两个值：Keep out会阻止代理进入障碍物，但如果处于某种原因留在了里面则会很容易出来。Keep in会将代理留在障碍物内部自由移动。</p>
@@ -552,7 +552,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">using UnityEngine;</span><br><span class="line">using System.Collections;</span><br><span class="line">using Pathfinding.RVO;</span><br><span class="line"></span><br><span class="line">public class SimpleRVOAI : MonoBehaviour &#123;</span><br><span class="line">RVOController controller;</span><br><span class="line"></span><br><span class="line">// Use this for initialization</span><br><span class="line">void Awake () &#123;</span><br><span class="line">controller = GetComponent&lt;RVOController&gt;();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// Update is called once per frame</span><br><span class="line">public void Update () &#123;</span><br><span class="line">// Just some point far away</span><br><span class="line">var targetPoint = transform.position + transform.forward * 100;</span><br><span class="line"></span><br><span class="line">// Set the desired point to move towards using a desired speed of 10 and a max speed of 12</span><br><span class="line">controller.SetTarget(targetPoint, 10, 12);</span><br><span class="line"></span><br><span class="line">// Calculate how much to move during this frame</span><br><span class="line">// This information is based on movement commands from earlier frames</span><br><span class="line">// as local avoidance is calculated globally at regular intervals by the RVOSimulator component</span><br><span class="line">var delta = controller.CalculateMovementDelta(transform.position, Time.deltaTime);</span><br><span class="line">transform.position = transform.position + delta;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>4.复制几个圆柱体并调整至相对，运行游戏可以看到圆柱体会尝试躲避其他圆柱体。</p>
 <p>可以从代码看出来，<strong>RVOController本身不处理移动</strong>。因为一旦其他脚本也在控制移动，就会引起混乱。（在4.0之前RVOController是处理移动的）</p>
-<p>RVOSimulator实际上是 <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/simulator.html" target="_blank" rel="noopener">Pathfinding.RVO.Simulator</a>的包装类。</p>
+<p>RVOSimulator实际上是 <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/simulator.html">Pathfinding.RVO.Simulator</a>的包装类。</p>
 <p>rvo面板介绍</p>
 <h2 id="添加RVO障碍"><a href="#添加RVO障碍" class="headerlink" title="添加RVO障碍"></a>添加RVO障碍</h2><p>可以通过代码获取到RVOSimulator：</p>
 <p>Pathfinding.RVO.Simulator sim = (FindObjectOfType(typeof(RVOSimulator)) as RVOSimulator).GetSimulator ();</p>
@@ -567,21 +567,21 @@
 <p><strong>划分自定义代价值区域的使用方法：</strong></p>
 <p><strong>1.</strong>在场景中创建一个空物体命名为GUO（不是必须的），添加组件<strong>Graph Update Scene。</strong></p>
 <p><strong>2.</strong>点击GUO，在场景中按住左Shift键，然后点击你想划分区域的地方，会出现一个点，再点击一下会将两个点连接起来。这样就可以创建出一块自定义的区域：</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding下/Honeycam 2019-03-11 16-39-23.gif" target="_blank" rel="noopener"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（下）/Honeycam 2019-03-11 16-39-23.gif" alt="Honeycam 2019-03-11 16-39-23.gif"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding下/Honeycam 2019-03-11 16-39-23.gif"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（下）/Honeycam 2019-03-11 16-39-23.gif" alt="Honeycam 2019-03-11 16-39-23.gif"></a></p>
 <p>节点的位置信息可以在组件的Points属性里进行修改。</p>
 <p><strong>3.</strong>根据组件中的Penalty Delta来修改区域的代价值，不同的代价会让Agent在寻路时选择最优的路线，避开代价较大的区域。也可以设置为不可走区域。</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding下/Image 0011552293900.png" target="_blank" rel="noopener"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（下）/Image 0011552293900.png" alt="Image 0011552293900.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding下/Image 0011552293900.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（下）/Image 0011552293900.png" alt="Image 0011552293900.png"></a></p>
 <p><strong>4.</strong>如图所示，代理会尝试绕过代价高的区域</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding下/Image 0011552295310.png" target="_blank" rel="noopener"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（下）/Image 0011552295310.png" alt="Image 0011552295310.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding下/Image 0011552295310.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（下）/Image 0011552295310.png" alt="Image 0011552295310.png"></a></p>
 <p><strong>Tag的使用方法：</strong></p>
 <p>Tag可以使两个Agent在同样的区域有不同的寻路结果.</p>
 <p>0.新建一个场景，场景中像之前的流程一样，保持有地板，寻路目标，Agent，并可以正常寻路。</p>
 <p>1.利用<strong>Graph Update Scene</strong>划分一片区域，并为区域添加一个Tag，命名为Grass（Tag的名称可以在A*组件的面板中修改。）</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding下/Image 0011552296107.png" target="_blank" rel="noopener"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（下）/Image 0011552296107.png" alt="Image 0011552296107.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding下/Image 0011552296107.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（下）/Image 0011552296107.png" alt="Image 0011552296107.png"></a></p>
 <p>2.添加两个agent，并附加Seeker脚本。修改Seeker的Tag属性，一个Agent将tag的Traversable取消勾选，另一个保持勾选。</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding下/Image 0011552547742.png" target="_blank" rel="noopener"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（下）/Image 0011552547742.png" alt="Image 0011552547742.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding下/Image 0011552547742.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（下）/Image 0011552547742.png" alt="Image 0011552547742.png"></a></p>
 <p>3.运行游戏，两个Agent会规划出不同的路径。</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding下/Image 0011552548056.png" target="_blank" rel="noopener"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（下）/Image 0011552548056.png" alt="Image 0011552548056.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding下/Image 0011552548056.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（下）/Image 0011552548056.png" alt="Image 0011552548056.png"></a></p>
 <p>也可以对每个Agent的每个Tag设置不同的惩罚值，可以实现开头说的场景。</p>
 <hr>
 <p>NavMesh下有问题</p>
@@ -611,7 +611,7 @@
 </tr>
 <tr>
 <td>在某些物体移动或创建销毁时更新图</td>
-<td>阅读重计算部分图或<a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/dynamicgridobstacle.html" target="_blank" rel="noopener">DynamicGridObstacle</a>类或<a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/navmeshcutting.html" target="_blank" rel="noopener">Navmesh Cutting</a>章节</td>
+<td>阅读重计算部分图或<a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/dynamicgridobstacle.html">DynamicGridObstacle</a>类或<a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/navmeshcutting.html">Navmesh Cutting</a>章节</td>
 </tr>
 <tr>
 <td>修改某单个节点的属性</td>
@@ -623,19 +623,19 @@
 </tr>
 <tr>
 <td>创建一小块图在角色周围</td>
-<td>阅读<a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/proceduralgridmover.html" target="_blank" rel="noopener">ProceduralGridMover</a>类</td>
+<td>阅读<a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/proceduralgridmover.html">ProceduralGridMover</a>类</td>
 </tr>
 <tr>
 <td>创建新节点并使用代码连接他们</td>
-<td>See <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/pointgraph.html#AddNode" target="_blank" rel="noopener">PointGraph.AddNode</a> and <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/writinggraphgenerators.html" target="_blank" rel="noopener">Writing Graph Generators</a></td>
+<td>See <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/pointgraph.html#AddNode">PointGraph.AddNode</a> and <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/writinggraphgenerators.html">Writing Graph Generators</a></td>
 </tr>
 <tr>
 <td>使图的一部分成本变高</td>
-<td>See <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdates.html#smaller-updates" target="_blank" rel="noopener">Recalculating parts of graphs</a>, <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdates.html#direct" target="_blank" rel="noopener">Using direct access to graph data</a> and <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdatescene.html" target="_blank" rel="noopener">GraphUpdateScene</a></td>
+<td>See <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdates.html#smaller-updates">Recalculating parts of graphs</a>, <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdates.html#direct">Using direct access to graph data</a> and <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdatescene.html">GraphUpdateScene</a></td>
 </tr>
 <tr>
 <td>阻止一些单位穿过某个节点，但是其他节点可以穿过</td>
-<td>See <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/tags.html" target="_blank" rel="noopener">Working with tags</a>, <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdates.html#smaller-updates" target="_blank" rel="noopener">Recalculating parts of graphs</a>, <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdatescene.html" target="_blank" rel="noopener">GraphUpdateScene</a> and <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdates.html#direct" target="_blank" rel="noopener">Using direct access to graph data</a></td>
+<td>See <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/tags.html">Working with tags</a>, <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdates.html#smaller-updates">Recalculating parts of graphs</a>, <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdatescene.html">GraphUpdateScene</a> and <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdates.html#direct">Using direct access to graph data</a></td>
 </tr>
 <tr>
 <td>移动物体的寻路（如一艘船）</td>
@@ -643,17 +643,17 @@
 </tr>
 <tr>
 <td>添加一个障碍物，但首先确定障碍物没有困住或覆盖任何其他单位（TD游戏）</td>
-<td>See <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdates.html#blocking" target="_blank" rel="noopener">Check for blocking placements</a></td>
+<td>See <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdates.html#blocking">Check for blocking placements</a></td>
 </tr>
 </tbody>
 </table>
 <h2 id="需要更新的内容"><a href="#需要更新的内容" class="headerlink" title="需要更新的内容"></a>需要更新的内容</h2><p>当需要更新图时，通常会需要做两件事情中的一件。</p>
-<p>你可能希望使用与最初生成图时相同的设置重新计算图形，但如果为了更新一部分区域而重新计算了整个图似乎很浪费（<a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/astarpath.html#Scan" target="_blank" rel="noopener">AstarPath.Scan</a>），比如，玩家可能只是TD游戏中放置了一座新塔。</p>
+<p>你可能希望使用与最初生成图时相同的设置重新计算图形，但如果为了更新一部分区域而重新计算了整个图似乎很浪费（<a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/astarpath.html#Scan">AstarPath.Scan</a>），比如，玩家可能只是TD游戏中放置了一座新塔。</p>
 <p>或者只想要更改现有图的某些设置。例如，更改某些节点上的tag或代价。</p>
 <p>可以对除了NavMesh之外的图重新计算一小部分，navmesh只有完全重新计算才有意义。使用脚本和GraphUpdateScene组件执行此操作，将名为“updatePhysics”的字段设置为true。</p>
 <p>Grid 图会正常工作，只需指定边界，它就会为你完成所有操作。但是，考虑到侵蚀等问题，它可能会重新计算一个比指定边界略大的区域。</p>
 <p>Recast  图只能全部重新计算。因此，使用较小的tile尺寸可以缩短重新计算的时间。但是如果太小，Recast图会退化为Grid图。如果使用多线程，则会将大部分重新计算放置到单独的线程中，以避免过多地影响FPS。</p>
-<p>点图将重新计算通过边界的所有连接。但是，它不会寻找以GameObject形式新添加的新节点，为此你需要使用  <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/astarpath.html#Scan" target="_blank" rel="noopener">AstarPath.Scan</a>.</p>
+<p>点图将重新计算通过边界的所有连接。但是，它不会寻找以GameObject形式新添加的新节点，为此你需要使用  <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/astarpath.html#Scan">AstarPath.Scan</a>.</p>
 <p>如想更改节点的属性，有一些东西可供你修改</p>
 <p>你可以更改node的tag以实现不同单位行走不同区域，也可以修改节点的惩罚值</p>
 <p>可以更改节点上的惩罚。这用于使某些节点比其他节点更难/更慢地遍历，以便代理在其他节点之前更喜欢某些路径。但是有一些限制。您不能指定负惩罚，因为使用的算法无法处理（如果可能，系统会慢得多）。然而，常见的技巧是设置非常大的初始惩罚（可以在图形设置中完成），然后从该高值减少惩罚。但请注意，由于必须搜索更多节点，因此这将使路径寻找更慢。所需的惩罚值非常高。没有真正的“惩罚单位”，但罚款1000大致相当于一个世界旅行单位。</p>
@@ -667,8 +667,8 @@
 <p>协程加载 但不能保证良好的FPS，但至少可以显示加载屏幕</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">IEnumerator Start () &#123;</span><br><span class="line">foreach (Progress progress in AstarPath.active.ScanAsync()) &#123;</span><br><span class="line">Debug.Log(&quot;Scanning... &quot; + progress.description + &quot; - &quot; + (progress.progress*100).ToString(&quot;0&quot;) + &quot;%&quot;);</span><br><span class="line">yield return null;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>看一下这俩</p>
-<p><a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/astarpath.html#Scan" target="_blank" rel="noopener">AstarPath.Scan</a></p>
-<p><a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/astarpath.html#ScanAsync" target="_blank" rel="noopener">AstarPath.ScanAsync</a></p>
+<p><a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/astarpath.html#Scan">AstarPath.Scan</a></p>
+<p><a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/astarpath.html#ScanAsync">AstarPath.ScanAsync</a></p>
 <h2 id="重新计算部分图"><a href="#重新计算部分图" class="headerlink" title="重新计算部分图"></a>重新计算部分图</h2><p>可以使用GraphUpdateScene组件或使用脚本,调用AstarPath类中的方法完成部分图更新，脚本通过使用Bounds对象或Pathfinding.GraphUpdateObject（就是GraphUpdateScene组件，实际上是在后台就是这么运行的）。</p>
 <blockquote>
 <p>Smaller graph updates can either be done using the GraphUpdateScene component which can be edited in the Unity inspector or using scripting which is done by calling a method in the AstarPath class with either a Bounds object or a Pathfinding.GraphUpdateObject (which is what the GraphUpdateScene component actually does in the background).</p>
@@ -678,7 +678,7 @@
 <blockquote>
 <p>The method will then put the task in a queue to be carried out before the next path calculation. It has to be put in a queue because if it carried out directly, it might interfere with pathfinding, especially if multithreading is on, and cause all kinds of errors. This means that you might not see an update of the graph directly, but it will always be updated before the next pathfinding calculation starts (almost always, see AstarPath.limitGraphUpdates ).</p>
 </blockquote>
-<p>Recast图也可以使用<a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/navmeshcutting.html" target="_blank" rel="noopener">navmesh cutting</a>伪更新，<a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/navmeshcutting.html" target="_blank" rel="noopener">navmesh cutting</a>可以使障碍物在Navmesh中切出一个洞，但无法添加更多的Navmesh平面。See <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/navmeshcut.html" target="_blank" rel="noopener">Pathfinding.NavmeshCut</a>，比重新计算整张图快的多，但是有更有限。</p>
+<p>Recast图也可以使用<a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/navmeshcutting.html">navmesh cutting</a>伪更新，<a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/navmeshcutting.html">navmesh cutting</a>可以使障碍物在Navmesh中切出一个洞，但无法添加更多的Navmesh平面。See <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/navmeshcut.html">Pathfinding.NavmeshCut</a>，比重新计算整张图快的多，但是有更有限。</p>
 <p>如果在Unity的Editor中编辑修改已知的图形，那么使用GraphUpdateScene组件是最方便简单的，使用组件你可以轻松更改特定区域的tag而无需任何代码。 但是，如果需要在游戏中动态执行，则使用代码更新图会更方便。 例如，在塔防游戏中新放置的建筑物的更新部分表操作。</p>
 <h2 id="使用脚本"><a href="#使用脚本" class="headerlink" title="使用脚本"></a>使用脚本</h2><p>需要创建GraphUpdateObject并设置所需的参数，然后调用AstarPath.UpdateGraphs方法，将更新任务添加至队列中。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">// using Pathfinding; //At top of script</span><br><span class="line"></span><br><span class="line">// As an example, use the bounding box from the attached collider</span><br><span class="line">Bounds bounds = GetComponent&lt;Collider&gt;().bounds;</span><br><span class="line">var guo = new GraphUpdateObject(bounds);</span><br><span class="line"></span><br><span class="line">// Set some settings</span><br><span class="line">guo.updatePhysics = true;</span><br><span class="line">AstarPath.active.UpdateGraphs(guo);</span><br></pre></td></tr></table></figure>
@@ -687,52 +687,52 @@
 <p>如果在使用网格图或者点图时，不需要重新计算所有节点的参数，可以将updatePhysics 设置为 false以避免不必要的计算</p>
 <p>（我的理解是如果局部计算的话，需要将这个选项关闭以避免不必要的计算）</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">guo.updatePhysics = false;</span><br></pre></td></tr></table></figure>
-<p>For details about exactly what fields to set, take a look at the class documentation for the <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdateobject.html" target="_blank" rel="noopener">GraphUpdateObject </a>.</p>
+<p>For details about exactly what fields to set, take a look at the class documentation for the <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdateobject.html">GraphUpdateObject </a>.</p>
 <h3 id="直接使用图数据"><a href="#直接使用图数据" class="headerlink" title="直接使用图数据"></a>直接使用图数据</h3><p>有时可能需要直接对图数据进行操作。</p>
-<p><a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/accessingdata.html" target="_blank" rel="noopener">Accessing graph data</a> for information about how to access graph data.</p>
-<p><a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/usingnodes.html#node-properties" target="_blank" rel="noopener">Node properties</a> and <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphnode.html" target="_blank" rel="noopener">Pathfinding.GraphNode</a> for information about what properties a node has.</p>
+<p><a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/accessingdata.html">Accessing graph data</a> for information about how to access graph data.</p>
+<p><a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/usingnodes.html#node-properties">Node properties</a> and <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphnode.html">Pathfinding.GraphNode</a> for information about what properties a node has.</p>
 <p>下面是一个更改网格图中所有节点并使用perlin噪声来决定节点是否应该可以行走的示例：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">AstarPath.active.AddWorkItem(new AstarWorkItem(ctx =&gt; &#123;</span><br><span class="line">var gg = AstarPath.active.data.gridGraph;</span><br><span class="line">for (int z = 0; z &lt; gg.depth; z++) &#123;</span><br><span class="line">for (int x = 0; x &lt; gg.width; x++) &#123;</span><br><span class="line">var node = gg.GetNode(x, z);</span><br><span class="line">// This example uses perlin noise to generate the map</span><br><span class="line">node.Walkable = Mathf.PerlinNoise(x * 0.087f, z * 0.087f) &gt; 0.4f;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// Recalculate all grid connections</span><br><span class="line">// This is required because we have updated the walkability of some nodes</span><br><span class="line">gg.GetNodes(node =&gt; gg.CalculateConnections((GridNodeBase)node));</span><br><span class="line"></span><br><span class="line">// Update the &apos;area&apos; information in the graph.</span><br><span class="line">// This is required because we have updated the connectivity of the graph</span><br><span class="line">ctx.QueueFloodFill();</span><br><span class="line">&#125;));</span><br></pre></td></tr></table></figure>
 <p>经过修改后的图：</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding下/Image 0011552639822.png" target="_blank" rel="noopener"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（下）/Image 0011552639822.png" alt="Image 0011552639822.png"></a></p>
-<p>只有在安全的情况下才能修改图表数据。路径查找可能随时在运行，因此必须先暂停路径寻找线程，然后更新数据。最简单的方法是使用<a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/astarpath.html#AddWorkItem" target="_blank" rel="noopener">AstarPath.AddWorkItem</a>：</p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding下/Image 0011552639822.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（下）/Image 0011552639822.png" alt="Image 0011552639822.png"></a></p>
+<p>只有在安全的情况下才能修改图表数据。路径查找可能随时在运行，因此必须先暂停路径寻找线程，然后更新数据。最简单的方法是使用<a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/astarpath.html#AddWorkItem">AstarPath.AddWorkItem</a>：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">AstarPath.active.AddWorkItem(() =&gt; &#123;</span><br><span class="line">// Safe to update graphs here</span><br><span class="line">var node = AstarPath.active.GetNearest(transform.position).node;</span><br><span class="line">node.position = (Int3)transform.position;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 <p>更改图数据后要及时更新图。如果更改了任何节点的Walkable或连接，则需要更新Area的信息，系统通过Area来确定哪些节点可以到达哪些其他节点，而这些节点又用于快速确定路径是否可行。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">AstarPath.active.AddWorkItem(new AstarWorkItem(ctx =&gt; &#123;</span><br><span class="line">var node = AstarPath.active.GetNearest(transform.position).node;</span><br><span class="line">node.Walkable = false;</span><br><span class="line">ctx.QueueFloodFill();</span><br><span class="line">&#125;));</span><br></pre></td></tr></table></figure>
-<p>QueueFloodFill()是根据性能进行批处理的，因此在连续更新的多个图更新时不需要多次调用QueueFloodFill()。如果需要Area的信息是最新的，则应该调用<a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/iworkitemcontext.html#EnsureValidFloodFill" target="_blank" rel="noopener">ctx.EnsureValidFloodFill</a>方法。但是通常开发中不会用到。</p>
+<p>QueueFloodFill()是根据性能进行批处理的，因此在连续更新的多个图更新时不需要多次调用QueueFloodFill()。如果需要Area的信息是最新的，则应该调用<a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/iworkitemcontext.html#EnsureValidFloodFill">ctx.EnsureValidFloodFill</a>方法。但是通常开发中不会用到。</p>
 <blockquote>
 <p>The flood fill calls are batched for performance so that multiple graph updates which are executed directly after each other do not have to run the flood fill more than once. If your work item requires that the area information is up to date you should call the ctx.EnsureValidFloodFill method first. Usually this is not something that work items require however.</p>
 </blockquote>
-<p>如果修改了walkability，需要重新计算节点之间的链接。对于Grid图来说非常重要，可以使用<a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/gridgraph.html#CalculateConnections5" target="_blank" rel="noopener">GridGraph.CalculateConnections</a>方法。注意，这需要在你更改了walkability的节点以及与其相邻的节点上调用，因为他们可能必须更改其连接以添加或删除该节点作为连接。</p>
+<p>如果修改了walkability，需要重新计算节点之间的链接。对于Grid图来说非常重要，可以使用<a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/gridgraph.html#CalculateConnections5">GridGraph.CalculateConnections</a>方法。注意，这需要在你更改了walkability的节点以及与其相邻的节点上调用，因为他们可能必须更改其连接以添加或删除该节点作为连接。</p>
 <p>AddWorkItem方法也可以以更高级的方式使用。例如，它允许您在必要时将计算分布在多个帧上：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">AstarPath.active.AddWorkItem(new AstarWorkItem(</span><br><span class="line">        () =&gt; &#123;</span><br><span class="line">    // Called once, right before the</span><br><span class="line">    // first call to the method below</span><br><span class="line">&#125;,</span><br><span class="line">        force =&gt; &#123;</span><br><span class="line">    // Called every frame until complete.</span><br><span class="line">    // Signal that the work item is</span><br><span class="line">    // complete by returning true.</span><br><span class="line">    // The &quot;force&quot; parameter will</span><br><span class="line">    // be true if the work item is</span><br><span class="line">    // required to complete immediately.</span><br><span class="line">    // In that case this method should</span><br><span class="line">    // block and return true when done.</span><br><span class="line">    return true;</span><br><span class="line">&#125;</span><br><span class="line">        ));</span><br></pre></td></tr></table></figure>
 <p>debug记得写一下</p>
 <h2 id="工作原理"><a href="#工作原理" class="headerlink" title="工作原理"></a>工作原理</h2><p>当使用GraphUpdateObject进行实时更新时， 所有可以更新的内置的图都会循环调用自身的UpdateArea 方法。</p>
-<p>图将每一个需要被更新或受影响的节点发送给<a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdateobject.html#Apply" target="_blank" rel="noopener">Pathfinding.GraphUpdateObject.Apply </a>， Apply方法会更改惩罚值，walkablity或者其他指定的参数，图也可以使用特定的更新逻辑，如GridGraph(see <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdates.html#gridgraphs" target="_blank" rel="noopener">GridGraph specific details</a>)。你不需要明白这些更新方法的不同，这些方法的具体细节的了解适合想使用源码的人。</p>
+<p>图将每一个需要被更新或受影响的节点发送给<a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdateobject.html#Apply">Pathfinding.GraphUpdateObject.Apply </a>， Apply方法会更改惩罚值，walkablity或者其他指定的参数，图也可以使用特定的更新逻辑，如GridGraph(see <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdates.html#gridgraphs">GridGraph specific details</a>)。你不需要明白这些更新方法的不同，这些方法的具体细节的了解适合想使用源码的人。</p>
 <blockquote>
-<p>When updating is carried out using a GraphUpdateObject, all graphs will be looped over and those which can be updated (all built in ones) will have their UpdateArea function called (i.e be updated).<br>Each node is updated by the graphs calling <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdateobject.html#Apply" target="_blank" rel="noopener">Pathfinding.GraphUpdateObject.Apply</a> sending each affected node to it, the Apply function will then change penalty, walkability or other parameters specified. Graphs can also use custom updating logic, such as the GridGraph (see <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdates.html#gridgraphs" target="_blank" rel="noopener">GridGraph specific details</a>). You do not have to understand all different function calls to be able to use it, those are mostly for people who want to mess around with the source code.</p>
+<p>When updating is carried out using a GraphUpdateObject, all graphs will be looped over and those which can be updated (all built in ones) will have their UpdateArea function called (i.e be updated).<br>Each node is updated by the graphs calling <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdateobject.html#Apply">Pathfinding.GraphUpdateObject.Apply</a> sending each affected node to it, the Apply function will then change penalty, walkability or other parameters specified. Graphs can also use custom updating logic, such as the GridGraph (see <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdates.html#gridgraphs">GridGraph specific details</a>). You do not have to understand all different function calls to be able to use it, those are mostly for people who want to mess around with the source code.</p>
 </blockquote>
-<h3 id="Gird图的特殊细节"><a href="#Gird图的特殊细节" class="headerlink" title="Gird图的特殊细节"></a>Gird图的特殊细节</h3><p><a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdateobject.html#updatePhysics" target="_blank" rel="noopener">updatePhysics</a>是更新Gird图时非常重要的属性，如果设置为true，所有被影响的节点都会重新计算他们的高度，然后检查自身是否可走。当更新Grid图时，最好保持为true。</p>
-<p>当更新Grid图时，GraphUpdateObject的Apply方法会被更新范围内的所有节点调用，节点会检查<a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdateobject.html#updatePhysics" target="_blank" rel="noopener">updatePhysics</a>变量，如果<a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdateobject.html#updatePhysics" target="_blank" rel="noopener">updatePhysics</a>设置为true（默认值是true），则更新区域会根据Collision Testing设置的直径扩张，并且在其中的每个节点都会做碰撞检测，如果是false，则只有更新区域内的节点会调用Apply方法，并不会做其他事情。</p>
+<h3 id="Gird图的特殊细节"><a href="#Gird图的特殊细节" class="headerlink" title="Gird图的特殊细节"></a>Gird图的特殊细节</h3><p><a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdateobject.html#updatePhysics">updatePhysics</a>是更新Gird图时非常重要的属性，如果设置为true，所有被影响的节点都会重新计算他们的高度，然后检查自身是否可走。当更新Grid图时，最好保持为true。</p>
+<p>当更新Grid图时，GraphUpdateObject的Apply方法会被更新范围内的所有节点调用，节点会检查<a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdateobject.html#updatePhysics">updatePhysics</a>变量，如果<a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdateobject.html#updatePhysics">updatePhysics</a>设置为true（默认值是true），则更新区域会根据Collision Testing设置的直径扩张，并且在其中的每个节点都会做碰撞检测，如果是false，则只有更新区域内的节点会调用Apply方法，并不会做其他事情。</p>
 <blockquote>
 <p>The updatePhysics variable matters a lot when updating grid graphs. If it is set to true, all nodes affected will have their height recalculated and then checked if they are still walkable. You usually want to leave this to true when updating a grid graph.</p>
 <p>When updating a GridGraph, the GraphUpdateObject’s Apply function (which changed walkability, tags and penalties) will be called for each node inside the bounds, it will check the updatePhysics variable, if it is true (which is the default value), the area will be expanded by the diameter of the specified in the Collision Testing settings and every node inside the area will be checked for collisions. If it is false, however, only the Apply function will be called for the nodes inside the area (not expanded) and nothing else will be done.</p>
 </blockquote>
 <h3 id="基于Navmesh的图"><a href="#基于Navmesh的图" class="headerlink" title="基于Navmesh的图"></a>基于Navmesh的图</h3><p>基于navmesh的图（Navmesh和RecastGraph）只支持更新已存在的节点的惩罚，walkablity等以更新整个图，GraphUpdateObjects 不能添加新的节点（更新整个图除外），GraphUpdateObject 会更新所有交叉接触的节点/多边形，或者在GUO范围内的所有节点。对于recast也可以通过Nacmesh cut快速更新图。</p>
 <blockquote>
-<p>Navmesh based graphs (NavMeshGraph and RecastGraph) only have support for updating penalty, walkability and similar on already existing nodes or for recast graphs, to completely recalculate whole tiles. New nodes cannot be created using GraphUpdateObjects (unless recalculating whole tiles). The GraphUpdateObject will affect all nodes/triangles which intersect or are contained by the GUO’s bounds.<br>For recast graphs you can also use <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/navmeshcut.html" target="_blank" rel="noopener">navmesh cutting </a>to update the graph in a fast way.</p>
+<p>Navmesh based graphs (NavMeshGraph and RecastGraph) only have support for updating penalty, walkability and similar on already existing nodes or for recast graphs, to completely recalculate whole tiles. New nodes cannot be created using GraphUpdateObjects (unless recalculating whole tiles). The GraphUpdateObject will affect all nodes/triangles which intersect or are contained by the GUO’s bounds.<br>For recast graphs you can also use <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/navmeshcut.html">navmesh cutting </a>to update the graph in a fast way.</p>
 </blockquote>
 <h3 id="点图（PointGraphs）"><a href="#点图（PointGraphs）" class="headerlink" title="点图（PointGraphs）"></a>点图（PointGraphs）</h3><p>点图的更新会调用边界内的所有节点的Apply方法，GraphUpdateObject.updatePhysics如果设置为true，它还会重新计算经过更新区域的所有链接点。</p>
-<h2 id="Graph-Update-Object"><a href="#Graph-Update-Object" class="headerlink" title="Graph Update Object"></a>Graph Update Object</h2><p>The GraphUpdateObject contains some basic variables on how to update each node. See documentation for the <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdateobject.html" target="_blank" rel="noopener">Pathfinding.GraphUpdateObject</a> for more info.</p>
+<h2 id="Graph-Update-Object"><a href="#Graph-Update-Object" class="headerlink" title="Graph Update Object"></a>Graph Update Object</h2><p>The GraphUpdateObject contains some basic variables on how to update each node. See documentation for the <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdateobject.html">Pathfinding.GraphUpdateObject</a> for more info.</p>
 <h4 id="从GraphUpdateObject继承"><a href="#从GraphUpdateObject继承" class="headerlink" title="从GraphUpdateObject继承"></a>从GraphUpdateObject继承</h4><p>GraphUpdateObject可以被继承，覆写某些方法。下面是一个例子，执行父类Apply方法的同时移动节点：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">using UnityEngine;</span><br><span class="line">using Pathfinding;</span><br><span class="line"></span><br><span class="line">public class MyGUO : GraphUpdateObject &#123;</span><br><span class="line">public Vector3 offset = Vector3.up;</span><br><span class="line">public override void Apply (GraphNode node) &#123;</span><br><span class="line">// Keep the base functionality</span><br><span class="line">base.Apply(node);</span><br><span class="line">// The position of a node is an Int3, so we need to cast the offset</span><br><span class="line">node.position += (Int3)offset;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>也可以这样：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public void Start () &#123;</span><br><span class="line">    MyGUO guo = new MyGUO();</span><br><span class="line"></span><br><span class="line">    guo.offset = Vector3.up*2;</span><br><span class="line">    guo.bounds = new Bounds(Vector3.zero, Vector3.one*10);</span><br><span class="line">    AstarPath.active.UpdateGraphs(guo);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h2 id="检查是否阻塞（塔防）"><a href="#检查是否阻塞（塔防）" class="headerlink" title="检查是否阻塞（塔防）"></a>检查是否阻塞（塔防）</h2><p>在塔防游戏中很重要的一点是，玩家放置的塔没有使出兵点和目标点直接堵塞，插件为此提供了对应的API。</p>
-<p><a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdateutilities.html#UpdateGraphsNoBlock" target="_blank" rel="noopener">Pathfinding.GraphUpdateUtilities.UpdateGraphsNoBlock</a>方法会检查给定的graph update object是否会引起两个或更多的点引起堵塞，然而该方法会比常规更新图速度要慢，所以你可能不会经常使用它。</p>
+<p><a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdateutilities.html#UpdateGraphsNoBlock">Pathfinding.GraphUpdateUtilities.UpdateGraphsNoBlock</a>方法会检查给定的graph update object是否会引起两个或更多的点引起堵塞，然而该方法会比常规更新图速度要慢，所以你可能不会经常使用它。</p>
 <p>举个例子，当玩家再塔防游戏中放置一个防御塔的时候，你可以初始化防御塔，然后调用UpdateGraphsNoBlock方法检查新添加的防御塔是否会阻挡路径，如果是则立即移除防御塔并提示玩家选择的位置不符合规则。你也可以传递节点列表给UpdateGraphsNoBlock方法，这样不仅可以确定初始点和目标点之间没有堵塞，并且在单位行走时可以放置防御塔的情况下，所有单位都能到达目标。</p>
 <blockquote>
-<p>The <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdateutilities.html#UpdateGraphsNoBlock" target="_blank" rel="noopener">Pathfinding.GraphUpdateUtilities.UpdateGraphsNoBlock</a> method can be used to first check if a given graph update object will cause the path between two or more points to become blocked. This is however slower than a normal graph update so you probably don’t want to use it too often.</p>
+<p>The <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdateutilities.html#UpdateGraphsNoBlock">Pathfinding.GraphUpdateUtilities.UpdateGraphsNoBlock</a> method can be used to first check if a given graph update object will cause the path between two or more points to become blocked. This is however slower than a normal graph update so you probably don’t want to use it too often.</p>
 <p>For example when a player in a tower defence game places a tower, you could instantiate it, then call the UpdateGraphsNoBlock method to check if the newly placed tower will block the path. If it did then remove the tower immediately and notify the player that the choosen position was not valid. You can pass a list of nodes to the UpdateGraphsNoBlock method so you could for example make sure that not only is the path from the start to the goal not blocked, but also that all units can still reach the goal (if it is possible to place towers when enemies are walking around).</p>
 </blockquote>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">var guo = new GraphUpdateObject(tower.GetComponent&lt;Collider&gt;().bounds);</span><br><span class="line">var spawnPointNode = AstarPath.active.GetNearest(spawnPoint.position).node;</span><br><span class="line">var goalNode = AstarPath.active.GetNearest(goalPoint.position).node;</span><br><span class="line"></span><br><span class="line">if (GraphUpdateUtilities.UpdateGraphsNoBlock(guo, spawnPointNode, goalNode, false)) &#123;</span><br><span class="line">    // Valid tower position</span><br><span class="line">    // Since the last parameter (which is called &quot;alwaysRevert&quot;) in the method call was false</span><br><span class="line">    // The graph is now updated and the game can just continue</span><br><span class="line">&#125; else &#123;</span><br><span class="line">    // Invalid tower position. It blocks the path between the spawn point and the goal</span><br><span class="line">    // The effect on the graph has been reverted</span><br><span class="line">    Destroy(tower);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -962,6 +962,8 @@
                     
                       
                     
+                      
+                    
                     <span class="site-state-item-count">11</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
@@ -1089,6 +1091,15 @@
 
 
 
+
+
+
+  <script src="https://unpkg.com/mermaid@7.1.2/dist/mermaid.min.js"></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize("");
+    }
+  </script>
 
         
 
@@ -1531,6 +1542,26 @@
   
 
   
+<script>
+if ($('body').find('pre.mermaid').length) {
+  $.ajax({
+    type: 'GET',
+    url: '',
+    dataType: 'script',
+    cache: true,
+    success: function() {
+      mermaid.initialize({
+        theme: '',
+        logLevel: 3,
+        flowchart: { curve: 'linear' },
+        gantt: { axisFormat: '%m/%d/%Y' },
+        sequence: { actorMargin: 50 }
+      });
+    }
+  });
+}
+</script>
+
 
   
 

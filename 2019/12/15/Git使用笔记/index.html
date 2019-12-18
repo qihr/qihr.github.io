@@ -96,18 +96,18 @@
 
 
 
-  <meta name="description" content="hexo和git的基本操作。">
-<meta name="keywords" content="Git">
+  <meta name="description" content="hexo的基本操作。">
+<meta name="keywords" content="Hexo">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Git使用手册">
+<meta property="og:title" content="Hexo使用手册">
 <meta property="og:url" content="http://yoursite.com/2019/12/15/Git使用笔记/index.html">
 <meta property="og:site_name" content="Note">
-<meta property="og:description" content="hexo和git的基本操作。">
+<meta property="og:description" content="hexo的基本操作。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-12-17T00:45:54.654Z">
+<meta property="og:updated_time" content="2019-12-18T16:15:21.457Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Git使用手册">
-<meta name="twitter:description" content="hexo和git的基本操作。">
+<meta name="twitter:title" content="Hexo使用手册">
+<meta name="twitter:description" content="hexo的基本操作。">
 
 
 
@@ -125,7 +125,7 @@
   };
 </script>
 
-  <title>Git使用手册 | Note</title>
+  <title>Hexo使用手册 | Note</title>
   
 
 
@@ -357,7 +357,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Git使用手册
+          <h1 class="post-title" itemprop="name headline">Hexo使用手册
 
               
             
@@ -400,7 +400,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-12-17 08:45:54" itemprop="dateModified" datetime="2019-12-17T08:45:54+08:00">2019-12-17</time>
+                <time title="修改时间：2019-12-19 00:15:21" itemprop="dateModified" datetime="2019-12-19T00:15:21+08:00">2019-12-19</time>
               
             
           </span>
@@ -446,7 +446,7 @@
                 
                   <span class="post-meta-item-text">本文字数：</span>
                 
-                <span title="本文字数">2.8k</span>
+                <span title="本文字数">3.5k</span>
               
 
               
@@ -480,15 +480,15 @@
       
 
       
-        <p>hexo和git的基本操作。</p>
+        <p>hexo的基本操作。</p>
 <a id="more"></a>
-<h3 id="1-连接GitHub"><a href="#1-连接GitHub" class="headerlink" title="1.连接GitHub"></a>1.连接GitHub</h3><p> 配置信息 </p>
+<h3 id="1-连接GitHub"><a href="#1-连接GitHub" class="headerlink" title="1.连接GitHub"></a>1.连接GitHub</h3><p>配置信息 </p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global user.name <span class="string">"你的GitHub用户名"</span></span><br><span class="line">git config --global user.email <span class="string">"你的GitHub注册邮箱"</span></span><br></pre></td></tr></table></figure>
 <p> 生成密钥文件</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ssh-keygen -t rsa -C <span class="string">"你的GitHub注册邮箱"</span></span><br></pre></td></tr></table></figure>
 <p>后面提示连按三个回车即可。</p>
 <p>找到C:\Users\Sayi1.ssh文件夹中的id_rsa.pub，复制全部内容。</p>
-<p>打开<a href="https://github.com/settings/keys" target="_blank" rel="noopener">GitHub-Settings-SSH And GPGkeys</a> ，选择New SSH Key，粘贴.pub的内容。</p>
+<p>打开<a href="https://github.com/settings/keys">GitHub-Settings-SSH And GPGkeys</a> ，选择New SSH Key，粘贴.pub的内容。</p>
 <p>检测GitHub公钥设置是否成功，输入：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh git@github.com</span><br></pre></td></tr></table></figure>
 <p>出现 Hi ! “你的github名字”即设置成功。</p>
@@ -526,7 +526,14 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone git@github.com:......</span><br></pre></td></tr></table></figure>
 <p>因为刚刚设置了默认分支为hexo，所以会直接download网站文件。</p>
 <p>2.然后执行章节2的hexo部分操作。</p>
-<h3 id="7-Bash生成hexo文章"><a href="#7-Bash生成hexo文章" class="headerlink" title="7.Bash生成hexo文章"></a>7.Bash生成hexo文章</h3><p>md手动去打标签和日期很不方便。</p>
+<h3 id="7-支持mermaid"><a href="#7-支持mermaid" class="headerlink" title="7.支持mermaid"></a>7.支持mermaid</h3><p>官方教程很简单，不做介绍： <a href="https://github.com/webappdevelp/hexo-filter-mermaid-diagrams">官方教程</a></p>
+<p>安装完成后无法显示的几个解决办法：</p>
+<p>1.将站点的<code>_config.yml</code>文件的external_link字段设置为false。作者说这是一个hexo的bug。</p>
+<p>2.如果是next主题，检查主题（themes/next）的<code>_config.yml</code>是否有mermaid属性：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># <span class="selector-tag">Mermaid</span> <span class="selector-tag">tag</span></span><br><span class="line"><span class="selector-tag">mermaid</span>:</span><br><span class="line">  <span class="selector-tag">enable</span>: <span class="selector-tag">false</span></span><br><span class="line">  # Available themes: default | dark | forest | neutral</span><br><span class="line">  <span class="selector-tag">theme</span>: <span class="selector-tag">forest</span></span><br><span class="line">  cdn: //cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js</span><br><span class="line">  #cdn: //cdnjs.cloudflare.com/ajax/libs/mermaid/8.0.0/mermaid.min.js</span><br></pre></td></tr></table></figure>
+<p>改为：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># <span class="selector-tag">Mermaid</span> <span class="selector-tag">tag</span></span><br><span class="line">mermaid: ## mermaid url https://github.com/knsv/mermaid</span><br><span class="line">  <span class="selector-tag">enable</span>: <span class="selector-tag">true</span>  # <span class="selector-tag">default</span> <span class="selector-tag">true</span></span><br><span class="line">  <span class="selector-tag">version</span>: "7<span class="selector-class">.1</span><span class="selector-class">.2</span>" # <span class="selector-tag">default</span> <span class="selector-tag">v7</span><span class="selector-class">.1</span><span class="selector-class">.2</span></span><br><span class="line">  options:  # find more api options from https://github.com/knsv/mermaid/blob/master/src/mermaidAPI.js</span><br><span class="line">    #startOnload: true  // default true</span><br></pre></td></tr></table></figure>
+<p>这点非常坑，很多教程都没有讲到。</p>
 <h3 id="9-其他问题"><a href="#9-其他问题" class="headerlink" title="9.其他问题"></a>9.其他问题</h3><h4 id="关于git-commit-m-卡在vim编辑器无法退出"><a href="#关于git-commit-m-卡在vim编辑器无法退出" class="headerlink" title="关于git commit -m 卡在vim编辑器无法退出"></a>关于git commit -m 卡在vim编辑器无法退出</h4><p>vim对新人真的太不又好了，退出都不会。</p>
 <blockquote>
 <p>按下小写字母i，会进入编辑模式。可以在此模式下输入你想要的commit message。输入结束以后，按下esc退出编辑模式，这时按下英文输入法下的冒号，再输入wq，就可以保存退出了。w是write，q是quit。也可以在按esc退出编辑模式以后，切换到大写模式，连按两下Z。</p>
@@ -534,11 +541,11 @@
 <blockquote>
 <p>[core]<br>        editor = ‘D:/Program Files/Notepad/notepad++.exe’ -multiImst -nosession</p>
 </blockquote>
-<p>作者：Elpie Kay<br>链接：<a href="https://www.zhihu.com/question/61913534/answer/192748096" target="_blank" rel="noopener">https://www.zhihu.com/question/61913534/answer/192748096</a><br>来源：知乎<br>著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</p>
+<p>作者：Elpie Kay<br>链接：<a href="https://www.zhihu.com/question/61913534/answer/192748096">https://www.zhihu.com/question/61913534/answer/192748096</a><br>来源：知乎<br>著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</p>
 </blockquote>
 <h4 id="站点文章并没有按时间排序"><a href="#站点文章并没有按时间排序" class="headerlink" title="站点文章并没有按时间排序"></a>站点文章并没有按时间排序</h4><p>记得写date,不然会按文章标题排序。</p>
 <figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">title: Mac OS X 10.10.3下android-5.1.1_r9 源码下载与编译</span><br><span class="line">date: 2015-08-18 10:36:21</span><br><span class="line">categories: Android</span><br><span class="line">tags: [Tech,Android]</span><br></pre></td></tr></table></figure>
-<h3 id="0-附录"><a href="#0-附录" class="headerlink" title="0.附录"></a>0.附录</h3><p>[^1]: <a href="https://zhuanlan.zhihu.com/p/26625249" target="_blank" rel="noopener">GitHub+Hexo 搭建个人网站详细教程</a><br>[^2]: <a href="https://www.zhihu.com/question/21193762/answer/79109280" target="_blank" rel="noopener">使用hexo，如果换了电脑怎么更新博客</a></p>
+<h3 id="0-附录"><a href="#0-附录" class="headerlink" title="0.附录"></a>0.附录</h3><p>[^1]: <a href="https://zhuanlan.zhihu.com/p/26625249">GitHub+Hexo 搭建个人网站详细教程</a><br>[^2]: <a href="https://www.zhihu.com/question/21193762/answer/79109280">使用hexo，如果换了电脑怎么更新博客</a></p>
 
       
     </div>
@@ -562,7 +569,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Git/" rel="tag"># Git</a>
+            <a href="/tags/Hexo/" rel="tag"># Hexo</a>
           
         </div>
       
@@ -712,6 +719,8 @@
                     
                       
                     
+                      
+                    
                     <span class="site-state-item-count">11</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
@@ -776,7 +785,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-连接GitHub"><span class="nav-text">1.连接GitHub</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-配置环境"><span class="nav-text">2.配置环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-网站推送"><span class="nav-text">3.网站推送</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-主题下载"><span class="nav-text">4.主题下载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-保存文章和配置文件到分支"><span class="nav-text">5.保存文章和配置文件到分支</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-更换环境后的重新部署"><span class="nav-text">6.更换环境后的重新部署</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-Bash生成hexo文章"><span class="nav-text">7.Bash生成hexo文章</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-其他问题"><span class="nav-text">9.其他问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#关于git-commit-m-卡在vim编辑器无法退出"><span class="nav-text">关于git commit -m 卡在vim编辑器无法退出</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#站点文章并没有按时间排序"><span class="nav-text">站点文章并没有按时间排序</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#0-附录"><span class="nav-text">0.附录</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-连接GitHub"><span class="nav-text">1.连接GitHub</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-配置环境"><span class="nav-text">2.配置环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-网站推送"><span class="nav-text">3.网站推送</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-主题下载"><span class="nav-text">4.主题下载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-保存文章和配置文件到分支"><span class="nav-text">5.保存文章和配置文件到分支</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-更换环境后的重新部署"><span class="nav-text">6.更换环境后的重新部署</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-支持mermaid"><span class="nav-text">7.支持mermaid</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-其他问题"><span class="nav-text">9.其他问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#关于git-commit-m-卡在vim编辑器无法退出"><span class="nav-text">关于git commit -m 卡在vim编辑器无法退出</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#站点文章并没有按时间排序"><span class="nav-text">站点文章并没有按时间排序</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#0-附录"><span class="nav-text">0.附录</span></a></li></ol></div>
             
 
           </div>
@@ -839,6 +848,15 @@
 
 
 
+
+
+
+  <script src="https://unpkg.com/mermaid@7.1.2/dist/mermaid.min.js"></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize("");
+    }
+  </script>
 
         
 
@@ -1281,6 +1299,26 @@
   
 
   
+<script>
+if ($('body').find('pre.mermaid').length) {
+  $.ajax({
+    type: 'GET',
+    url: '',
+    dataType: 'script',
+    cache: true,
+    success: function() {
+      mermaid.initialize({
+        theme: '',
+        logLevel: 3,
+        flowchart: { curve: 'linear' },
+        gantt: { axisFormat: '%m/%d/%Y' },
+        sequence: { actorMargin: 50 }
+      });
+    }
+  });
+}
+</script>
+
 
   
 
