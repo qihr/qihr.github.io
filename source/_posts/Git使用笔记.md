@@ -1,19 +1,19 @@
 ---
-title: Git使用手册
+title: Hexo使用手册
 date: 2019-12-15 20:40:21
-tags: [Git]
+tags: [Hexo]
 categories: Program
 ---
 
 
 
-hexo和git的基本操作。
+hexo的基本操作。
 
 <!-- more -->
 
 ### 1.连接GitHub
 
- 配置信息 
+配置信息 
 
 ```bash
 git config --global user.name "你的GitHub用户名"
@@ -176,9 +176,38 @@ git clone git@github.com:......
 
 
 
-###  7.Bash生成hexo文章
+### 7.支持mermaid
 
-md手动去打标签和日期很不方便。
+官方教程很简单，不做介绍： [官方教程](https://github.com/webappdevelp/hexo-filter-mermaid-diagrams)
+
+安装完成后无法显示的几个解决办法：
+
+1.将站点的`_config.yml`文件的external_link字段设置为false。作者说这是一个hexo的bug。
+
+2.如果是next主题，检查主题（themes/next）的`_config.yml`是否有mermaid属性：
+
+```css
+# Mermaid tag
+mermaid:
+  enable: false
+  # Available themes: default | dark | forest | neutral
+  theme: forest
+  cdn: //cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js
+  #cdn: //cdnjs.cloudflare.com/ajax/libs/mermaid/8.0.0/mermaid.min.js
+```
+
+改为：
+
+```css
+# Mermaid tag
+mermaid: ## mermaid url https://github.com/knsv/mermaid
+  enable: true  # default true
+  version: "7.1.2" # default v7.1.2
+  options:  # find more api options from https://github.com/knsv/mermaid/blob/master/src/mermaidAPI.js
+    #startOnload: true  // default true
+```
+
+这点非常坑，很多教程都没有讲到。
 
 
 

@@ -935,12 +935,12 @@ pdf:
     #cdn: //cdnjs.cloudflare.com/ajax/libs/pdfobject/2.1.1/pdfobject.min.js
 
 # Mermaid tag
-mermaid:
-  enable: false
-  # Available themes: default | dark | forest | neutral
-  theme: forest
-  cdn: //cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js
-  #cdn: //cdnjs.cloudflare.com/ajax/libs/mermaid/8.0.0/mermaid.min.js
+# Mermaid tag
+mermaid: ## mermaid url https://github.com/knsv/mermaid
+  enable: true  # default true
+  version: "7.1.2" # default v7.1.2
+  options:  # find more api options from https://github.com/knsv/mermaid/blob/master/src/mermaidAPI.js
+    #startOnload: true  // default true
 
 
 # ---------------------------------------------------------------
