@@ -1,194 +1,1103 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Hexo使用手册</title>
-    <url>/2019/12/15/Git%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<p>hexo的基本操作。</p>
+    <title>CSharp笔记1.基础</title>
+    <url>/2019/12/17/CSharp%E7%AC%94%E8%AE%B0/CSharp%E7%AC%94%E8%AE%B01%20%E5%9F%BA%E7%A1%80/</url>
+    <content><![CDATA[<p>基础内容，包括：.Net框架概述，语言规则，变量类型和存储，方法，类，表达式运算符和语句。</p>
 <a id="more"></a>
-<h3 id="1-连接GitHub"><a href="#1-连接GitHub" class="headerlink" title="1.连接GitHub"></a>1.连接GitHub</h3><p>配置信息 </p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git config --global user.name <span class="string">"你的GitHub用户名"</span></span><br><span class="line">git config --global user.email <span class="string">"你的GitHub注册邮箱"</span></span><br></pre></td></tr></table></figure>
-<p> 生成密钥文件</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ ssh-keygen -t rsa -C <span class="string">"你的GitHub注册邮箱"</span></span><br></pre></td></tr></table></figure>
-<p>后面提示连按三个回车即可。</p>
-<p>找到C:\Users\Sayi1.ssh文件夹中的id_rsa.pub，复制全部内容。</p>
-<p>打开<a href="https://github.com/settings/keys">GitHub-Settings-SSH And GPGkeys</a> ，选择New SSH Key，粘贴.pub的内容。</p>
-<p>检测GitHub公钥设置是否成功，输入：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ssh git@github.com</span><br></pre></td></tr></table></figure>
-<p>出现 Hi ! “你的github名字”即设置成功。</p>
-<p>之所以设置GitHub密钥原因是，通过非对称加密的公钥与私钥来完成加密，公钥放置在GitHub上，私钥放置在自己的电脑里。GitHub要求每次推送代码都是合法用户，所以每次推送都需要输入账号密码验证推送用户是否是合法用户，为了省去每次输入密码的步骤，采用了ssh，当你推送的时候，git就会匹配你的私钥跟GitHub上面的公钥是否是配对的，若是匹配就认为你是合法用户，则允许推送。这样可以保证每次的推送都是正确合法的。</p>
-<h3 id="2-配置环境"><a href="#2-配置环境" class="headerlink" title="2.配置环境"></a>2.配置环境</h3><p>1.检测Node.is和Npm是否安装成功：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">node -v</span><br><span class="line">npm -v</span><br></pre></td></tr></table></figure>
-<p>如果Bash上显示了Node和npm的版本号即安装成功</p>
-<p>2.安装Hexo</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">npm install -g hexo-cli</span><br></pre></td></tr></table></figure>
-<p>完成上步后，输入：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">hexo init blog</span><br></pre></td></tr></table></figure>
-<p>检测网站是否可以运行：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">hexo new test_my_site</span><br><span class="line"></span><br><span class="line">hexo g</span><br><span class="line"></span><br><span class="line">hexo s</span><br></pre></td></tr></table></figure>
-<p>完成后，在浏览器中输入：localhost:4000可以看到已经有一个简陋的网站了。</p>
-<p>在bash中输入hexo可以看有哪些常用指令：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">npm install hexo -g #安装Hexo</span><br><span class="line">npm update hexo -g #升级</span><br><span class="line">hexo init #初始化博客</span><br><span class="line"></span><br><span class="line">hexo n "我的博客" == hexo new "我的博客" #新建文章</span><br><span class="line">hexo g == hexo generate #生成</span><br><span class="line">hexo s == hexo server #启动服务预览</span><br><span class="line">hexo d == hexo deploy #部署</span><br><span class="line"></span><br><span class="line">hexo server #Hexo会监视文件变动并自动更新，无须重启服务器</span><br><span class="line">hexo server -s #静态模式</span><br><span class="line">hexo server -p 5000 #更改端口</span><br><span class="line">hexo server -i 192.168.1.1 #自定义 IP</span><br><span class="line">hexo clean #清除缓存，若是网页正常情况下可以忽略这条命令</span><br></pre></td></tr></table></figure>
-<h3 id="3-网站推送"><a href="#3-网站推送" class="headerlink" title="3.网站推送"></a>3.网站推送</h3><p>找到网站目录，打开<code>_config.yml</code>。<code>_config.yml</code>是网站的配置文件。themes目录下也有一个同名文件，那个是主题配置文件。</p>
-<p>打开文件，找到最后的deploy，修改为：</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">deploy:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">git</span></span><br><span class="line">  <span class="attr">repository:</span> <span class="string">git@github.com:qihr/qihr.github.io.git</span></span><br><span class="line">  <span class="attr">branch:</span> <span class="string">master</span></span><br></pre></td></tr></table></figure>
-<p>修改这是为了给hexo d配置对应参数，生成的静态页面会推送至master分支。</p>
-<p>安装Git部署插件：</p>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">npm install hexo<span class="literal">-deployer</span><span class="literal">-git</span> -<span class="literal">-save</span></span><br></pre></td></tr></table></figure>
-<p>然后推送至master：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">hexo clean </span><br><span class="line">hexo g </span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure>
-<h3 id="4-主题下载"><a href="#4-主题下载" class="headerlink" title="4.主题下载"></a>4.主题下载</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git clone https://github.com/iissnan/hexo-theme-next themes/next</span><br></pre></td></tr></table></figure>
-<p>打开站点目录下的<code>_config.yml</code>文件，修改主题为下载的：</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Extensions</span></span><br><span class="line"><span class="comment">## Plugins: https://hexo.io/plugins/</span></span><br><span class="line"><span class="comment">## Themes: https://hexo.io/themes/</span></span><br><span class="line"><span class="attr">theme:</span> <span class="string">next</span>  </span><br><span class="line"><span class="comment">#theme: landscape</span></span><br></pre></td></tr></table></figure>
-<h3 id="5-保存文章和配置文件到分支"><a href="#5-保存文章和配置文件到分支" class="headerlink" title="5.保存文章和配置文件到分支"></a>5.保存文章和配置文件到分支</h3><p>master分支保存的只是渲染出的静态网页，新建一个分支用于保存文章和网站配置文件比较靠谱。</p>
-<p>新建一个分支，名如hexo，然后设置为默认分支。</p>
-<p>执行：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git add .</span><br><span class="line">git commit -m "..."</span><br><span class="line">git push origin hexo</span><br></pre></td></tr></table></figure>
-<p>这样网站文件会推送至hexo分支，而静态网页（hexo d）生成的文件会在master分支中。</p>
-<h3 id="6-更换环境后的重新部署"><a href="#6-更换环境后的重新部署" class="headerlink" title="6.更换环境后的重新部署"></a>6.更换环境后的重新部署</h3><p>0.执行章节2的git部分操作。</p>
-<p>1.将hexo分支的网站文件clone至本地：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git clone git@github.com:......</span><br></pre></td></tr></table></figure>
-<p>因为刚刚设置了默认分支为hexo，所以会直接download网站文件。</p>
-<p>2.然后执行章节2的hexo部分操作。</p>
-<h3 id="7-支持mermaid"><a href="#7-支持mermaid" class="headerlink" title="7.支持mermaid"></a>7.支持mermaid</h3><p>官方教程很简单，不做介绍： <a href="https://github.com/webappdevelp/hexo-filter-mermaid-diagrams">官方教程</a></p>
-<p>安装完成后无法显示的几个解决办法：</p>
-<p>1.将站点的<code>_config.yml</code>文件的external_link字段设置为false。作者说这是一个hexo的bug。</p>
-<p>2.如果是next主题，检查主题（themes/next）的<code>_config.yml</code>是否有mermaid属性：</p>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line"># <span class="selector-tag">Mermaid</span> <span class="selector-tag">tag</span></span><br><span class="line"><span class="selector-tag">mermaid</span>:</span><br><span class="line">  <span class="selector-tag">enable</span>: <span class="selector-tag">false</span></span><br><span class="line">  # Available themes: default | dark | forest | neutral</span><br><span class="line">  <span class="selector-tag">theme</span>: <span class="selector-tag">forest</span></span><br><span class="line">  cdn: //cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js</span><br><span class="line">  #cdn: //cdnjs.cloudflare.com/ajax/libs/mermaid/8.0.0/mermaid.min.js</span><br></pre></td></tr></table></figure>
-<p>改为：</p>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line"># <span class="selector-tag">Mermaid</span> <span class="selector-tag">tag</span></span><br><span class="line">mermaid: ## mermaid url https://github.com/knsv/mermaid</span><br><span class="line">  <span class="selector-tag">enable</span>: <span class="selector-tag">true</span>  # <span class="selector-tag">default</span> <span class="selector-tag">true</span></span><br><span class="line">  <span class="selector-tag">version</span>: "7<span class="selector-class">.1</span><span class="selector-class">.2</span>" # <span class="selector-tag">default</span> <span class="selector-tag">v7</span><span class="selector-class">.1</span><span class="selector-class">.2</span></span><br><span class="line">  options:  # find more api options from https://github.com/knsv/mermaid/blob/master/src/mermaidAPI.js</span><br><span class="line">    #startOnload: true  // default true</span><br></pre></td></tr></table></figure>
-<p>这点非常坑，很多教程都没有讲到。</p>
-<h3 id="9-其他问题"><a href="#9-其他问题" class="headerlink" title="9.其他问题"></a>9.其他问题</h3><h4 id="关于git-commit-m-卡在vim编辑器无法退出"><a href="#关于git-commit-m-卡在vim编辑器无法退出" class="headerlink" title="关于git commit -m 卡在vim编辑器无法退出"></a>关于git commit -m 卡在vim编辑器无法退出</h4><p>vim对新人真的太不又好了，退出都不会。</p>
+<h2 id="一-Net框架"><a href="#一-Net框架" class="headerlink" title="一 .Net框架"></a>一 .Net框架</h2><h3 id="1-1-net框架构成"><a href="#1-1-net框架构成" class="headerlink" title="1.1 .net框架构成"></a>1.1 .net框架构成</h3><pre class="mermaid">graph LR;
+    id1[编程工具]--产生-->id2(编译的代码);
+    id2--使用-->id3[BCL基类库]
+    id2--被执行-->id4[CLR公共语言运行库]
+    id3--被执行-->id4</pre>
+
+<p><strong>BCL(Base Class Library )</strong> :</p>
+<p>基础类库(或者称为框架类库 Framework Class Library ， FCL)，自己写程序时也会调到BCL</p>
+<p><strong>CLR(Common Language Runtime)</strong>： </p>
+<p>公共语言运行库。.net框架的核心组件，在操作系统的顶层，负责<strong>管理</strong>程序的执行。可以从下图看到，可以看到，非托管代码CLR不提供服务。</p>
+<p>CRL还提供这几种服务：1.自动垃圾收集，2.安全和认证。3.通过访问BCL得到广泛的编程功能，如Web服务和数据服务。</p>
+<pre class="mermaid">graph TB;
+    id1-->id5
+    id1-->id6
+    id1-->id7
+    id1-->id4
+    id11[非.net程序]-->id10[操作系统]
+    id7-->id10
+subgraph 托管代码
+    id1[程序集1]
+    id2[程序集2]
+    id3[程序集3]
+end
+subgraph CLR
+    id4[内存管理\异常处理]
+    id5[垃圾收集\反射服务]
+    id6[JIT编辑器\类加载器]
+    id7[安全服务]
+end
+subgraph 非托管代码
+    id11
+end</pre>
+
+<p><strong>托管代码(managed code)</strong>：</p>
+<p>.net编写的代码称为托管代码。</p>
+<p><strong>非托管代码(unmanaged code)：</strong></p>
+<p>不在CLR控制之下的代码，如Win32，C/C++ DLL。</p>
+<h3 id="1-2-编译过程"><a href="#1-2-编译过程" class="headerlink" title="1.2 编译过程"></a>1.2 编译过程</h3><pre class="mermaid">graph LR;
+    id1[1.net兼容语言的源代码]-->id2(.net兼容编译器)
+    id2-->id3[2.程序集:A.CIL B.类型信息 C.安全信息]</pre>
+
+<p><strong>解释：</strong></p>
+<ol>
+<li>使用c#或vb等.net语言编写的文本文件。</li>
+<li>使用编程语言写好的文件需要使用编译器生成<strong>程序集</strong>文件，程序集文件只能是可执行的，或者是<strong>DLL</strong>。并且程序集中的不是本机代码，而是CIL公共中间语言的中间语言，</li>
+</ol>
+<p><strong>CIL（Common Intermediate Language）：</strong></p>
+<p>公共语言基础结构，CIL是一组阐述了系统架构，规则，和约定的规范。也是一组数据结构，系统标准。和CIL有关的还有<strong>IL</strong>和<strong>MSIL</strong> 不过已经很少用到了。</p>
+<pre class="mermaid">graph TB
+subgraph CLR
+    id2[公共语言运行库CLR] 
+    id3[公共语言规范CLS]
+    id4[基类库BCL]
+      id5[元数据定义]
+    id6[公告类型系统]
+    id7[公共中间语言CIL指令组]
+end</pre>
+
+<p>CLI的重要组成部分是：</p>
+<ol>
+<li><strong>CTS（COmmon Type System ）</strong>：公共类型系统，定义了托管代码中一定会使用的类型特征。.net兼容的编程语言的类型通常会映射到CTS中已定义的类型。CTS最重要的特征是，所有类型都继承公共的基类 object,使用CTS可以确保系统类型和用户定义类型能被任何.net兼容的语言所使用</li>
+<li><strong>CLS（COmmon Language Soecification）</strong>：公共语言规范，详细说明了.net兼任语言的规则和行为，包括参数传递，类结构，数据类型。</li>
+</ol>
+<h3 id="1-3-编译成本机代码并执行"><a href="#1-3-编译成本机代码并执行" class="headerlink" title="1.3 编译成本机代码并执行"></a>1.3 编译成本机代码并执行</h3><pre class="mermaid">graph LR;
+    id0-->id7
+    id7-->id1
+    id1-->id2
+    id2-->id3
+    id3-->id5
+    subgraph 编译时
+    id0[c#源文件]
+    id7[c#编译器]
+    id1[程序集:A.类型信息 B.CIL]
+    end
+    subgraph 运行时
+    id2[JIT编译器 公共语言运行库CLR]
+    id3[本机代码]
+    id5[操作系统服务]
+    end</pre>
+
+<p><strong>编译步骤</strong>：</p>
+<ol>
+<li>检查程序集的安全特性</li>
+<li>在内存中分配空间</li>
+<li>把程序集中的可执行代码发送给JIT，把其中一部分编译成本机代码。</li>
+</ol>
+<p><strong>需要注意的点：</strong></p>
+<ul>
+<li>程序集中的可执行代码只有在需要时才会有JIT编译，编译后被缓存起来以备后面的程序执行。不被调用的代码将不会被编译。并且被调用的代码只编译一次。</li>
+<li>CIL被JIT编译为本机代码后，在运行时会被CLR管理，执行GC检查数组边界参数类型异常管理的任务。</li>
+<li>CIL被调用运行时才会被编译成本机代码。</li>
+</ul>
+<p><strong>JIT(Just-in-Time):</strong>  实时编译器</p>
+<p>Ngen工具可以将程序集转换成当前处理器的本机代码。Ngen处理过的代码可以免去运行时的JIT编译过程。</p>
+<h3 id="1-4-总结"><a href="#1-4-总结" class="headerlink" title="1.4 总结"></a>1.4 总结</h3><p>.net的框架的结构和缩写:</p>
+<pre class="mermaid">graph TB
+    subgraph 程序集
+        id2[公共中间语言CILILMSIL]
+    end
+subgraph 公共语言基础结构
+    id4[CTS公共类型系统]
+    id5[CTS公共语言规范]
+end
+subgraph 公共语言运行库CLR
+    id7[GC垃圾收集器]
+    id8[JIT实时编译器]
+    id9[BCL基类库]
+end</pre>
+
+<h2 id="二-格式规则"><a href="#二-格式规则" class="headerlink" title="二.格式规则"></a>二.格式规则</h2><h3 id="2-1-标识符"><a href="#2-1-标识符" class="headerlink" title="2.1 标识符"></a>2.1 标识符</h3><p>用来命名如变量，方法，参数等程序结构的字符串。命名上有一些规则：</p>
+<ul>
+<li>字幕和下划线可以用在任何位置。</li>
+<li>数字不能放在首位，但是可以放在其他地方。</li>
+<li>@字符只能放在标识符首位，虽然允许使用，但不推荐使用@做字符。</li>
+<li>标识符区分大小写。</li>
+</ul>
+<h3 id="2-2-关键字"><a href="#2-2-关键字" class="headerlink" title="2.2 关键字"></a>2.2 关键字</h3><p><strong>定义：</strong></p>
 <blockquote>
-<p>按下小写字母i，会进入编辑模式。可以在此模式下输入你想要的commit message。输入结束以后，按下esc退出编辑模式，这时按下英文输入法下的冒号，再输入wq，就可以保存退出了。w是write，q是quit。也可以在按esc退出编辑模式以后，切换到大写模式，连按两下Z。</p>
-<p>如果你用不惯这个编辑器的话，可以通过配置git config –global core.editor ‘其它文本编辑器的执行文件的路径’，这样需要调用文本编辑器时，就不会用默认的vi了。譬如设置成notepad++，sublimetext等等。</p>
+<p>关键字是预定义的保留标识符，对编译器有特殊意义。 除非前面有 <code>@</code> 前缀，否则不能在程序中用作标识符。 例如，<code>@if</code> 是有效标识符，而 <code>if</code> 则不是，因为 <code>if</code> 是关键字。</p>
+</blockquote>
+<p><strong>上下文关键字：</strong></p>
 <blockquote>
-<p>[core]<br>        editor = ‘D:/Program Files/Notepad/notepad++.exe’ -multiImst -nosession</p>
+<p>上下文关键字仅在一部分程序上下文中有特殊含义，可以在相应上下文范围之外用作标识符。 一般来说，C# 语言中新增的关键字会作为上下文关键字添加，以免破坏用旧版语言编写的程序。</p>
 </blockquote>
-<p>作者：Elpie Kay<br>链接：<a href="https://www.zhihu.com/question/61913534/answer/192748096">https://www.zhihu.com/question/61913534/answer/192748096</a><br>来源：知乎<br>著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</p>
-</blockquote>
-<h4 id="站点文章并没有按时间排序"><a href="#站点文章并没有按时间排序" class="headerlink" title="站点文章并没有按时间排序"></a>站点文章并没有按时间排序</h4><p>记得写date,不然会按文章标题排序。</p>
-<figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">title: Mac OS X 10.10.3下android-5.1.1_r9 源码下载与编译</span><br><span class="line">date: 2015-08-18 10:36:21</span><br><span class="line">categories: Android</span><br><span class="line">tags: [Tech,Android]</span><br></pre></td></tr></table></figure>
-<h3 id="0-附录"><a href="#0-附录" class="headerlink" title="0.附录"></a>0.附录</h3><p>[^1]: <a href="https://zhuanlan.zhihu.com/p/26625249">GitHub+Hexo 搭建个人网站详细教程</a><br>[^2]: <a href="https://www.zhihu.com/question/21193762/answer/79109280">使用hexo，如果换了电脑怎么更新博客</a></p>
+<p>上下关键字是仅在特定语言结构中充当关键字的标识符，可以在代码的其他部分被用做标识符。</p>
+<p>上下文关键字：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left"></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th style="text-align:right"></th>
+<th style="text-align:center"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">add</td>
+<td>ascending</td>
+<td>async</td>
+<td>await</td>
+<td>by</td>
+<td style="text-align:right">descending</td>
+<td style="text-align:center">dynamic</td>
+</tr>
+<tr>
+<td style="text-align:left">equals</td>
+<td>from</td>
+<td>get</td>
+<td>global</td>
+<td>group</td>
+<td style="text-align:right">in</td>
+<td style="text-align:center">into</td>
+</tr>
+<tr>
+<td style="text-align:left">join</td>
+<td>let</td>
+<td>on</td>
+<td>orderby</td>
+<td>partial</td>
+<td style="text-align:right">remove</td>
+<td style="text-align:center">select</td>
+</tr>
+<tr>
+<td style="text-align:left">set</td>
+<td>value</td>
+<td>var</td>
+<td>where</td>
+<td>yield</td>
+<td style="text-align:right"></td>
+</tr>
+</tbody>
+</table>
+<h3 id="2-3-其他"><a href="#2-3-其他" class="headerlink" title="2.3 其他"></a>2.3 其他</h3><p><strong>块：</strong></p>
+<p>大括号包围的多条语句和序列，<strong>在语法上相当于一条语句</strong>。用于语法上只需要一条语句，但执行的动作无法用一条简单语句表达。</p>
+<p><strong>WriteLine</strong>:</p>
+<p>{0} {1} 这叫替换值</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line">Console.WriteLine(<span class="string">"aaaa &#123;0&#125; and &#123;1&#125;"</span>,<span class="number">3</span>,<span class="number">6</span>);</span><br></pre></td></tr></table></figure>
+<p>也可以：</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line">Console.WriteLine(<span class="string">"aaaa &#123;1&#125; and &#123;0&#125;"</span>,<span class="number">3</span>,<span class="number">6</span>);</span><br></pre></td></tr></table></figure>
+<p>不要试图引用替换值长度列以外位置的值，比如{2}</p>
+<p><strong>格式化数字字符串</strong>：</p>
+<p>这{1：C}叫格式说明符或者对齐说明符</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;index(必选指定列表中的某一项),alignment(可选,指定字段宽度对齐):format(可选，指定项的格式)&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//格式说明符如：</span></span><br><span class="line">Console.WriteLine(<span class="string">"aaaa &#123;0:C&#125;"</span>,<span class="number">3</span>);</span><br></pre></td></tr></table></figure>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//对齐说明符如：</span></span><br><span class="line"><span class="comment">//负数表示左对齐</span></span><br><span class="line">Console.WriteLine(<span class="string">"aaaa &#123;0,10&#125;"</span>,<span class="number">3</span>);</span><br></pre></td></tr></table></figure>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//标准的格式字段字符串形如:Axx，其中A代表格式说明符，XX代表精度</span></span><br><span class="line">Console.WriteLine(<span class="string">"aaaa &#123;0:F4&#125;"</span>,<span class="number">3.123</span>); <span class="comment">//像这种就表示显示四位小数点。</span></span><br></pre></td></tr></table></figure>
+<p><strong>文档注释</strong>：</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span><span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span>这是说明</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span>文档注释包含XML文本，可以生成程序文档。</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span><span class="doctag">&lt;/summary&gt;</span></span></span><br></pre></td></tr></table></figure>
+<h2 id="三-类型，存储和变量"><a href="#三-类型，存储和变量" class="headerlink" title="三.类型，存储和变量"></a>三.类型，存储和变量</h2><h3 id="3-1-CSharp的相关特点"><a href="#3-1-CSharp的相关特点" class="headerlink" title="3.1 CSharp的相关特点"></a>3.1 CSharp的相关特点</h3><p>c的程序是一组函数和数据类型，c++是一组函数和类，但是<strong>c#的程序(可执行程序或DLL)是一组类型声明。</strong></p>
+<p>Main方法当然也是必须的，c#同时引入了命名空间:</p>
+<p><strong>命名空间</strong>是一种把相关的类型声明分组并命名的办法。</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">namespace</span> <span class="title">Game</span></span><br><span class="line">&#123;</span><br><span class="line">    DeclarationOfTypeA</span><br><span class="line">    DeclarationOfTypeB</span><br><span class="line">    <span class="keyword">class</span> <span class="title">C</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>*</strong>类就是一个模板，它本身并不是数据结构，但他说明了由模板构造的对象的特征。</p>
+<h3 id="3-2-预定义类型"><a href="#3-2-预定义类型" class="headerlink" title="3.2 预定义类型"></a>3.2 预定义类型</h3><pre class="mermaid">graph TB
+
+id6[简单类型]
+id8[预定义类型]
+id9[非数值类型]
+id10[数值类型]
+id11[整数类型]
+id12[浮点类型]
+id6---id10
+id10---id11
+id10---id12
+id11---id13
+id11---id15
+id11---id17
+id11---id18
+id12---id20
+id12---id21
+id12---id22
+id8---id6
+id8---id2
+id8---id3
+id8---id4
+id6---id9
+id9---id5
+id9---id7
+subgraph  
+    id2[object]
+    id3[string]
+    id4[dynamic]
+end
+subgraph    
+id5[bool]
+id7[char]
+end
+subgraph  
+id20[decimal]
+id21[float]
+id22[double]
+end
+subgraph    
+id13[8bit sbyte\byte]
+id15[16bit short\ushort]
+id17[32bit int\uint]
+id18[ 64bitlong\along]
+end</pre>
+
+<p>常用的预定义简单类型:</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>范围</th>
+<th>.net框架类型</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>byte</td>
+<td>0~255 (2^8)</td>
+<td>System.Byte</td>
+<td>0</td>
+</tr>
+<tr>
+<td>short</td>
+<td>-32768~32767 (2^16)</td>
+<td>System.Int16</td>
+<td>0</td>
+</tr>
+<tr>
+<td>int</td>
+<td>-2147483638~2147483647 (2^32)</td>
+<td>System.Int32</td>
+<td>0</td>
+</tr>
+<tr>
+<td>long</td>
+<td>-9223372036854775808~<br>9223372036854775807 (2^64)</td>
+<td>System.Int64</td>
+<td>0</td>
+</tr>
+<tr>
+<td>float</td>
+<td>1.5<em>10^(-45) ~ 3.4 </em>10^(38)</td>
+<td>Sytem.Single</td>
+<td>0.0F</td>
+</tr>
+<tr>
+<td>double</td>
+<td>5<em>10^(-324) ~ 1.7 </em>10^(308)</td>
+<td>System.Double</td>
+<td>0.0D</td>
+</tr>
+<tr>
+<td>char</td>
+<td>U+0000~U+ffffSystem.Char</td>
+<td>System.Char</td>
+<td>\ x0000</td>
+</tr>
+</tbody>
+</table>
+<p>c#的类型名称就是.net框架类型的别名。.net框架类型可以在c#中直接使用但不推荐。</p>
+<p>和C/C++不一样，c#数字不具有布尔意义。</p>
+<p>预定义类型可以直接用，如int，和用户类型不一样。</p>
+<h3 id="3-3-用户类型"><a href="#3-3-用户类型" class="headerlink" title="3.3 用户类型"></a>3.3 用户类型</h3><p>除了16种预定义类型，还可以创建用户定义类型，有6种类型可以由用户自己创建:</p>
+<ul>
+<li>类类型(class)</li>
+<li>结构类型(struct)</li>
+<li>数组类型(array)</li>
+<li>枚举类型(enum)</li>
+<li>委托类型(delegate)</li>
+<li>接口类型(interface)</li>
+</ul>
+<p><strong>*</strong>用户定义类型必须先声明后实例化。</p>
+<h3 id="3-4-堆和栈"><a href="#3-4-堆和栈" class="headerlink" title="3.4 堆和栈"></a>3.4 堆和栈</h3><ul>
+<li>栈是内存数组。</li>
+<li>堆是一块内存区域，GC会自动清除堆对象。</li>
+</ul>
+<p>类型决定了对象的存储位置。类型有两种：值类型和引用类型。</p>
+<ul>
+<li>值类型存放在栈里。</li>
+<li>引用类型需要两块内存，一个存实际的数据，在堆中。另一个存引用，指向堆的存放位置，可能在堆中也可能在栈中。</li>
+</ul>
+<p><strong>*</strong>对于一个引用类型，其实例数据部分始终存放在堆里，无论值还是引用</p>
+<table>
+<thead>
+<tr>
+<th>变量类型</th>
+<th>存储位置</th>
+<th>自动初始化</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>本地变量</td>
+<td>栈或者栈和堆</td>
+<td>否</td>
+<td>用于函数成员内部的本地计算</td>
+</tr>
+<tr>
+<td>类字段</td>
+<td>堆</td>
+<td>是</td>
+<td>类的成员</td>
+</tr>
+<tr>
+<td>结构字段</td>
+<td>栈或堆</td>
+<td>是</td>
+<td>结构的成员</td>
+</tr>
+<tr>
+<td>参数</td>
+<td>栈</td>
+<td>否</td>
+<td>用于把值传入或传出方法</td>
+</tr>
+<tr>
+<td>数组元素</td>
+<td>堆</td>
+<td>是</td>
+<td>数组的成员</td>
+</tr>
+</tbody>
+</table>
+<p><em>注意：</em></p>
+<ul>
+<li>dynamic关键字的类型在运行时才会被解析。</li>
+<li>c#和c++不同，不能再类型的外部声明全局变量。所有的字段都属于类型。也没有全局方法（在类型的外部)。</li>
+</ul>
+<h2 id="四-方法"><a href="#四-方法" class="headerlink" title="四.方法"></a>四.方法</h2><p><strong>*</strong>方法体也是个块</p>
+<h3 id="4-1-变量的生存周期"><a href="#4-1-变量的生存周期" class="headerlink" title="4.1 变量的生存周期"></a>4.1 变量的生存周期</h3><table>
+<thead>
+<tr>
+<th></th>
+<th>实例字段</th>
+<th>本地变量</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>生存期</strong></td>
+<td>从实例被创建开始</td>
+<td>从它在块中被声明的那点开始，在块完成执行时结束。</td>
+</tr>
+<tr>
+<td><strong>隐式初始化</strong></td>
+<td>初始化该类型的默认值</td>
+<td>没有隐式初始化。未初始化尝试使用编译器会报错。</td>
+</tr>
+<tr>
+<td><strong>存储区域</strong></td>
+<td>实例字段是类的成员，所以所有字段都存在堆里。无论是值类型还是引用类型。</td>
+<td>值类型：栈。引用类型：引用存在栈里，数据存在堆里。</td>
+</tr>
+</tbody>
+</table>
+<p><strong>*</strong>c#和c++不一样 不允许在第一个有效范围内声明另一个同名本地变量。</p>
+<h3 id="4-2-隐式类型"><a href="#4-2-隐式类型" class="headerlink" title="4.2 隐式类型"></a>4.2 隐式类型</h3><ul>
+<li>在方法范围内声明的变量可以具有隐式类型var。var关键字不是特定类型变量的符号，只是语法速记。表示可以从右侧推断出类型。</li>
+<li>隐式类型本地变量为强类型。</li>
+<li>var只能用于本地变量，不能用于字段，只能在变量声明中包括初始化时使用，一旦推断出类型则是固定不可更改的。</li>
+<li>和js的var不一样。</li>
+</ul>
+<h3 id="4-3-Const关键字"><a href="#4-3-Const关键字" class="headerlink" title="4.3 Const关键字"></a>4.3 Const关键字</h3><ul>
+<li>const 是核心声明的一部分必须放在类型前面。</li>
+<li>必须有初始化语句，变量必须在声明时初始化，且以后不能改变。</li>
+<li><strong>const也可以是null，但不能是某个对象的引用，因为对象的引用是在运行时决定的。</strong></li>
+</ul>
+<h3 id="4-4-参数"><a href="#4-4-参数" class="headerlink" title="4.4 参数"></a>4.4 参数</h3><p><strong>形参和实参</strong></p>
+<p>形参（形式参数）：</p>
+<ul>
+<li>方法的定义中的参数，一个占位符。没有数据，等到方法调用时接受传过来的参数。</li>
+<li>只有在方法被调用时才会分配内存，方法调用结束后立即释放内存。</li>
+</ul>
+<p>实参（实际参数）：</p>
+<ul>
+<li>调用时传给形参。</li>
+<li>实参必须有确切的值。</li>
+<li>如果存在和形参类型的兼容，那么实参的类型可以和形参不一致。</li>
+</ul>
+<p><strong>值传递参数和引用传递参数</strong></p>
+<p>值传递参数：</p>
+<ul>
+<li>把实参的值复制给形参。引用类型的实参会复制引用，对于值类型会复制值。</li>
+<li>通过值传递参数，系统在栈上为形参分配内存。</li>
+</ul>
+<p>引用传递参数：</p>
+<ul>
+<li>引用传递参数不会在栈上分配内存，实际上，形参的参数名作为了实参变量的别名。指向相同的内存位置。所以修改了形参就是在修改实参。可以理解为C中的指针。</li>
+<li>声明和调用使用ref修饰符。</li>
+<li>实参同时必须是变量，在用作实参前必须被赋值。必须是变量的意思是 ，Function(ref 3+4)这种是不可以的。</li>
+</ul>
+<p><strong>*</strong>数组作为实参传递，便一起会使用实参数组而不是创建新的</p>
+<p><strong>引用类型作为值传递参数和引用传递参数</strong></p>
+<p>无论是值参数还是引用参数，都可以在方法内部修改它的成员。但实质上还是有区别的。</p>
+<p>作为值参数传递：</p>
+<p>如果在方法内创建一个新对象并赋值给形参，实参和形参的关联会切断。 方法调用结束后，新对象也就不在了。</p>
+<pre class="mermaid">graph TB;
+    subgraph 2对成员赋值后
+    id4[栈:ref:f1]
+    id5[栈:ref:a1]
+    id6[堆:Val 20]
+    id4-->id6
+    id5-->id6
+    end
+    subgraph 1调用开始时
+    id1[栈:ref:f1]
+    id2[栈:ref:a1]
+    id3[堆:Val 50]
+    id1-->id3
+    id2-->id3
+    end</pre>
+
+<pre class="mermaid">graph TB;
+    subgraph 4方法完成后
+    id5[栈:ref:a1]
+    id6[堆:Val 50]
+    id5-->id6
+    end
+    subgraph 3创建新对象并赋值给形参之后
+    id1[栈:ref:f1]
+    id2[栈:ref:a1]
+    id3[堆:Val 20]
+    id4[堆:Val 50]
+    id1-->id3
+    id2-->id4
+    end</pre>
+
+<p>作为引用参数传递:</p>
+<p>如果在方法内创建一个新对象并赋值给形参，在方法结束后该对象依然存在，并且是实参所引用的值。</p>
+<p><strong>输出参数</strong></p>
+<p>输出参数用于方法体内把数据传出到调用代码,必须在声明和调用中都使用out修饰符。输出参数out，我个人理解和ref是不同功能的，out参数主要是为了将方法中的变量传出，而ref是为了将变量传入方法。</p>
+<ul>
+<li>实参同时也必须是变量（out 3+5 不可以），不能是其他类型的表达式，因为方法需要内存位置保存返回值。</li>
+<li>和引用参数相似，形参担当实参的别名，实参和形参是同一块内存。所以对形参的更改会改变实参。</li>
+</ul>
+<p>输出参数有几个要求：</p>
+<ul>
+<li>在方法中，输出参数在能够被读取前<strong>必须被赋值</strong>。这意味着参数的初始值是无关的，并且没必要在方法调用之前为实参赋值。</li>
+<li>在方法返回前，内部贯穿的任何可能路径都必须为所有输出参数进行一次赋值。</li>
+<li>此外，因为在方法内读取输出变量之前必须对其写入，所以不可能使用输出参数把数据传入方法。如果在赋值之前试图读取他，编译器会有错误信息。</li>
+</ul>
+<p><strong>参数数组</strong></p>
+<p>关键字params，允许零个或多个实参对应一个特殊的形参，注意的点：</p>
+<ul>
+<li>参数列表中只能有一个参数数组。并且是最后一个</li>
+<li>参数数组表示的所有参数必须有相同的类型。</li>
+<li>params修饰符不需要在调用时使用。</li>
+</ul>
+<p>格式：</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ListInts</span>(<span class="params"><span class="keyword">params</span> <span class="keyword">int</span>[] invals</span>)</span></span><br></pre></td></tr></table></figure>
+<p>可以通过两种方式给参数数组传参：</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line">ListInts（<span class="number">10</span>,<span class="number">20</span>,<span class="number">30</span>）；</span><br><span class="line"><span class="keyword">int</span>[] intarray = &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;;</span><br><span class="line">ListInts（intarray）;</span><br></pre></td></tr></table></figure>
+<p>一些补充：</p>
+<ul>
+<li>参数数组是一个数组，数组是引用类型，所以所有数据都保存在堆中。</li>
+<li>如果对应的形参数组没有实参，编译器会创建一个有零个元素的数组使用。</li>
+<li>当数组在堆中被创建时，实参的值是被<strong>复制</strong>到数组中，像值传递参数。</li>
+<li>如果数组是值类型，则值被复制，实参不受方法内部影响。</li>
+<li>如果数组是引用类型，那引用被复制，实参可能会收到方法内部影响。</li>
+</ul>
+<p><strong>命名参数和位置参数</strong></p>
+<p>一般的方法，实参和形参的顺序一致。称为位置参数。</p>
+<p>还有一种，只需要要指定参数的名字，就可以任意顺序在方法调用中列出实参。叫做命名参数。</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line">Method(c:<span class="number">2</span>,a:<span class="number">4</span>,B:<span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+<p>可以同时使用位置参数和命名参数，但位置参数必须先列出来。</p>
+<p><strong>可选参数</strong></p>
+<p>表明某个参数是可选的，需要在方法声明时为参数提供默认值。不是所有的参数类型都可以作为可选参数：</p>
+<ul>
+<li>只有值类型的默认值可以在编译时确定，才可以将值类型作为可选参数</li>
+<li>只有默认值是null的时候引用类型才可以作为可选参数使用（意思是只能在方法签名上将此形参标记为null，而不是在签名中去尝试new这个引用类型。）</li>
+<li>可选参数只能是值类型。</li>
+</ul>
+<p>对于方法签名：所有必填参数必须在可选参数声明之前声明，如果有params参数必须在所有可选参数之后声明。</p>
+<p>对于调用方法：省略参数必须在最后开始，也就是说不能前面省略，后面不省略。如果需要随意省略可选参数，必须使用命名参数的特性来实现，使用可选参数的名字来消除歧义。</p>
+<ul>
+<li><p><strong>参数类型语法使用总结</strong></p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">修饰符</th>
+<th style="text-align:center">是否在声明时使用</th>
+<th style="text-align:center">是否在调用时使用</th>
+<th style="text-align:center">执行</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">值</td>
+<td style="text-align:center">无</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">系统把实参的值复制到形参</td>
+</tr>
+<tr>
+<td style="text-align:center">引用</td>
+<td style="text-align:center">ref</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">仅包含一个返回的值。形参是实参的别名。</td>
+</tr>
+<tr>
+<td style="text-align:center">输出</td>
+<td style="text-align:center">out</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">仅包含一个返回的值。形参是实参的别名</td>
+</tr>
+<tr>
+<td style="text-align:center">数组</td>
+<td style="text-align:center">params</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center">允许传递可变数目的实参到方法。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="4-6-重载"><a href="#4-6-重载" class="headerlink" title="4.6 重载"></a>4.6 重载</h3><p>注意重载的讲解放入在方法章节中，可以作为提醒:重载是方法的一个性质，和类无关。</p>
+<p>（突然想到，c支持重载吗？）</p>
+<ul>
+<li>重载必须有和其他方法不一样的签名，签名包括：方法名称，参数数目，参数数据类型和顺序，参数修饰符。</li>
+<li><strong>返回类型不是签名的一部分，形参的名称也不是签名的一部分。</strong></li>
+</ul>
+<h3 id="4-7-栈帧"><a href="#4-7-栈帧" class="headerlink" title="4.7 栈帧"></a>4.7 栈帧</h3><p>调用方法时内存从栈的顶部开始分配，保存和方法关联的数据项。这块内存叫<strong>栈帧</strong>(stack frame)。栈帧包括如下内容：</p>
+<ul>
+<li>返回地址，方法退出时继续执行的位置。</li>
+<li>方法的值参数，或者参数数组。</li>
+<li>和方法调用相关的其他数据管理项。</li>
+</ul>
+<p>栈帧的展开过程：</p>
+<pre class="mermaid">graph TB
+    subgraph 从栈中弹出Methoda
+    id10["Main()"]
+    end
+    subgraph 从栈中弹出MethodB
+    id8["Main()"]
+    id9["MethodA()"]
+    end
+    subgraph 从Main调用MethodB
+    id2["Main()"]
+    id3["MethodA()"]
+    id4["MethodA()"]
+    end
+subgraph 从Main调用MethodA
+    id4["Main()"]
+    id5["MethodA()"]
+end
+subgraph 开始执行Main 
+    id7["Main()"]
+end</pre>
+
+<p><strong>*</strong>递归的调用会产生很多不同的独立栈帧。</p>
+<h2 id="五-类"><a href="#五-类" class="headerlink" title="五.类"></a>五.类</h2><p>类成员类型有9种：</p>
+<ul>
+<li>数据成员：字段，常量</li>
+<li>函数成员：方法，属性，运算符，构造函数，析构函数，事件，索引</li>
+</ul>
+<p>声明类成员的方式：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[特性][修饰符]核心声明</span><br></pre></td></tr></table></figure>
+<p>多个特性和多个修饰符内部可以顺序随意，但整体上必须是这个顺序。</p>
+<p>c#是单继承，但继承的层次没有限制。所有类都派生自object类，即使没有任何基类规格说明继承的类。object是唯一的非派生类，它是继承层次结构的基础。没有基类规格说明的类隐式派生自object。</p>
+<p>派生类的实例由基类的实例加上派生类新增的成员组成。派生类的引用指向整个类对象，包括基类部分。</p>
+<h3 id="5-1静态成员"><a href="#5-1静态成员" class="headerlink" title="5.1静态成员"></a>5.1静态成员</h3><p><strong>Static 静态变量 </strong>：</p>
+<p>可修饰的类型不限，声明和构造方法种初始化，运行时是常量，只是使变量持有的引用不可变。初次构造后就确定了值。</p>
+<ul>
+<li>静态字段被类的所有实例共享，所有实例都访问内存同一位置。</li>
+<li>如果静态字段有初始化语句，那会在使用任何静态成员之前初始化该字段。但是不会在程序执行开始就初始化。</li>
+<li>静态方法不能访问实例成员，但是能访问其他静态成员。</li>
+<li>静态的成员当然也是在堆上。</li>
+</ul>
+<p><strong>const常量</strong>：</p>
+<p>可修饰基本类型，声明的时候初始化，是常量。使用时不需要加载到内存。</p>
+<ul>
+<li>成员常量不能被声明为静态的。</li>
+<li>成员常量和本地常量差不多。同时成员常量的值必须是编译时可计算的。</li>
+<li>和静态量不同，常量没有自己的存储位置，而是在编译时被编译器替换，类似于c和c++的define。</li>
+</ul>
+<h3 id="5-2-属性"><a href="#5-2-属性" class="headerlink" title="5.2 属性"></a>5.2 属性</h3><p>属性不为数据存储分配内存，和字段不同，它是执行代码的。属性上不允许有除了get和set以外的其他方法，同时，访问器不能显示调用。</p>
+<p>set 和 get访问器有预定义的语法和语义。set有一个隐式的值参数value，返回类型是void。get没有参数，且get所有路径必须包含一条return语句，返回和属性相同的类型。</p>
+<p>属性和字段的区别：</p>
+<ul>
+<li>属性是函数性成员不是数据成员。允许处理输入输出。字段不行</li>
+<li>属性可以只读或者只写，字段不行。</li>
+<li>编译后的变量和编译后的属性语义不同，这意味着将公共字段改为属性后，访问这个字段的其他程序集都需要编译。如果属性本身做一些更改，那不需要重新编译访问它的其他程序集。</li>
+</ul>
+<p><strong>自动实现属性</strong></p>
+<p>允许只声明属性而不声明后备字段。编译器会创建隐藏的后备字段，并自动挂接到get和set访问器上。自动属性使开发者在倾向于声明一个公有字段的地方很容易的插入一个属性。</p>
+<ul>
+<li>不声明后备字段，编译器根据属性的类型分配存储。</li>
+<li>不能提供访问器的方法体。也就是不能实现get和set。</li>
+<li>除非通过访问器，否则不能访问后备字段。所以实现只读和只写属性没有意义，因此必须同时提供读写访问器。</li>
+</ul>
+<p>静态属性：不能访问实例成员，只能被实例成员访问。不管有没有实例都是存在的。外部访问使用类名。</p>
+<p>自动实现属性这个在具体开发的时候才能深刻理解到它存在的必要性，非常方便。</p>
+<h3 id="5-3-构造方法"><a href="#5-3-构造方法" class="headerlink" title="5.3 构造方法"></a>5.3 构造方法</h3><p>构造函数声明为public可以从类的外部创建实例，需要注意的点：</p>
+<ul>
+<li>构造函数没有返回值。</li>
+<li>构造函数可以被重载。</li>
+<li>如果用户声明了任何构造方法，则编译器不会提供默认的构造方法。</li>
+<li>构造方法可以声明为static，用于初始化类级别的项，静态字段这种。</li>
+</ul>
+<p><strong>静态构造方法</strong>：</p>
+<ul>
+<li>类中只能有一个静态构造函数，而且不能带参数。</li>
+<li>静态构造函数不能有任何访问修饰符。</li>
+<li>静态构造函数和静态方法一样，不能访问实例成员，因此不能使用this访问器</li>
+<li>不能从程序中显示调用静态构造方法，系统会自动调用它，在：引用任何静态成员之前，创建类的任何实例之前。</li>
+</ul>
+<p><strong>对象初始化</strong></p>
+<p>两种初始化方法：</p>
+<ul>
+<li>new xxx()</li>
+<li>new xxx(){在此初始化设置公有字段的值}  大括号里就是初始化。这种方式也叫对象初始化语句，扩展了对象创建的语法。</li>
+</ul>
+<p><strong>*</strong>需要注意，初始化发生在构造方法执行之后，因此构造方法中设置的值可能会在之后对象初始化中重置为相同或不相同的值。</p>
+<h3 id="5-4-析构函数"><a href="#5-4-析构函数" class="headerlink" title="5.4 析构函数"></a>5.4 析构函数</h3><p>析构函数具体在后面讲，执行类的实例被销毁之前需要的清理或释放非托管资源的行为。非托管资源是指通过win32api获得的文件句柄 如果坚持使用。net类就不用编写析构方法</p>
+<h3 id="5-6-readonly修饰符"><a href="#5-6-readonly修饰符" class="headerlink" title="5.6 readonly修饰符"></a>5.6 readonly修饰符</h3><p>字段可以用readonly修饰符声明，作为类似const，一旦值被设定就不能改变。但有一些却别：</p>
+<ul>
+<li>const字段只能在声明语句中初始化，readonly可以在声明语句和任何构造函数中初始化。但如果readonly的字段是static的则需要在静态构造函数中初始化。</li>
+<li>const字段的值必须在编译的时候决定，但readonly可以在运行时决定。也就是说可以在不同的构造方法中设置不同的值。</li>
+<li>const的行为总是静态的，但readonly可以是实例字段，也可以是静态字段，并且在内存中有存储位置。</li>
+</ul>
+<h3 id="5-7-this关键字"><a href="#5-7-this关键字" class="headerlink" title="5.7 this关键字"></a>5.7 this关键字</h3><p>在类中使用，对当前实例的引用。只能被用在实例构造函数、实例方法、属性和索引器的实例访问器中。this的目的是区分类的成员和本地变量或者参数，或者作为调用方法的实参。</p>
+<p>*不能再静态方法中使用this。</p>
+<h3 id="5-8-索引器"><a href="#5-8-索引器" class="headerlink" title="5.8 索引器"></a>5.8 索引器</h3><p>和属性的比较：</p>
+<ul>
+<li>和属性一样，不用分配内存来存储。</li>
+<li>索引器和属性都是主要被用来访问其他数据成员。</li>
+<li>属性通常表示单独的数据成员，索引通常表示多个数据成员。</li>
+</ul>
+<p>*索引器不能被声明为static</p>
+<p>需要注意：</p>
+<ul>
+<li><p>索引器没有名称，在名称的位置是关键字this。</p>
+</li>
+<li><p>参数列表在方括号中间。</p>
+</li>
+<li><p>参数列表至少声明一个参数。</p>
+</li>
+</ul>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line">ReturnType <span class="keyword">this</span>[ Type param1,....]</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">get</span>&#123;&#125;</span><br><span class="line">	<span class="keyword">set</span>&#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>索引器的set访问器接受两项数据：</strong></p>
+<ul>
+<li>隐式参数value持有的要保存的数据，</li>
+<li>一个或更多索引参数表示数据应该保存到哪。</li>
+</ul>
+<p>set访问器的含义:</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">set</span>(<span class="params">ParameterList,Type <span class="keyword">value</span></span>)</span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+<p>get访问器必须检查索引参数确定他表示哪个字段，并返回字段值。get访问器的含义:</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">get</span>(<span class="params">ParameterList</span>)</span>&#123;<span class="keyword">return</span> ValueOftype&#125;</span><br></pre></td></tr></table></figure>
+<p>*和属性一样，set和get是不能显示调用的，当索引器在表达式中取值时将自动调用get，赋值时自动调用set。</p>
+<p>索引器的例子：</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">Empolyee</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">string</span> LastName;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">string</span> FirstName;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">string</span> City;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">string</span> <span class="keyword">this</span>[<span class="keyword">int</span> index]</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">set</span>&#123;</span><br><span class="line">            <span class="keyword">switch</span>(idnex)&#123;</span><br><span class="line">                <span class="keyword">case</span> <span class="number">0</span>:lastName = <span class="keyword">value</span>; <span class="keyword">break</span>;</span><br><span class="line">                    ...</span><br><span class="line">                        <span class="keyword">default</span>: <span class="keyword">throw</span> <span class="keyword">new</span> ArgumentOutOfRangeexception(<span class="string">"index"</span>);&#125;&#125;</span><br><span class="line">        <span class="keyword">get</span>&#123;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">0</span>:<span class="keyword">return</span> LastName; <span class="keyword">break</span>;</span><br><span class="line">                    ...</span><br><span class="line">                        <span class="keyword">default</span>: <span class="keyword">throw</span> <span class="keyword">new</span> ArgumentOutOfRangeexception(<span class="string">"index"</span>);&#125;&#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>*索引器可以重载，一定要保持有不同的参数列表:</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">Class1</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">int</span> tmp1;</span><br><span class="line">    <span class="keyword">int</span> tmp2;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> <span class="keyword">this</span>[<span class="keyword">int</span> index]</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span>&#123;   ... &#125;</span><br><span class="line">        <span class="keyword">set</span>&#123;   ... &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> <span class="keyword">this</span>[<span class="keyword">int</span> index，<span class="keyword">int</span> index]</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span>&#123;...&#125;</span><br><span class="line">        <span class="keyword">set</span>&#123;...&#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="5-9-访问器的修饰符"><a href="#5-9-访问器的修饰符" class="headerlink" title="5.9 访问器的修饰符"></a>5.9 访问器的修饰符</h3><p>*注意是访问器，是属性和索引中的访问器。</p>
+<p>属性和索引器是函数成员，并自带了get和set访问器。可以通过对get和set设置不同的访问级别，是对象的外部只能读取该属性而不能写入，这是一个非常重要的封装工具。在实际的开发中很常用这种封装方法。</p>
+<p>但要注意，必须同时有gat和set访问器时，访问器才能有修饰符，并且只能有一个访问修饰符。访问器的修饰符必须比成员的级别更严格。 也就是访问器的访问级别必须要比成员的访问级别的位置低，也不能等于属性的访问级别。</p>
+<p>访问级别：</p>
+<pre class="mermaid">graph LR
+id0[public]-->id1[protected internal]
+id1-->id2[protected]
+id1-->id3[internal]
+id2-->id4[private]
+id3-->id4[private]</pre>
+
+<h3 id="5-10-分部类和分部类型"><a href="#5-10-分部类和分部类型" class="headerlink" title="5.10 分部类和分部类型"></a>5.10 分部类和分部类型</h3><p>分部类可以声明在不同或相同的文件中，局部声明要被标注为partial class。partial不是关键字，在程序中可以用于标识符。但在class struct（局部结构），interface（局部借口）前它表示分布类型。</p>
+<p><strong>分部方法：</strong></p>
+<p>分布方法是声明在分部类中不同部分的方法，也可以声明在同一个类中，分为两个部分：</p>
+<ul>
+<li>定义分布方法声明：给出签名和返回类型，声明的实现部分知识一个分号。</li>
+<li>实现分部方法声明：给出签名和返回类型，是以正常形式的语句块实现。</li>
+</ul>
+<p>需要注意的内容：</p>
+<p>定义和实现的签名和返回类型必须匹配。返回类型必须是void，签名不能包括访问修饰符，也就是说分部方法是私有的，列表不能包含out参数。定义和实现必须包含上下文关键字partial，直接放在关键字void之前。可以有定义而没有实现，但编译器会把方法的声明以及方法内部任何对方法的调用移除。</p>
+<p>例子：</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Myclass</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">partial</span> <span class="keyword">void</span> <span class="title">PrintSum</span>(<span class="params"><span class="keyword">int</span> x , <span class="keyword">int</span> y</span>)</span>; </span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Add</span>(<span class="params"><span class="keyword">int</span> x, <span class="keyword">int</span> y</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        PrintSum(x,y);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">partial</span> <span class="keyword">class</span> <span class="title">Myclass</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">partial</span> <span class="keyword">void</span> <span class="title">PrintSum</span>(<span class="params"><span class="keyword">int</span> x, <span class="keyword">int</span> y</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        console.writeLine(<span class="string">"xxx:"</span> , x +y);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="5-11-屏蔽基类成员"><a href="#5-11-屏蔽基类成员" class="headerlink" title="5.11 屏蔽基类成员"></a>5.11 屏蔽基类成员</h3><p>无法删除父类的任何成员，但是可以通过声明和父类一样名字的成员来屏蔽基类成员：</p>
+<ol>
+<li>声明一个相同名称相同类型的成员</li>
+<li>屏蔽方法需要在派生类中声明新的带有相同签名的函数成员。</li>
+<li>使用new修饰符告诉编译器正在故意屏蔽继承的成员，否则程序会成功编译，但会警告你隐藏了一个继承的成员。</li>
+</ol>
+<p><strong>*</strong>签名是有名称和参数列表组成，不包括返回类型。</p>
+<p>例子：</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">Someclass</span></span><br><span class="line"> ｛</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">string</span> a;</span><br><span class="line">   ｝</span><br><span class="line"><span class="keyword">class</span> <span class="title">someclass2</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">new</span> <span class="keyword">public</span> <span class="keyword">string</span> a;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以使用基类访问（base access）表达式访问隐藏的继承成员。</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line">Console.WriteLine(<span class="string">"&#123;0&#125;"</span> , <span class="keyword">base</span>.a);</span><br></pre></td></tr></table></figure>
+<p>*屏蔽基类成员再使用基类访问，并不是好的设计方式</p>
+<h3 id="5-12虚方法和覆写方法"><a href="#5-12虚方法和覆写方法" class="headerlink" title="5.12虚方法和覆写方法"></a>5.12虚方法和覆写方法</h3><p>基类引用调用派生类（derived class）方法：</p>
+<ol>
+<li>派生类的方法和基类的方法有享用的签名和返回类型</li>
+<li>基类的方法使用virtual标注</li>
+<li>派生类的方法使用override标注</li>
+</ol>
+<p>*注意此方式和new隐藏基类成员在行为上的区别。</p>
+<p>需要注意：</p>
+<ul>
+<li>覆写和被覆写的方法必须具有相同的可访问性。</li>
+<li>不能覆写static方法或非虚方法</li>
+<li>方法，属性，索引器，以及事件，都可以被声明为virtual和override</li>
+</ul>
+<p><strong>覆写标记为override的方法</strong></p>
+<p>覆写方法可以在继承的任何层次出现，对象的基类部分引用调用一个被覆写的方法时，方法会执行标记为override的方法的最高派生版本。若更高的派生级别有该方法的其他声明，但没标记override，则不会被调用。</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line">Class MyBaseClass</span><br><span class="line">&#123;</span><br><span class="line">	<span class="function">Virtual <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Print</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>	&#123;</span><br><span class="line">	   <span class="comment">//输出 base</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line">Class myderivedClass:MyBaseClass</span><br><span class="line">&#123;</span><br><span class="line">	<span class="function"><span class="keyword">override</span> <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Print</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>	&#123;</span><br><span class="line">	 <span class="comment">//输出derivedclass</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line">Class SecondDervied:MyDerivedClass</span><br><span class="line">&#123;</span><br><span class="line">	<span class="function"><span class="keyword">override</span> <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Print</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>	&#123;</span><br><span class="line">		<span class="comment">//输出Second</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>几种情况：<br><figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//1.SecondDervied的Print是正常覆写的。</span></span><br><span class="line">SecondDervied secd = <span class="keyword">new</span> SecondDervied() </span><br><span class="line">MyBaseClass mybb = （ MyBaseClass）d；</span><br><span class="line"></span><br><span class="line">secd.print  <span class="comment">//调用的是SecondDervied的方法，这是正常的</span></span><br><span class="line">mybb.print <span class="comment">//调用的也是SecondDervied的方法</span></span><br></pre></td></tr></table></figure></p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//2.使用new声明sec类的Print</span></span><br><span class="line"></span><br><span class="line">SecondDervied d = <span class="keyword">new</span> SecondDervied() </span><br><span class="line">MyBaseClass b = （ MyBaseClass）d；</span><br><span class="line"></span><br><span class="line">d.print  <span class="comment">//调用的是SecondDervied 的方法，这是正常的</span></span><br><span class="line">b.print <span class="comment">//调用的是myderivedClass的方法，也就是说，只向上传递了一级到了myderivedClass override的print方法。sec类的print方法被new屏蔽掉了无法调用。</span></span><br></pre></td></tr></table></figure>
+<p>*属性，事件索引器也是可以被覆写的。</p>
+<p><strong>一些问题</strong></p>
+<ol>
+<li>b可以调用SecondDervied 的方法，是因为它虽然是父类的引用，但堆上有子类的数据所以可以调用子类的方法。如果只是单纯的new了一个父类，是不是就没法调用子类的方法了？</li>
+<li>覆写到底是什么，和覆盖的区别是</li>
+<li>覆写，覆盖，重载？</li>
+</ol>
+<h3 id="5-13-构造函数的执行"><a href="#5-13-构造函数的执行" class="headerlink" title="5.13 构造函数的执行"></a>5.13 构造函数的执行</h3><ul>
+<li>调用对象的基类部分，需要隐式调用基类的某个构造函数作为创建实例过程的一部分。</li>
+<li>继承层次中的每个类在执行自己的构造方法之前执行它的基类构造方法。</li>
+<li>构造方法中调用虚方法是及其不推荐的。</li>
+</ul>
+<p><strong>一些问题：</strong></p>
+<p>如果基类的构造方法没有无参的怎么办还会自动调用吗</p>
+<p><strong>指定构造方法</strong></p>
+<p>派生类使用指定的基类构造函数，或使用指定的派生类构造方法，有两个办法：</p>
+<ol>
+<li><p>使用关键字base并指明使用哪一个基类构造函数 </p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="function">Public <span class="title">aclass</span>(<span class="params"><span class="keyword">int</span> x</span>):<span class="title">base</span>(<span class="params">x</span>)</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用关键字this,并指明使用父类的哪一个构造函数</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="function">Public <span class="title">aclass</span>(<span class="params"><span class="keyword">int</span> x</span>):<span class="title">this</span>(<span class="params">x,<span class="string">"dadasdad"</span></span>)</span></span><br></pre></td></tr></table></figure>
+<p><strong>*</strong>this的一个用处是从多个构造函数中抽离出公用的构造方法代码，书中很推荐这种做法。</p>
+<p><strong>*</strong>还有一种写法，但并不是好办法。抽离出代码，只作为一个公共方法，而不是公共构造方法，这样的坏处有两点：一是编译器知道方法是构造方法后会进行一些优化，第二有些事必须在构造方法中执行，比如readonly字段只能在构造方法中初始化。</p>
+<p><strong>*</strong>当然，如果this抽离的公共构造方法可以初始化类所需要的所有东西，那也可以作为独立有效的构造方法，反之可以设置成private，只能让其他构造方法调用。</p>
+</li>
+</ol>
+<h3 id="5-14-类的访问级别"><a href="#5-14-类的访问级别" class="headerlink" title="5.14 类的访问级别"></a>5.14 类的访问级别</h3><p>类的可访问级别有两种：public和internal。标记为internal的类只能被其所在的程序集中的类看到（程序集不是程序也不是dll，第二十一章讲）。</p>
+<p>*类和成员的访问修饰符是有区别的</p>
+<h3 id="5-15-程序集间的继承"><a href="#5-15-程序集间的继承" class="headerlink" title="5.15 程序集间的继承"></a>5.15 程序集间的继承</h3><p>c#可以从不同的程序集内定义的基类来派生类，不同的程序集派生类需要几个条件：</p>
+<ol>
+<li>基类必须为public，这样才能在外部访问。</li>
+<li>在vs工程中的reference节点添加对包含该基类的程序集的引用。</li>
+</ol>
+<p><strong>*</strong>放置一个using指令，带上要访问的类或类型所在的命名空间就可以不使用完全限定名称。</p>
+<p><strong>*</strong>增加对其他程序集的引用和using指令是两回事。增加引用是告诉编译器所需的类型在哪定义，using只是允许不使用完全限定名称而已。</p>
+<h3 id="5-16-成员访问修饰符"><a href="#5-16-成员访问修饰符" class="headerlink" title="5.16 成员访问修饰符"></a>5.16 成员访问修饰符</h3><p>b类能否访问a类成员，取决于a类的两个特征：</p>
+<ol>
+<li>B是否派生自A。</li>
+<li>.B是否和A在同一个程序集。</li>
+</ol>
+<p>成员默认的访问级别是private，不能比类有更高级别的访问性。</p>
+<p><strong>成员可访问性需要注意的点：</strong></p>
+<ul>
+<li>private类成员只能被自己的类成员访问，不能被继承的类访问。但private类能被嵌套类访问。</li>
+<li>protected的访问级别和private差不多，但它允许派生类访问该成员。（程序集外部继承也能访问）</li>
+<li>internal对程序集内部的所有类可见，对程序集外部的类不可见。</li>
+<li>Protect internal 对所有继承该类以及程序集内部的类可见。是并集，不是交集。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">修饰符</th>
+<th style="text-align:center">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">private</td>
+<td style="text-align:center">只在类的内部可访问。</td>
+</tr>
+<tr>
+<td style="text-align:center">internal</td>
+<td style="text-align:center">对该程序集内所有类可访问。</td>
+</tr>
+<tr>
+<td style="text-align:center">protected</td>
+<td style="text-align:center">对所有继承该类的类可访问。</td>
+</tr>
+<tr>
+<td style="text-align:center">protected internal</td>
+<td style="text-align:center">对所有继承该类或在该程序集内声明的类可访问</td>
+</tr>
+<tr>
+<td style="text-align:center">public</td>
+<td style="text-align:center">对任何类可访问。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="5-17-抽象成员"><a href="#5-17-抽象成员" class="headerlink" title="5.17 抽象成员"></a>5.17 抽象成员</h3><p>抽象成员是被设计为覆盖的函数成员（字段和常量不可以）。</p>
+<p><strong>需要注意的点：</strong></p>
+<ul>
+<li>必须用abstract修饰符标记。不能实现代码。</li>
+<li>抽象成员只能在抽象类中声明。方法，属性，事件，索引可以被声明为抽象的。</li>
+<li>virtual修饰符不能被附加到abstract。</li>
+<li>实现派生类抽象成员，必须指定override修饰符。</li>
+</ul>
+<p>比较虚成员和抽象成员</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>虚成员</th>
+<th>抽象成员</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>关键字</td>
+<td>virtual</td>
+<td>abstract</td>
+</tr>
+<tr>
+<td>实现体</td>
+<td>有实现体。</td>
+<td>没有实现体，分号代替。</td>
+</tr>
+<tr>
+<td>在派生类中被覆写</td>
+<td>能被覆写，使用override。</td>
+<td>必须被覆写，使用override。</td>
+</tr>
+<tr>
+<td>成员的类型</td>
+<td>方法，属性，事件，索引器。</td>
+<td>方法，属性，事件，索引器。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="5-17-抽象类"><a href="#5-17-抽象类" class="headerlink" title="5.17 抽象类"></a>5.17 抽象类</h3><p>抽象类是被设计为继承的类。抽象类只能被用作其他类的基类。</p>
+<p>注意的几点：</p>
+<ul>
+<li>不能创建抽象类的实例。</li>
+<li>抽象类使用abstract修饰符声明。</li>
+<li>抽象类可以包含抽象成员和普通成员。</li>
+<li>抽象类可以派生自另一个抽象类。</li>
+<li>派生自抽象类的类必须使用override关键字实现抽象类的所有抽象成员，除非派生类也是抽象的。</li>
+</ul>
+<h3 id="5-18-密封类"><a href="#5-18-密封类" class="headerlink" title="5.18 密封类"></a>5.18 密封类</h3><p>sealed只能被用作独立的类，不能被当作基类。继承密封类编译器会报错</p>
+<h3 id="5-19-静态类"><a href="#5-19-静态类" class="headerlink" title="5.19 静态类"></a>5.19 静态类</h3><p>静态类中所有成员都是静态的。数学库这样的类就很适合作为静态库。</p>
+<p>注意的几点：</p>
+<ul>
+<li>类必须标记为static</li>
+<li>所有成员必须是静态的</li>
+<li>类可以有一个静态构造函数但不能有实例构造函数。</li>
+<li>静态类是隐式密封的。</li>
+<li>静态类的成员是用过类名调用。</li>
+</ul>
+<h3 id="5-20-扩展方法"><a href="#5-20-扩展方法" class="headerlink" title="5.20 扩展方法"></a>5.20 扩展方法</h3><p>扩展方法允许编写的放和声明他的类之外的类关联。</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line">Static <span class="keyword">class</span> <span class="title">extendmydata</span></span><br><span class="line"></span><br><span class="line">｛</span><br><span class="line"></span><br><span class="line"><span class="function">Public <span class="keyword">static</span> <span class="keyword">double</span> <span class="title">xxx</span>(<span class="params"><span class="keyword">this</span> 类名 md</span>)｛｝</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">｝</span></span><br></pre></td></tr></table></figure>
+<p>注意：</p>
+<ul>
+<li>声明的扩展方法必须声明为static。</li>
+<li>扩张方法必须声明问static。</li>
+<li>.第一个参数类型是this 且后面跟着它想扩展的类名称。</li>
+</ul>
+<h2 id="六-表达式和运算符"><a href="#六-表达式和运算符" class="headerlink" title="六 表达式和运算符"></a>六 表达式和运算符</h2><h3 id="6-1-简述"><a href="#6-1-简述" class="headerlink" title="6.1 简述"></a>6.1 简述</h3><ul>
+<li>表达式求值是将每个运算符应用到它的操作数的过程。</li>
+<li>运算符是符号，表示返回单个结果的操作。运算符会做：将操作数作为输入-执行某个操作-基于该操作返回一个值。比如说：a+b+c+d 就是3个运算符4个操作数。</li>
+<li>操作数是指作为运算符输入的数据元素。</li>
+</ul>
+<p>*表达式和运算符的关系:表达式里包含了运算符。</p>
+<p>运算符需要注意的点：</p>
+<ul>
+<li><p>特殊运算符：可空类型的特殊运算符，空接合运算符。</p>
+</li>
+<li><p>赋值运算符：对运算符右边的表达式求值，并设置为左边变量的值。赋值表达式是一个表达式，所以x=10也是一个值，所以x=z=y=10也是成立的。</p>
+</li>
+<li><p>条件运算符：和If 不一样，if是控制流语句，应当作为控制，控制两个行为执行其中一个。条件运算符返回的是一个表达式，他应该是返回两个值中的一个。</p>
+</li>
+<li><p>typeof运算符：不能重载。一元运算符使用示例：</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line">Type t =<span class="keyword">typeof</span>(someclass);</span><br><span class="line">T.getFields();</span><br><span class="line">T.Getmethod();</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="6-2-字面量"><a href="#6-2-字面量" class="headerlink" title="6.2 字面量"></a>6.2 字面量</h3><p>字面量是明确，固定的值。字面量是写入源代码的，所以它的值必须在编译时可知。</p>
+<ul>
+<li>整数字面量：可以是 123，123L，123U（无符号整型）,123UL（无符号长整形）,或者是16进制。对于已知后缀，编译器会把数字字符串解释为能表示该值而不丢失数据的最小类型。</li>
+<li>实数字面量：6.2698e-12 ，123.31F.注意无后缀的实数字面量是double类型。</li>
+<li>字符字面量：类型是char，简单转移数序列是反斜杠加单个字符 \n这种。</li>
+<li>常规字符串字面量：包含字符，简单转移序列，16进制和Unicode转移序列。</li>
+<li>逐字字符串字面量：有一个@作为前缀，并且转义字符串不会被求值。都会被打印出来。有一个例外是双引号组会被解释为单个双引号字符。</li>
+</ul>
+<p><strong>*</strong>编译器会让相同的字符串字面量共享堆中同一内存位置以节约内存。</p>
+<h3 id="6-3-求值顺序"><a href="#6-3-求值顺序" class="headerlink" title="6.3 求值顺序"></a>6.3 求值顺序</h3><p>赋值运算符和条件是最低的，其次是位或与，接着是相等，然后是移位，移位上面是加减乘除。初级运算符（语言中的. 方法调用，索引，自增，new）是最高的，其次是一元运算符（+-!~）。</p>
+<p><strong>*</strong>注意：之前上学的时候有讲过++x和x++的区别，在c#中，x++是初级运算符，++x是一元运算符。所以说他们是两种不一样的操作。</p>
+<h3 id="6-4-关系比较运算符和相等比较运算符"><a href="#6-4-关系比较运算符和相等比较运算符" class="headerlink" title="6.4 关系比较运算符和相等比较运算符"></a>6.4 关系比较运算符和相等比较运算符</h3><p>关系比较运算符和相等比较运算符就是&lt; =&gt;，比较操作数并返回bool类型值。</p>
+<p>C#中数字不具备布尔意义。</p>
+<p>这有一个疑问，实际上我在StackOverflow上有看过关于这个解释，因为false是0的表示，所以取反是true的同时，0取反也恰好是1，不知道c#是不是有这个意思。</p>
+<h4 id="6-4-1-浅比较"><a href="#6-4-1-浅比较" class="headerlink" title="6.4.1 浅比较"></a>6.4.1 浅比较</h4><p>比较两个引用类型的相等性时，一般是比较它们的引用。如果引用相等，就意味着两个变量都指向内存中同一个对象，相等性比较为true。如果两个变量不指向同一个对象，哪怕是两个对象的数据完全一致也是false。</p>
+<h4 id="6-4-2-深比较"><a href="#6-4-2-深比较" class="headerlink" title="6.4.2 深比较"></a>6.4.2 深比较</h4><p>string类型的对象也是引用类型，但是他的比较方式不同。比较时会比较内容（区分大小写）和长度。即使两个string占据不同的内存区域，但长度和内容相等，那相等性比较的也是true。</p>
+<p><strong>*</strong>委托使用的也是深比较。不看内存位置，只看内容。</p>
+<h3 id="6-5-条件逻辑运算符"><a href="#6-5-条件逻辑运算符" class="headerlink" title="6.5 条件逻辑运算符"></a>6.5 条件逻辑运算符</h3><p>短路操作：如果 expr1&amp;&amp;expr2 或 expr1&amp;&amp;expr2 中expr1的结果已经确定了就会跳过expr2的值。</p>
+<p>因为短路操作的存在，所以不要在expr2中放置带副作用的表达式。</p>
+<h3 id="6-6-逻辑运算符"><a href="#6-6-逻辑运算符" class="headerlink" title="6.6 逻辑运算符"></a>6.6 逻辑运算符</h3><table>
+<thead>
+<tr>
+<th>运算符</th>
+<th>名称</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>&amp;</td>
+<td>位与</td>
+<td>仅当两个操作位都为1时结果位才是1。</td>
+</tr>
+<tr>
+<td>\</td>
+<td></td>
+<td>位或</td>
+<td>只要任意一个操作位为1结果位就是1。</td>
+</tr>
+<tr>
+<td>^</td>
+<td>位异或</td>
+<td>仅当一个而不是两个操作数为1时结果位为1。</td>
+</tr>
+<tr>
+<td>~</td>
+<td>位非</td>
+<td>一元操作符。操作数的每一个位都取反。该操作得到操作数的二进制反码。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="6-7-移位运算符"><a href="#6-7-移位运算符" class="headerlink" title="6.7 移位运算符"></a>6.7 移位运算符</h3><h4 id="6-7-1-补码"><a href="#6-7-1-补码" class="headerlink" title="6.7.1 补码"></a>6.7.1 补码</h4><p>底层使用二进制补码的形式表示有符号二进制数。正数使用正常的二进制形式，如果取一个数的相反数需要把这个数按位取反再加一。二进制补码中所有的负数最左边的比特位置都是1。</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="number">0</span>|<span class="number">0</span>|<span class="number">0</span>|<span class="number">0</span>|<span class="number">1</span>|<span class="number">1</span>|<span class="number">0</span>|<span class="number">0</span> <span class="comment">//12</span></span><br><span class="line"><span class="number">1</span>|<span class="number">1</span>|<span class="number">1</span>|<span class="number">1</span>|<span class="number">0</span>|<span class="number">0</span>|<span class="number">1</span>|<span class="number">1</span> <span class="comment">//按位取反</span></span><br><span class="line"><span class="number">1</span>|<span class="number">1</span>|<span class="number">1</span>|<span class="number">1</span>|<span class="number">0</span>|<span class="number">1</span>|<span class="number">0</span>|<span class="number">0</span> <span class="comment">//+1 二进制补码 -12</span></span><br></pre></td></tr></table></figure>
+<p>若直接将10111111转换成十进制，发现结果并不是-65，而是191。 事实上，在计算机内，如果是一个二进制数，其最左边的位是1，则我们可以判定它为负数，并且是用补码表示。 若要得到一个负二进制补码的数值，只要对补码全部取反并加1，就可得到其数值。所以说当要使用一个负数时，是有一层补码的转换的。</p>
+<h4 id="6-7-2-移位运算完成乘法"><a href="#6-7-2-移位运算完成乘法" class="headerlink" title="6.7.2 移位运算完成乘法"></a>6.7.2 移位运算完成乘法</h4><p>通过位移可以迅速的完成乘法，比如把整数左移一位的结果和乘2的结果是相同的，右移一位的结果和除以2相同，移掉的位置补0。</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//乘法</span></span><br><span class="line"><span class="number">0</span>|<span class="number">0</span>|<span class="number">0</span>|<span class="number">0</span>|<span class="number">1</span>|<span class="number">1</span>|<span class="number">1</span>|<span class="number">0</span> <span class="comment">//14</span></span><br><span class="line"><span class="number">0</span>|<span class="number">1</span>|<span class="number">1</span>|<span class="number">1</span>|<span class="number">0</span>|<span class="number">0</span>|<span class="number">0</span>|<span class="number">0</span> <span class="comment">//14 &lt;&lt; 3 = 112</span></span><br><span class="line"><span class="comment">//除法</span></span><br><span class="line"><span class="number">0</span>|<span class="number">0</span>|<span class="number">0</span>|<span class="number">0</span>|<span class="number">1</span>|<span class="number">1</span>|<span class="number">1</span>|<span class="number">0</span> <span class="comment">//14</span></span><br><span class="line"><span class="number">0</span>|<span class="number">0</span>|<span class="number">0</span>|<span class="number">0</span>|<span class="number">0</span>|<span class="number">0</span>|<span class="number">0</span>|<span class="number">1</span> <span class="comment">//14 &gt;&gt; 3 = 1</span></span><br></pre></td></tr></table></figure>
+<p>但是在负数中右移会有问题，右移一位左边补0的话就变成了正数，所以，当操作数是有符号负数时，如果最左边的位是1，在左边移开的位位置用1填充，而不是0。正数还照常。</p>
+<h3 id="6-8-类型转换"><a href="#6-8-类型转换" class="headerlink" title="6.8 类型转换"></a>6.8 类型转换</h3><p>隐式转换：如果有必要，编译器会自动执行转换。</p>
+<p>显示转换：编译器只在使用显示转换运算符时才执行转换。</p>
+<h4 id="6-8-1-用户定义转换"><a href="#6-8-1-用户定义转换" class="headerlink" title="6.8.1 用户定义转换"></a>6.8.1 用户定义转换</h4><p>声明隐式转换：</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line">pulic <span class="keyword">static</span> <span class="keyword">implicit</span> <span class="keyword">operator</span> TargetType（Sourcetype identifier）</span><br><span class="line">&#123; Return objectoftargettype；&#125;</span><br></pre></td></tr></table></figure>
+<p>声明显示转换：</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line">pulic <span class="keyword">static</span> <span class="keyword">explicit</span> <span class="keyword">operator</span> TargetType（Sourcetype identifier）</span><br><span class="line">&#123;Return objectoftargettype；&#125;</span><br></pre></td></tr></table></figure>
+<p>public和static是必须的。</p>
+<h3 id="6-9-运算符重载"><a href="#6-9-运算符重载" class="headerlink" title="6.9 运算符重载"></a>6.9 运算符重载</h3><p>运算符重载只能用于类和结构。</p>
+<p>一元重载运算符的重载方法：</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> LimitedInt <span class="keyword">operator</span>-(LimitedInt x)</span><br></pre></td></tr></table></figure>
+<p>二元重载运算符的重载方法：</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> LimitedInt <span class="keyword">operator</span>+(LimitedInt x，<span class="keyword">double</span> y)</span><br></pre></td></tr></table></figure>
+<p>可以重载的符号：</p>
+<ul>
+<li>一元运算符：+，-，!，~，++，–，true,false。</li>
+<li>二元运算符：+，-，*，/，%，&amp;，|，^，&lt;&lt;，&gt;&gt;，==，!=，&gt;，&lt;，&gt;=，&lt;=</li>
+</ul>
+<p>重载的符号不可以做的事情：</p>
+<ul>
+<li>创建新运算符</li>
+<li>改变运算符语法</li>
+<li>重新定义运算符如何处理预定义类型</li>
+<li>改变运算符的优先级或结合性</li>
+</ul>
+<h2 id="七-语句"><a href="#七-语句" class="headerlink" title="七 语句"></a>七 语句</h2><h3 id="7-1-什么是语句"><a href="#7-1-什么是语句" class="headerlink" title="7.1 什么是语句"></a>7.1 什么是语句</h3><p>简单语句由一个表达式和后面跟着的分号组成。</p>
+<p>块是由一对大括号括起来的语句序列。括起来的语句可以包括：</p>
+<ul>
+<li>声明语句</li>
+<li>嵌入语句</li>
+<li>标签语句</li>
+<li>嵌套块。</li>
+</ul>
+<h3 id="7-2-表达式语句"><a href="#7-2-表达式语句" class="headerlink" title="7.2 表达式语句"></a>7.2 表达式语句</h3><p>表达式有返回值，但实际上表达式也有副作用。副作用是一种影响程序状态的行为，许多表达式求值只是为了他们的副作用，比如说x=10这个赋值表达式（由一个运算符和两个操作数组成），实质上我们只是想给x赋值，但给x赋值只是副作用。表达式的主要目的返回x的新值由于没人接收反而被忽略了。</p>
+<p>可以在表达式的后面防止语句终结符，分号；来从一个表达式创建一条语句。表达式返回的值会被丢弃。</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line">x=<span class="number">10</span>; <span class="comment">//表示计算这个表达式的全部原因就是为了完成这个副作用。</span></span><br></pre></td></tr></table></figure>
+<h3 id="7-3-控制流语句"><a href="#7-3-控制流语句" class="headerlink" title="7.3 控制流语句"></a>7.3 控制流语句</h3><p>控制流结构：条件执行，循环语句，跳转语句。</p>
+<p>条件执行和循环结构（除了foreach）都需要一个测试表达式或条件来决定怎么执行。</p>
+<p>*注意foreach不能在循环时删减遍历元素。</p>
+<h3 id="7-7-do语句"><a href="#7-7-do语句" class="headerlink" title="7.7 do语句"></a>7.7 do语句</h3><p>即使条件为false，do也会至少执行一次。</p>
+<p>:grey_question: 如果在while里改变了了测试表达式的值怎么办</p>
+<h3 id="7-8-for语句"><a href="#7-8-for语句" class="headerlink" title="7.8 for语句"></a>7.8 for语句</h3><figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span>(initiallizer;testexpr;iterationexpr)</span><br><span class="line">&#123;</span><br><span class="line">    statement;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>initiallizer只执行一次，在所有for结构其他部分之前。initiallizer中的变量只在改for语句的内部可见。</p>
+<h3 id="7-9-swich语句"><a href="#7-9-swich语句" class="headerlink" title="7.9 swich语句"></a>7.9 swich语句</h3><ul>
+<li>每个分支以一个或多个分支标签case开始。</li>
+<li>每个分支末尾必须是break结束或者其他四种跳转语句。所以说，不是说一个case分支可以不写跳转语句而去读了下一个case的语句，而是，其实他们两个是一个分支语句，但是有两个分支标签。</li>
+<li>分支标签会按顺序求值，如果case和swtich的测试表达式一致则执行该分支。然后跳到swtich语句底部。</li>
+<li>如果写了default，那一定要写跳转语句。</li>
+<li>case后面的分支标签是常量表达式，必须在编译的时候就完全获取到运算结果。</li>
+<li>与c和c++不同，每个switch段，包括default必须以一个跳转语句结尾，也不可以执行一个switch段中的代码然后直接执行接下来的部分。c#不允许一个分支到另一个分支。</li>
+</ul>
+<h3 id="7-10-跳转语句"><a href="#7-10-跳转语句" class="headerlink" title="7.10 跳转语句"></a>7.10 跳转语句</h3><p>break跳出最内层的封装语句。</p>
+<p>continue转到最内层的封装语句的顶端</p>
+<h4 id="7-10-1-标签语句"><a href="#7-10-1-标签语句" class="headerlink" title="7.10.1 标签语句"></a>7.10.1 标签语句</h4><p>标签语句主要用于goto语句。</p>
+<ul>
+<li>标签语句的形式：Identifier：statement</li>
+<li>标签语句会执行statement，不会执行任何identifier有关的东西。</li>
+<li>标签语句有自己的声明空间，所以和作用域内的其他标识符重复也没关系。</li>
+<li>标签语句不能是关键字，或在范围内和其他标签标识符相同。</li>
+</ul>
+<p>作用域：声明所在的块，嵌套在该块内部的块。</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line">xyz：x=<span class="number">10</span>;</span><br></pre></td></tr></table></figure>
+<h4 id="7-10-2-goto语句"><a href="#7-10-2-goto语句" class="headerlink" title="7.10.2 goto语句"></a>7.10.2 goto语句</h4><p>goto语句无条件转移控制到一个标签语句</p>
+<p>goto也可以把控制转移到switch语句内部的标签中</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">goto</span> <span class="keyword">case</span> constantexpression</span><br><span class="line"><span class="keyword">goto</span> <span class="keyword">default</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="7-11-using语句"><a href="#7-11-using语句" class="headerlink" title="7.11 using语句"></a>7.11 using语句</h3><p>using语句用于简化释放非托管对象资源，被适当的dispose。资源是指实现了system.idisposable接口的类或者结构。idisposable接口中含有一个名称为dispose的方法。</p>
+<p><strong>*</strong>using指令不等同于using语句。</p>
+<p>using语句帮助减少了意外的运行错误带来的潜在问题，常规的资源使用流程:</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//1.分配资源</span></span><br><span class="line">ResType Resource = <span class="keyword">new</span> ResType(....);</span><br><span class="line"></span><br><span class="line"><span class="comment">//2.使用资源,如果这一段发生异常，Dispose将不被调用。</span></span><br><span class="line"><span class="comment">//使用Resource的语句</span></span><br><span class="line">...</span><br><span class="line"><span class="comment">//异常导致控制转移出方法之外，步骤3将不会被调用。</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//3.处置资源</span></span><br><span class="line">Resource.Dispose;</span><br></pre></td></tr></table></figure>
+<p>使用using语句的方式：</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//圆括号内的代码分配资源</span></span><br><span class="line"><span class="comment">//statement是使用资源的代码</span></span><br><span class="line"><span class="comment">//using语句隐式产生处置该资源的代码。</span></span><br><span class="line"><span class="keyword">using</span>(ResType res = Expression)Statement</span><br></pre></td></tr></table></figure>
+<p>using语句的内部原理：</p>
+<ol>
+<li>分配资源</li>
+<li>把statement放进try块</li>
+<li>创建资源的dispose方法的调用，并放进finally块。</li>
+</ol>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">using</span>(ResType res = <span class="keyword">new</span> ResType(....) )Statement</span><br><span class="line"></span><br><span class="line"><span class="comment">//内部是这样的：</span></span><br><span class="line">&#123;</span><br><span class="line">    ResType res = <span class="keyword">new</span> ResType(....);</span><br><span class="line">    <span class="keyword">try</span></span><br><span class="line">    &#123;</span><br><span class="line">        Statement</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">finally</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//由using语句隐式提供</span></span><br><span class="line">        Dispose of resource</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>多种using语句的使用实例：</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> System.IO;</span><br><span class="line"><span class="keyword">namespace</span> <span class="title">UsingStatement</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">class</span> <span class="title">Program</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">using</span>(TextWriter tw = File.CreateText(<span class="string">"L.txt"</span>))</span><br><span class="line">            &#123;</span><br><span class="line">                tw.WriteLine(<span class="string">"YYY"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">            <span class="comment">//也可以用于相同类型的多个资源</span></span><br><span class="line">            <span class="keyword">using</span>(TextWriter tw = File.CreateText(<span class="string">"L1.txt"</span>)</span><br><span class="line">                 			 tw2 = File.CreateText(<span class="string">"L2.txt"</span>))</span><br><span class="line">            &#123;</span><br><span class="line">                tw.WriteLine(<span class="string">"zzzzz"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">            <span class="comment">//也可以嵌套</span></span><br><span class="line">            <span class="keyword">using</span>(TextWriter tw = File.CreateText(<span class="string">"L1.txt"</span>))</span><br><span class="line">            &#123;</span><br><span class="line">              <span class="keyword">using</span>(TextWriter tw = File.CreateText(<span class="string">"L3.txt"</span>))</span><br><span class="line">            	&#123;</span><br><span class="line">                tw.WriteLine(<span class="string">"XXXX"</span>);</span><br><span class="line">            	&#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//另一种形式 using(资源)使用资源</span></span><br><span class="line">            <span class="comment">//这种形式也能确保调用dispose方法，</span></span><br><span class="line">            <span class="comment">//但不能防止using语句已经释放了他的非托管资源后使用该资源。</span></span><br><span class="line">            <span class="comment">//资源声明和之前的声明已经不同了，是在try的外面。</span></span><br><span class="line">            TextWriter tw = File.CreateText(<span class="string">"L4.txt"</span>);</span><br><span class="line">            <span class="keyword">using</span>(tw)</span><br><span class="line">                tw.WriteLine(<span class="string">"ccccc"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>Program</category>
       </categories>
       <tags>
-        <tag>Hexo</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>UI框架笔记</title>
-    <url>/2019/12/15/UI%E6%A1%86%E6%9E%B6%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<p>s</p>
-<a id="more"></a>
-<h2 id="一-设计模式"><a href="#一-设计模式" class="headerlink" title="一 设计模式"></a>一 设计模式</h2><h3 id="1-工厂模式"><a href="#1-工厂模式" class="headerlink" title="1.工厂模式"></a>1.工厂模式</h3><p>所有对象的创造，都由同一个对象去创造</p>
-<p>简单来说： 向工厂类或者方法传入一个参数，会得到一个new出来的对应对象。</p>
-<h3 id="2-存储讲解"><a href="#2-存储讲解" class="headerlink" title="2.存储讲解"></a>2.存储讲解</h3><p>一些知识点(因为教程中工厂创建类是根据 参数 == “类名” 来区分的)：</p>
-<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">string</span> tmpa = <span class="string">"hello"</span>; String tmpb = <span class="string">"hello"</span>;</span><br></pre></td></tr></table></figure>
-<p>刚刚记笔记的时候简写了直接赋值常量字符串，这样是不能观察出去别的，必须像下图一样new出来</p>
-<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">string</span> tmpA = <span class="keyword">new</span> <span class="keyword">string</span> (<span class="keyword">new</span> <span class="keyword">char</span>[])&#123;<span class="string">'H'</span>,<span class="string">'L'</span>&#125;);</span><br><span class="line"><span class="keyword">string</span> tmpB = <span class="keyword">new</span> <span class="keyword">string</span> (<span class="keyword">new</span> <span class="keyword">char</span>[])&#123;<span class="string">'H'</span>,<span class="string">'L'</span>&#125;);</span><br><span class="line">Debug.Log(tempA == tempB);</span><br><span class="line">Debug.Log(tempA.Equals(tempB));</span><br></pre></td></tr></table></figure>
-<p>（两个都是true）</p>
-<p>Equal 对比的是变量的地址是否相等 ==比较的是内容是否一样 除了string类型（string较特殊 字符串是共享的 equal对于string对比的是内容。）</p>
-<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//zhan 1001</span></span><br><span class="line"><span class="keyword">object</span> tmpC = tempA;</span><br><span class="line"><span class="comment">//zhan 1002</span></span><br><span class="line"><span class="keyword">object</span> tmpD = tmpB;</span><br><span class="line"></span><br><span class="line">Debug.Log(<span class="string">"tmpc == tmpD"</span>)</span><br><span class="line">Debug.Log(tmpc ==tempD);</span><br><span class="line"></span><br><span class="line">Debug.Log(tempD.<span class="keyword">equals</span>(tempC));</span><br></pre></td></tr></table></figure>
-<p>答案是 false true</p>
-<p>因为虽然是tempd.equal 但是tempd实质上是tempb传过来的，并且equal被重载所以还是在比较string的内容</p>
-<p>注意 == 号是可以被重载的：</p>
-<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">bool</span> <span class="keyword">operator</span> ==(Vecter Ihs ,Vecter rhs)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span>(exp)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>同时需要重载 != 不然会报错。</p>
-<h4 id="参数传递"><a href="#参数传递" class="headerlink" title="参数传递"></a>参数传递</h4><ol>
-<li><p>按值传递值类型</p>
-</li>
-<li><p>按值传递引用类型</p>
-</li>
-<li><p>按引用传递值类型</p>
-</li>
-<li><p>按引用传递引用类型</p>
-</li>
-</ol>
-<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Food</span>(<span class="params"><span class="keyword">int</span> x</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    x = <span class="number">10</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//按值传递引用类型</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Food2</span>(<span class="params"><span class="keyword">ref</span> <span class="keyword">int</span> temp</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    tempX = <span class="number">10</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Food3</span>(<span class="params">Vecter tmpVect1</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    tempVect1.xx = <span class="number">10</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Food4</span>(<span class="params">Vecter tempVect2</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Vecter tmpVect = <span class="keyword">new</span> Vecter(<span class="number">10</span>);</span><br><span class="line">    tmpVect2 = tempVect;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Food5</span>(<span class="params"><span class="keyword">ref</span> Vecter tmpVect2</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Vecter tmpVect = <span class="keyword">new</span> Vecter(<span class="number">10</span>);</span><br><span class="line">    </span><br><span class="line">    tmpVect2 = tmpVect;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>需要说一下 ： Food4接受的参数是，参数里的对象在堆上所在的地址。而不是参数在栈上的地址。 自始至终 都是在做值传递。</p>
-<p>food5加了ref 所以参数传了栈的值</p>
-<h3 id="3-策略模式"><a href="#3-策略模式" class="headerlink" title="3.策略模式"></a>3.策略模式</h3><p>API传一个参数，得到不同的答案<br>一般做一些算法处理。<br>根据不同的参数做不同的处理。<br>多态的补充： 父类的指针 指向子类 再调用子类的方法。 eg： personnal（子类对象） person = new personstrage(子类构造方法)<br>也可以是 stragenase（父类对象） sb = new personstrage（子类构造方法）<br>override的方法 当子类以父类形式调用方法时，调用的时子类的override的方法。</p>
-<h3 id="4-观察者模式"><a href="#4-观察者模式" class="headerlink" title="4.观察者模式"></a>4.观察者模式</h3><p>观察者每隔一段时间去询问对象工作是否完成</p>
-<p>缺点： 经常询问，效率比较低。</p>
-<h3 id="5-代理模式"><a href="#5-代理模式" class="headerlink" title="5.代理模式"></a>5.代理模式</h3><p>对象完成工作后通知代理</p>
-<p>优点：完成任务后主动通知，不浪费性能</p>
-<p>能用代理模式的时候，不要使用观察者模式。</p>
-<p>和观察者模式不一样的地方在于，虽然对象在两种模式下都是每一帧在工作（比如播放动画），但是代理模式下，调用者不需要去每帧检查。而观察者模式下，调用者需要每帧检查。</p>
-<p><img src="/2019/12/15/UI框架笔记/C:/Users\Sayi1\AppData\Roaming\Typora\typora-user-images\image-20191215161524583.png" alt="image-20191215161524583" style="zoom:50%;"></p>
-<p>在干活的人多的时候，代理模式去向调用层报告要比观察者模式好得多。</p>
-<p>观察者模式和代理模式的优缺点。</p>
-<h3 id="6-单例模式"><a href="#6-单例模式" class="headerlink" title="6.单例模式"></a>6.单例模式</h3><p>单例模式存在一些问题：</p>
-<p>单例对象之间的交叉问题。代码混乱。</p>
-<p>尽量少用单例，要分析场景是否适合。</p>
-<h3 id="7-门面模式"><a href="#7-门面模式" class="headerlink" title="7.门面模式"></a>7.门面模式</h3><ol>
-<li><p>管理的东西，没有关联的逻辑关系 </p>
-</li>
-<li><p>但是把这些东西集合，可以形成一个功能。</p>
-</li>
-</ol>
-<p><img src="/2019/12/15/UI框架笔记/C:/Users\Sayi1\AppData\Roaming\Typora\typora-user-images\image-20191215161620196.png" alt="image-20191215161620196" style="zoom:50%;"></p>
-<h3 id="8-建造模式"><a href="#8-建造模式" class="headerlink" title="8.建造模式"></a>8.建造模式</h3><p><img src="/2019/12/15/UI框架笔记/C:/Users\Sayi1\AppData\Roaming\Typora\typora-user-images\image-20191215161644256.png" alt="image-20191215161644256"></p>
-<p>什么是assetbundle：比如说一个图片资源，和一个text文本资源，打成一个文件 test.u3d 这个u3d就是assetbundle。</p>
-<p>案例中写了两个类  一个是从内存中读取assetbundle：IABResuse。另一个是从硬盘中：AssetbundleLoad</p>
-<p>上层调用-&gt;AssetbundleLoad到内存-&gt;Assetbundle.LoadAsset</p>
-<p>自上而下的 每一个环节都提供不同的功能 分工明确。</p>
-<p>也叫责任链模式</p>
-<h3 id="9-中介者模式"><a href="#9-中介者模式" class="headerlink" title="9.中介者模式"></a>9.中介者模式</h3><p>迪米特原则  最少的引用其他类</p>
-<p>中介者模式就是这个原则。</p>
-<p>一个面试题：</p>
-<p><img src="/2019/12/15/UI框架笔记/C:/Users\Sayi1\AppData\Roaming\Typora\typora-user-images\image-20191215161738292.png" alt="image-20191215161738292"></p>
-<p>点乘 叉乘</p>
-<p><img src="/2019/12/15/UI框架笔记/C:/Users\Sayi1\AppData\Roaming\Typora\typora-user-images\image-20191215161749804.png" alt="image-20191215161749804"></p>
-<p>先判断夹角是否小于九十度 小于证明 npc在前方。</p>
-<p>然后判断x和y的投影。</p>
-<p><img src="/2019/12/15/UI框架笔记/C:/Users\Sayi1\AppData\Roaming\Typora\typora-user-images\image-20191215161807283.png" alt="image-20191215161807283"></p>
-<h2 id="零-问题"><a href="#零-问题" class="headerlink" title="零 问题"></a>零 问题</h2><p>对象为什么都在堆中？</p>
-<p>堆 栈 全局变量区 程序存储的三个区域 栈也有地址吗</p>
-<p>为什么 tempc == tempd 是false，因为类没有定义==重载吗？</p>
-]]></content>
-      <categories>
-        <category>Program</category>
-      </categories>
-      <tags>
-        <tag>Unity</tag>
+        <tag>CSharp</tag>
       </tags>
   </entry>
   <entry>
     <title>Unity插件：AStarPathfinding寻路系统（中）</title>
-    <url>/2019/12/11/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F%EF%BC%88%E4%B8%AD%EF%BC%89/</url>
+    <url>/2019/12/11/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F%EF%BC%88%E4%B8%AD%EF%BC%89/</url>
     <content><![CDATA[<p>本为为AStarPathfinding寻路系统介绍中篇，主要讲解演示。</p>
 <a id="more"></a>
 <h1 id="基础寻路网格生成"><a href="#基础寻路网格生成" class="headerlink" title="基础寻路网格生成"></a>基础寻路网格生成</h1><h2 id="1-1-Grid-Graph"><a href="#1-1-Grid-Graph" class="headerlink" title="1.1 Grid Graph"></a>1.1 Grid Graph</h2><p><strong>（1）</strong>准备工作：场景中添加Plane，障碍物。为Plane添加一个Layer（我的命名是Ground）。为所有的障碍物添加一个Layer（Obs），注意障碍物要添加Box Collider组件。新建一个空物体，并添加<strong>Astar Path</strong>组件。</p>
-<p><strong>（2）</strong>准备完成后，在Astar Path中添加<strong>Grid Graph</strong>，并设置网格图的长宽以足够覆盖整个Plane。根据障碍物的可攀爬高度设置<strong>Max Cilb</strong>。将Collison Testing中的<strong>Obstacle Layer</strong> Mask设置为障碍物所在的图层（Obs）。将<strong>Height Tesing</strong>中的Mask设置为Plane所在的图层（Ground）。<br><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（中）/97475890.jpg" alt="img"></p>
+<p><strong>（2）</strong>准备完成后，在Astar Path中添加<strong>Grid Graph</strong>，并设置网格图的长宽以足够覆盖整个Plane。根据障碍物的可攀爬高度设置<strong>Max Cilb</strong>。将Collison Testing中的<strong>Obstacle Layer</strong> Mask设置为障碍物所在的图层（Obs）。将<strong>Height Tesing</strong>中的Mask设置为Plane所在的图层（Ground）。<br><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统/Unity插件：AStarPathfinding寻路系统（中）/97475890.jpg" alt="img"></p>
 <p>设置完成后点击Scan，效果如图：</p>
-<p><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（中）/16226371.jpg" alt="img"></p>
+<p><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统/Unity插件：AStarPathfinding寻路系统（中）/16226371.jpg" alt="img"></p>
 <p><strong>（3）</strong> 为人物添加寻路功能：首先添加<strong>Seeker</strong>组件，然后添加AIPah（或者RichAI，适用于NavMesh）最后添加让物体执行寻路的代码：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">c#</span><br><span class="line">using UnityEngine;</span><br><span class="line">using System.Collections;</span><br><span class="line">using Pathfinding;</span><br><span class="line">public class AstarAI : MonoBehaviour</span><br><span class="line">&#123;</span><br><span class="line">public Transform target;</span><br><span class="line">public void Start()</span><br><span class="line">&#123;</span><br><span class="line">//Get a reference to the Seeker component we added earlier</span><br><span class="line">Seeker seeker = GetComponent&lt;Seeker&gt;();</span><br><span class="line">//Start a new path to the targetPosition, return the result to the OnPathComplete function</span><br><span class="line">seeker.StartPath(transform.position, target.position, OnPathComplete);</span><br><span class="line">&#125;</span><br><span class="line">public void OnPathComplete(Path p)</span><br><span class="line">&#123;</span><br><span class="line">Debug.Log(&quot;Yay, we got a path back. Did it have an error? &quot; + p.error);</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>运行后，会显示如图的绿色寻路路径，如果未显示，检查seeker脚本中的Draw Gizmos选项是否勾选。<br><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（中）/84506670.jpg" alt="img"></p>
+<p>运行后，会显示如图的绿色寻路路径，如果未显示，检查seeker脚本中的Draw Gizmos选项是否勾选。<br><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统/Unity插件：AStarPathfinding寻路系统（中）/84506670.jpg" alt="img"></p>
 <p>将Shape属性改为Hexagonal可以将网格更改为六边形：</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding中/Image 0011551784583.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（中）/Image 0011551784583.png" alt="Image 0011551784583.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding中/Image 0011551784583.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统/Unity插件：AStarPathfinding寻路系统（中）/Image 0011551784583.png" alt="Image 0011551784583.png"></a></p>
 <p>也可以修改为适用于ISO的寻路网格：</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding中/Image 0011551784750.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（中）/Image 0011551784750.png" alt="Image 0011551784750.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding中/Image 0011551784750.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统/Unity插件：AStarPathfinding寻路系统（中）/Image 0011551784750.png" alt="Image 0011551784750.png"></a></p>
 <h2 id="1-2-NavMesh-Graph"><a href="#1-2-NavMesh-Graph" class="headerlink" title="1.2 NavMesh Graph"></a>1.2 NavMesh Graph</h2><h2 id="1-3-Point-Graph"><a href="#1-3-Point-Graph" class="headerlink" title="1.3 Point Graph"></a>1.3 Point Graph</h2><p>（1）场景内添加添加物体和上面的图也一样，不过过多了一个如图的<strong>Way</strong>节点，用于当作路点使用。在Way中添加一些Cube充当路点。</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding中/Image 0011551672728.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（中）/Image 0011551672728.png" alt="Image 0011551672728.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding中/Image 0011551672728.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统/Unity插件：AStarPathfinding寻路系统（中）/Image 0011551672728.png" alt="Image 0011551672728.png"></a></p>
 <p>（2）在A*组件中添加Point Graph。并将<strong>Root属性</strong>设置为Way。</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding中/Image 0011551672544.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（中）/Image 0011551672544.png" alt="Image 0011551672544.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding中/Image 0011551672544.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统/Unity插件：AStarPathfinding寻路系统（中）/Image 0011551672544.png" alt="Image 0011551672544.png"></a></p>
 <p>（3）点击Scan即可。</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding中/Image 0011551672681.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（中）/Image 0011551672681.png" alt="Image 0011551672681.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding中/Image 0011551672681.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统/Unity插件：AStarPathfinding寻路系统（中）/Image 0011551672681.png" alt="Image 0011551672681.png"></a></p>
 <h2 id="1-4-Recast-Graph"><a href="#1-4-Recast-Graph" class="headerlink" title="1.4 Recast Graph"></a>1.4 Recast Graph</h2><p><strong>（1）</strong>和1.1的Grid做一样的准备工作</p>
 <p><strong>（2）</strong>在AstarPath组件中添加RecastGraph。</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding中/Image 0011551669627.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（中）/Image 0011551669627.png" alt="Image 0011551669627.png"></a></p>
-<p><strong>（3）</strong>点击Snap Bounds按钮，组件会自动适配场景中的地形。<a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding中/Image 0011551671673.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（中）/Image 0011551671673.png" alt="Image 0011551671673.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding中/Image 0011551669627.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统/Unity插件：AStarPathfinding寻路系统（中）/Image 0011551669627.png" alt="Image 0011551669627.png"></a></p>
+<p><strong>（3）</strong>点击Snap Bounds按钮，组件会自动适配场景中的地形。<a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding中/Image 0011551671673.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统/Unity插件：AStarPathfinding寻路系统（中）/Image 0011551671673.png" alt="Image 0011551671673.png"></a></p>
 <p><strong>（4）</strong>点击Scan 生成NavMesh</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding中/Image 0011551671933.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（中）/Image 0011551671933.png" alt="Image 0011551671933.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding中/Image 0011551671933.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统/Unity插件：AStarPathfinding寻路系统（中）/Image 0011551671933.png" alt="Image 0011551671933.png"></a></p>
 <p><strong>（5）</strong>寻路脚本的添加和1.1一样，不再介绍。</p>
 <h2 id="1-5-Layered-Grid-Graph"><a href="#1-5-Layered-Grid-Graph" class="headerlink" title="1.5 Layered Grid Graph"></a>1.5 Layered Grid Graph</h2><p>Layered 图和Grid图的生成方式一样，但Layered图可以分辨出台阶和地面，如图：</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding中/Image 0011551684240.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（中）/Image 0011551684240.png" alt="Image 0011551684240.png"></a></p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding中/Image 0011551684260.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（中）/Image 0011551684260.png" alt="Image 0011551684260.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding中/Image 0011551684240.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统/Unity插件：AStarPathfinding寻路系统（中）/Image 0011551684240.png" alt="Image 0011551684240.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding中/Image 0011551684260.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统/Unity插件：AStarPathfinding寻路系统（中）/Image 0011551684260.png" alt="Image 0011551684260.png"></a></p>
 <p>Layered图中可以明确的分出台阶和地面</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding中/Image 0011551775319.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（中）/Image 0011551775319.png" alt="Image 0011551775319.png"></a><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding中/Image 0011551775716.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E4%B8%AD/Image%200011551775716.png" alt="Image 0011551775716.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding中/Image 0011551775319.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统/Unity插件：AStarPathfinding寻路系统（中）/Image 0011551775319.png" alt="Image 0011551775319.png"></a><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding中/Image 0011551775716.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E4%B8%AD/Image%200011551775716.png" alt="Image 0011551775716.png"></a></p>
 <p>Grid会将台阶下面的区域设定为不可走</p>
 <h1 id="一些常用场景"><a href="#一些常用场景" class="headerlink" title="一些常用场景"></a>一些常用场景</h1><h2 id="1-1-RVO"><a href="#1-1-RVO" class="headerlink" title="1.1 RVO"></a>1.1 RVO</h2><h2 id="1-7-问题"><a href="#1-7-问题" class="headerlink" title="1.7 问题"></a>1.7 问题</h2><p>1.Grid和Lay图的图层问题</p>
 ]]></content>
@@ -196,14 +1105,14 @@
         <category>Program</category>
       </categories>
       <tags>
-        <tag>Unity</tag>
         <tag>游戏寻路</tag>
         <tag>Untiy插件</tag>
+        <tag>Unity</tag>
       </tags>
   </entry>
   <entry>
     <title>Unity插件：AStarPathfinding寻路系统（下）</title>
-    <url>/2019/12/11/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F%EF%BC%88%E4%B8%8B%EF%BC%89/</url>
+    <url>/2019/12/11/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F%EF%BC%88%E4%B8%8B%EF%BC%89/</url>
     <content><![CDATA[<p>本文为AStarPathfinding插件的进阶内容，如果需要简单的使用寻路功能可以看上和中。</p>
 <p>AI漫游以及扩展系统暂时没有做介绍，感兴趣的可以去官网看。</p>
 <a id="more"></a>
@@ -215,10 +1124,10 @@
 <p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011546871877.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011546871877.png" alt="Image 0011546871877.png"></a></p>
 <p>（Tile Handler Helper组件干嘛用的）</p>
 <p>3.添加一个障碍物，并为其添加NavMesh Cut组件，并按下图中所示调整参数：</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding上/Image 0011546871977.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（下）/Image 0011546871977.png" alt="Image 0011546871977.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding上/Image 0011546871977.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统/Unity插件：AStarPathfinding寻路系统（下）/Image 0011546871977.png" alt="Image 0011546871977.png"></a></p>
 <p>4.运行游戏，拖动障碍物时NavMesh被遮挡的部分会不可用。</p>
 <p>需要注意的是，切割的形状是XZ轴投影到Navmeshi平面的2D图形，不是3D，但2D图形通过拉伸也形成了高度，高度用于判断物体距离平面多高就需要切割的高度：</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding上/Image 0011546931837.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（下）/Image 0011546931837.png" alt="Image 0011546931837.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding上/Image 0011546931837.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统/Unity插件：AStarPathfinding寻路系统（下）/Image 0011546931837.png" alt="Image 0011546931837.png"></a></p>
 <p>所以只有物体在navmeshcut组件中设置的图形与NavMesh的接触部分才会被切割，包括高度和半径。</p>
 <p>Is dual功能到底干嘛的</p>
 <p>在3.x中，navmesh切割只能与重铸图一起使用，但在4.x中，它们可以与重铸和导航网图一起使用。</p>
@@ -228,7 +1137,7 @@
 <p>（代码都不好使）</p>
 <p>也可以通过Update Interval来更改。（这个值的更改位置不对 版本不同？？ ）</p>
 <p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011546945990.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011546945990.png" alt="Image 0011546945990.png"></a></p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding上/Image 0011546943710.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（下）/Image 0011546943710.png" alt="Image 0011546943710.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding上/Image 0011546943710.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统/Unity插件：AStarPathfinding寻路系统（下）/Image 0011546943710.png" alt="Image 0011546943710.png"></a></p>
 <p>因为navmesh切割可以很好地修改navmesh中的三角形，所以在更新图形时不可能保留标签和惩罚。对于在应用更新时保持完全相同的节点，将保留标签和惩罚。</p>
 <p>如果您需要使用标记，唯一可靠的方法是保留它们是应用所有图形更新，每次完成导航网格剪切更新时都会设置它们。这当然相对较慢，但它至少会起作用。</p>
 <h1 id="RVO（付费）"><a href="#RVO（付费）" class="headerlink" title="RVO（付费）"></a>RVO（付费）</h1><h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><h3 id="概览"><a href="#概览" class="headerlink" title="概览"></a>概览</h3><p>到底躲的是谁  需不需要操作</p>
@@ -255,7 +1164,7 @@
 <p>Often you want to have colliders on your agents, maybe to be able to hit them with bullets or something. However if you just add colliders (plus a rigidbody) to your agents you may see that the local avoidance quality goes down drastically in crowded scenarios. This is because when it is very crowded agents may overlap a tiny bit, the physics system will prevent that, but it will not do it in as nice a way as the local avoidance system, and this may lead to worse movement.</p>
 </blockquote>
 <p>如果Agent上有碰撞器，作者建议的解决办法是禁用代理之间的物理碰撞，将所有的代理放到一个单独的图层中，在Unity的物理系统设置中将该图层自身的碰撞关闭。</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding下/disable_collisions.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（下）/disable_collisions.png" alt="disable_collisions.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding下/disable_collisions.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统/Unity插件：AStarPathfinding寻路系统（下）/disable_collisions.png" alt="disable_collisions.png"></a></p>
 <h3 id="保持代理在图中"><a href="#保持代理在图中" class="headerlink" title="保持代理在图中"></a>保持代理在图中</h3><p>在局部躲避时，在拥挤的情况下会出现Agent将另一个Agent推出图外的情况。</p>
 <p>如果使用RichAI，则会自动处理被推出的情况。因为RichAI的移动需要它。如果使用AIPath，可以通过启用constrainInsideGraph来避免。</p>
 <p>还有一种办法是使用RVONavmesh 组件，组件会将图的边界转化为障碍物添加进RVO系统。RVONavmesh计算成本偏高，尤其是在图较大或者运行时更新图的时候，但它允许RVO系统更好地预测障碍，而不是当撞到时才找到墙壁。</p>
@@ -291,21 +1200,21 @@
 <p><strong>划分自定义代价值区域的使用方法：</strong></p>
 <p><strong>1.</strong>在场景中创建一个空物体命名为GUO（不是必须的），添加组件<strong>Graph Update Scene。</strong></p>
 <p><strong>2.</strong>点击GUO，在场景中按住左Shift键，然后点击你想划分区域的地方，会出现一个点，再点击一下会将两个点连接起来。这样就可以创建出一块自定义的区域：</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding下/Honeycam 2019-03-11 16-39-23.gif"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（下）/Honeycam 2019-03-11 16-39-23.gif" alt="Honeycam 2019-03-11 16-39-23.gif"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding下/Honeycam 2019-03-11 16-39-23.gif"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统/Unity插件：AStarPathfinding寻路系统（下）/Honeycam 2019-03-11 16-39-23.gif" alt="Honeycam 2019-03-11 16-39-23.gif"></a></p>
 <p>节点的位置信息可以在组件的Points属性里进行修改。</p>
 <p><strong>3.</strong>根据组件中的Penalty Delta来修改区域的代价值，不同的代价会让Agent在寻路时选择最优的路线，避开代价较大的区域。也可以设置为不可走区域。</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding下/Image 0011552293900.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（下）/Image 0011552293900.png" alt="Image 0011552293900.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding下/Image 0011552293900.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统/Unity插件：AStarPathfinding寻路系统（下）/Image 0011552293900.png" alt="Image 0011552293900.png"></a></p>
 <p><strong>4.</strong>如图所示，代理会尝试绕过代价高的区域</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding下/Image 0011552295310.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（下）/Image 0011552295310.png" alt="Image 0011552295310.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding下/Image 0011552295310.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统/Unity插件：AStarPathfinding寻路系统（下）/Image 0011552295310.png" alt="Image 0011552295310.png"></a></p>
 <p><strong>Tag的使用方法：</strong></p>
 <p>Tag可以使两个Agent在同样的区域有不同的寻路结果.</p>
 <p>0.新建一个场景，场景中像之前的流程一样，保持有地板，寻路目标，Agent，并可以正常寻路。</p>
 <p>1.利用<strong>Graph Update Scene</strong>划分一片区域，并为区域添加一个Tag，命名为Grass（Tag的名称可以在A*组件的面板中修改。）</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding下/Image 0011552296107.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（下）/Image 0011552296107.png" alt="Image 0011552296107.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding下/Image 0011552296107.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统/Unity插件：AStarPathfinding寻路系统（下）/Image 0011552296107.png" alt="Image 0011552296107.png"></a></p>
 <p>2.添加两个agent，并附加Seeker脚本。修改Seeker的Tag属性，一个Agent将tag的Traversable取消勾选，另一个保持勾选。</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding下/Image 0011552547742.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（下）/Image 0011552547742.png" alt="Image 0011552547742.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding下/Image 0011552547742.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统/Unity插件：AStarPathfinding寻路系统（下）/Image 0011552547742.png" alt="Image 0011552547742.png"></a></p>
 <p>3.运行游戏，两个Agent会规划出不同的路径。</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding下/Image 0011552548056.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（下）/Image 0011552548056.png" alt="Image 0011552548056.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding下/Image 0011552548056.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统/Unity插件：AStarPathfinding寻路系统（下）/Image 0011552548056.png" alt="Image 0011552548056.png"></a></p>
 <p>也可以对每个Agent的每个Tag设置不同的惩罚值，可以实现开头说的场景。</p>
 <hr>
 <p>NavMesh下有问题</p>
@@ -418,7 +1327,7 @@
 <p>下面是一个更改网格图中所有节点并使用perlin噪声来决定节点是否应该可以行走的示例：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">AstarPath.active.AddWorkItem(new AstarWorkItem(ctx =&gt; &#123;</span><br><span class="line">var gg = AstarPath.active.data.gridGraph;</span><br><span class="line">for (int z = 0; z &lt; gg.depth; z++) &#123;</span><br><span class="line">for (int x = 0; x &lt; gg.width; x++) &#123;</span><br><span class="line">var node = gg.GetNode(x, z);</span><br><span class="line">// This example uses perlin noise to generate the map</span><br><span class="line">node.Walkable = Mathf.PerlinNoise(x * 0.087f, z * 0.087f) &gt; 0.4f;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// Recalculate all grid connections</span><br><span class="line">// This is required because we have updated the walkability of some nodes</span><br><span class="line">gg.GetNodes(node =&gt; gg.CalculateConnections((GridNodeBase)node));</span><br><span class="line"></span><br><span class="line">// Update the &apos;area&apos; information in the graph.</span><br><span class="line">// This is required because we have updated the connectivity of the graph</span><br><span class="line">ctx.QueueFloodFill();</span><br><span class="line">&#125;));</span><br></pre></td></tr></table></figure>
 <p>经过修改后的图：</p>
-<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding下/Image 0011552639822.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（下）/Image 0011552639822.png" alt="Image 0011552639822.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding下/Image 0011552639822.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统/Unity插件：AStarPathfinding寻路系统（下）/Image 0011552639822.png" alt="Image 0011552639822.png"></a></p>
 <p>只有在安全的情况下才能修改图表数据。路径查找可能随时在运行，因此必须先暂停路径寻找线程，然后更新数据。最简单的方法是使用<a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/astarpath.html#AddWorkItem">AstarPath.AddWorkItem</a>：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">AstarPath.active.AddWorkItem(() =&gt; &#123;</span><br><span class="line">// Safe to update graphs here</span><br><span class="line">var node = AstarPath.active.GetNearest(transform.position).node;</span><br><span class="line">node.position = (Int3)transform.position;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 <p>更改图数据后要及时更新图。如果更改了任何节点的Walkable或连接，则需要更新Area的信息，系统通过Area来确定哪些节点可以到达哪些其他节点，而这些节点又用于快速确定路径是否可行。</p>
@@ -510,14 +1419,14 @@
         <category>Program</category>
       </categories>
       <tags>
-        <tag>Unity</tag>
         <tag>游戏寻路</tag>
         <tag>Untiy插件</tag>
+        <tag>Unity</tag>
       </tags>
   </entry>
   <entry>
     <title>Unity插件：AStarPathfinding寻路系统（上）</title>
-    <url>/2019/12/11/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F%EF%BC%88%E4%B8%8A%EF%BC%89/</url>
+    <url>/2019/12/11/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F%EF%BC%88%E4%B8%8A%EF%BC%89/</url>
     <content><![CDATA[<p>本文为AStarPathfinding插件的进阶内容，如果需要简单的使用寻路功能可以看上和中。</p>
 <p>AI漫游以及扩展系统暂时没有做介绍，感兴趣的可以去官网看。</p>
 <a id="more"></a>
@@ -534,7 +1443,7 @@
 <h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p>APathfinding是比较主流的Unity寻路插件，分付费（100刀）和免费版。支持五种图：Grid Graph，Navmesh Graph，Point Graph，Recast Graph（付费），Layered Grid Graph（付费）。同时支持自动生成Navmesh（付费），自带RVO避障系统（付费）。目前Unity寻路插件用的比较多的就是该插件，功能齐全，可调节估价公式等等等，总之是一款非常强大的插件。</p>
 <h1 id="准备，简单的Demo"><a href="#准备，简单的Demo" class="headerlink" title="准备，简单的Demo"></a>准备，简单的Demo</h1><p>下面的Demo是一个简单的寻路，将准备好的插件包导入新建项目中然后完成下面的操作：</p>
 <p><strong>（1）</strong>准备工作：场景中添加Plane（一块地板），障碍物。为Plane添加一个Layer（我的命名是Ground）。添加几个障碍物，为所有的障碍物添加Layer（Obs），注意障碍物要添加Box Collider组件*。新建一个空物体，并为空物体添加<strong>Astar Path</strong>组件。添加一个游戏人物命名为hero，一个球体命名为target用于表示hero要去的目标。场景内现在应该有：地板，障碍物，游戏人物，以及target，挂载了Astar Path的空物体。</p>
-<p><strong>（2）</strong>生成导航网格<strong>：</strong>准备完成后，在Astar Path中添加<strong>Grid Graph</strong>，并设置网格图的长宽以足够覆盖整个Plane。将Collison Testing中的<strong>Obstacle Layer</strong> Mask设置为障碍物所在的图层（Obs）。将<strong>Height Tesing</strong>中的Mask设置为Plane所在的图层（Ground）。<br><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（上）/97475890.jpg" alt="img"></p>
+<p><strong>（2）</strong>生成导航网格<strong>：</strong>准备完成后，在Astar Path中添加<strong>Grid Graph</strong>，并设置网格图的长宽以足够覆盖整个Plane。将Collison Testing中的<strong>Obstacle Layer</strong> Mask设置为障碍物所在的图层（Obs）。将<strong>Height Tesing</strong>中的Mask设置为Plane所在的图层（Ground）。<br><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统/Unity插件：AStarPathfinding寻路系统（上）/97475890.jpg" alt="img"></p>
 <p>设置完成后点击Scan，效果如图：</p>
 <p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011545907201.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011545907201.png" alt="Image 0011545907201.png"></a></p>
 <p>(3)让hero可以寻路：添加Seeker，Character Controler组件。新建一个名为MineAstarAI的脚本，并填入以下代码：</p>
@@ -1126,7 +2035,7 @@
 <p>下面是几种最常见的Modifier的比较：</p>
 <p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/modifier_comparison_grid.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/modifier_comparison_grid.png" alt="modifier_comparison_grid.png"></a></p>
 <p>关于这些Modifier的具体功能，看下面章节。</p>
-<p>需要注意，Modifiers通常不考虑世界几何图形或图形，因此小心使用太多平滑，可能会导致路径穿过不可行走的区域。圆滑路径一定要注意将参数调大，不然会卡死，如图：<br><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统（上）/84506670.jpg" alt="img"></p>
+<p>需要注意，Modifiers通常不考虑世界几何图形或图形，因此小心使用太多平滑，可能会导致路径穿过不可行走的区域。圆滑路径一定要注意将参数调大，不然会卡死，如图：<br><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统/Unity插件：AStarPathfinding寻路系统（上）/84506670.jpg" alt="img"></p>
 <p><strong>只有Seeker可以调用Modifieer吗</strong></p>
 <hr>
 <h1 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h1><h2 id="使用Modifiers组件"><a href="#使用Modifiers组件" class="headerlink" title="使用Modifiers组件"></a>使用Modifiers组件</h2><p>Modifiers组件一共有以下几种：</p>
@@ -1343,14 +2252,14 @@
         <category>Program</category>
       </categories>
       <tags>
-        <tag>Unity</tag>
         <tag>游戏寻路</tag>
         <tag>Untiy插件</tag>
+        <tag>Unity</tag>
       </tags>
   </entry>
   <entry>
     <title>UnityiOSSDK接入</title>
-    <url>/2019/12/11/UnityIosSDK%E6%8E%A5%E5%85%A5/</url>
+    <url>/2019/12/11/UnityIosSDK%E6%8E%A5%E5%85%A5/UnityIosSDK%E6%8E%A5%E5%85%A5/</url>
     <content><![CDATA[<p>iOS的SDK接入流程</p>
 <a id="more"></a>
 <h1 id="一-导出Xcode工程"><a href="#一-导出Xcode工程" class="headerlink" title="一 导出Xcode工程"></a>一 导出Xcode工程</h1><h2 id="1-1修改cs文件配置plist"><a href="#1-1修改cs文件配置plist" class="headerlink" title="1.1修改cs文件配置plist"></a>1.1修改cs文件配置plist</h2><p>修改 <code>IOSPostprocessBuild.cs</code> ，目的是在此提前配置好接下来导出的Xcode工程Custom iOS Target Properties的一些设置，如果不在此填配置参数则需要在Xcode中设置。</p>
@@ -1361,8 +2270,8 @@
 <p>（2）在<code>SetPlist</code>方法中填写SDK需要的Xcode设置：</p>
 <figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">SetPlist</span>(<span class="params"><span class="keyword">string</span> pathToBuildProject, XcodeBuilderItem xcodeBuilderItem</span>)</span></span><br><span class="line"><span class="function"></span>   &#123;</span><br><span class="line">      <span class="comment">//通用的plist设置</span></span><br><span class="line">      ...</span><br><span class="line">	<span class="keyword">switch</span> (scriptDefine) &#123;</span><br><span class="line">	<span class="keyword">case</span> <span class="string">"DACHEN_B2_IOS"</span>: <span class="comment">//平台名</span></span><br><span class="line">		UnityEngine.Debug.Log (<span class="string">"755sy (大臣B2)plist："</span> + scriptDefine);</span><br><span class="line">		_rootDic.SetString(<span class="string">"NSCameraUsageDescription"</span>, <span class="string">"需要使用您的相机照相"</span>);</span><br><span class="line">		_rootDic.SetString(<span class="string">"CFBundleDevelopmentRegion"</span>, <span class="string">"zh_CN"</span>);</span><br><span class="line"></span><br><span class="line">		PlistElementArray LSApplicationQueriesSchemesB2 = _rootDic.CreateArray (<span class="string">"LSApplicationQueriesSchemes"</span>);</span><br><span class="line">		LSApplicationQueriesSchemesB2.AddString (<span class="string">"weixin"</span>);</span><br><span class="line">		LSApplicationQueriesSchemesB2.AddString (<span class="string">"alipay"</span>);</span><br><span class="line">		LSApplicationQueriesSchemesB2.AddString (<span class="string">"openedvv"</span>);</span><br><span class="line">		LSApplicationQueriesSchemesB2.AddString (<span class="string">"alipayqr"</span>);</span><br><span class="line">		LSApplicationQueriesSchemesB2.AddString (<span class="string">"wechat"</span>);</span><br><span class="line"></span><br><span class="line">		PlistElementArray dachenB2URLTypes = _rootDic.CreateArray (<span class="string">"CFBundleURLTypes"</span>);</span><br><span class="line">		PlistElementDict dcb2item0_1 = dachenB2URLTypes.AddDict ();</span><br><span class="line">		PlistElementArray dcb2urlSchemes = dcb2item0_1.CreateArray (<span class="string">"CFBundleURLSchemes"</span>);</span><br><span class="line">		dcb2urlSchemes.AddString (<span class="string">"miaolevv5228"</span>);</span><br><span class="line"></span><br><span class="line">		<span class="keyword">break</span>;</span><br><span class="line">....</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
 <h2 id="1-2修改iOS配置表"><a href="#1-2修改iOS配置表" class="headerlink" title="1.2修改iOS配置表"></a>1.2修改iOS配置表</h2><p>打开<code>D:\workspace\cq1_g\branch_release\tool\客户端打包\iOS打包配置表</code>，对准备接入SDK的包进行一些设置：</p>
-<p><img src="/2019/12/11/UnityIosSDK接入/屏幕快照 2019-04-26 下午2.59.05.png" alt="屏幕快照 2019-04-26 下午2.59.05"></p>
-<p><img src="/2019/12/11/UnityIosSDK接入/屏幕快照 2019-04-26 下午2.59.15.png" alt="屏幕快照 2019-04-26 下午2.59.15"></p>
+<p><img src="/2019/12/11/UnityIosSDK接入/UnityIosSDK接入/屏幕快照 2019-04-26 下午2.59.05.png" alt="屏幕快照 2019-04-26 下午2.59.05"></p>
+<p><img src="/2019/12/11/UnityIosSDK接入/UnityIosSDK接入/屏幕快照 2019-04-26 下午2.59.15.png" alt="屏幕快照 2019-04-26 下午2.59.15"></p>
 <p><strong>一些需要配置的字段介绍：</strong></p>
 <table>
 <thead>
@@ -1414,24 +2323,24 @@
 </tbody>
 </table>
 <h2 id="1-3修改打包列表"><a href="#1-3修改打包列表" class="headerlink" title="1.3修改打包列表"></a>1.3修改打包列表</h2><p>打开<code>D:\workspace\cq1_g\branch_release\tool\客户端打包\打包列表</code>，修改为1.2表中的包名：</p>
-<p><img src="/2019/12/11/UnityIosSDK接入/{73BB6E7C-8A63-7DA5-926F-17722EE41046}-1556419503341.png" alt="{73BB6E7C-8A63-7DA5-926F-17722EE41046}"></p>
+<p><img src="/2019/12/11/UnityIosSDK接入/UnityIosSDK接入/{73BB6E7C-8A63-7DA5-926F-17722EE41046}-1556419503341.png" alt="{73BB6E7C-8A63-7DA5-926F-17722EE41046}"></p>
 <h2 id="1-4修改资源"><a href="#1-4修改资源" class="headerlink" title="1.4修改资源"></a>1.4修改资源</h2><p>打开<code>D:\workspace\cq1_g\branch_release\client\cq1_g\BuildSetting\Package</code>文件夹，复制一份接过iOSSDK的包文件夹。修改文件夹中的内容为SDK中提供的文件、图标。</p>
 <p>（1）将XcodeFiles\SDK中的内容替换为渠道方提供的.framework.bundle。</p>
-<p><img src="/2019/12/11/UnityIosSDK接入/Image 0011556438971.png" alt="Image 0011556438971"></p>
+<p><img src="/2019/12/11/UnityIosSDK接入/UnityIosSDK接入/Image 0011556438971.png" alt="Image 0011556438971"></p>
 <p>（2）在Resource文件夹下放入加载图片、闪屏</p>
-<p><img src="/2019/12/11/UnityIosSDK接入/Image 0011556439083.png" alt="Image 0011556439083"></p>
+<p><img src="/2019/12/11/UnityIosSDK接入/UnityIosSDK接入/Image 0011556439083.png" alt="Image 0011556439083"></p>
 <p>（3）在Icon文件夹下放入游戏图标，命名是固定的，注意修改。</p>
-<p><img src="/2019/12/11/UnityIosSDK接入/Image 0011556439496.png" alt="Image 0011556439496"></p>
+<p><img src="/2019/12/11/UnityIosSDK接入/UnityIosSDK接入/Image 0011556439496.png" alt="Image 0011556439496"></p>
 <p>（4）在Plugins/IOS文件夹下放入如下四个文件，这两组文件接SDK时会用到：</p>
-<p><img src="/2019/12/11/UnityIosSDK接入/Image 0011556439148.png" alt="Image 0011556439148"></p>
+<p><img src="/2019/12/11/UnityIosSDK接入/UnityIosSDK接入/Image 0011556439148.png" alt="Image 0011556439148"></p>
 <h2 id="1-5导出Xcode工程"><a href="#1-5导出Xcode工程" class="headerlink" title="1.5导出Xcode工程"></a>1.5导出Xcode工程</h2><p>点击BuildProject导出Xcode工程文件。</p>
-<p><img src="/2019/12/11/UnityIosSDK接入/屏幕快照 2019-04-28 下午3.13.09.png" alt="屏幕快照 2019-04-28 下午3.13.09"></p>
+<p><img src="/2019/12/11/UnityIosSDK接入/UnityIosSDK接入/屏幕快照 2019-04-28 下午3.13.09.png" alt="屏幕快照 2019-04-28 下午3.13.09"></p>
 <h1 id="二-接入SDK"><a href="#二-接入SDK" class="headerlink" title="二 接入SDK"></a>二 接入SDK</h1><h2 id="2-1修改项目配置"><a href="#2-1修改项目配置" class="headerlink" title="2.1修改项目配置"></a>2.1修改项目配置</h2><p>（1）勾选Automatically manage signing，自动管理证书。准备打包ipa时再调整为提供的证书。</p>
-<p><img src="/2019/12/11/UnityIosSDK接入/Image 0011556439643.png" alt="Image 0011556439643"></p>
+<p><img src="/2019/12/11/UnityIosSDK接入/UnityIosSDK接入/Image 0011556439643.png" alt="Image 0011556439643"></p>
 <p>（2）检查Custom iOS Target Properties中的配置是否和SDK文档中对应，1.1章节配置的plist会显示在此：</p>
-<p><img src="/2019/12/11/UnityIosSDK接入/Image 0011556440666.png" alt="Image 0011556440666"></p>
+<p><img src="/2019/12/11/UnityIosSDK接入/UnityIosSDK接入/Image 0011556440666.png" alt="Image 0011556440666"></p>
 <p>（3）如果提示内购报错，将内购关闭（下图的in-APP Purchase）：</p>
-<p><img src="/2019/12/11/UnityIosSDK接入/Image 0011556441292.png" alt="Image 0011556441292"></p>
+<p><img src="/2019/12/11/UnityIosSDK接入/UnityIosSDK接入/Image 0011556441292.png" alt="Image 0011556441292"></p>
 <p>（4）检查framework是否添加至工程。</p>
 <h2 id="2-2根据文档接入SDK"><a href="#2-2根据文档接入SDK" class="headerlink" title="2.2根据文档接入SDK"></a>2.2根据文档接入SDK</h2><p>（1）UnityAppDelegate中接入初始化，apple id，横竖屏等参数。</p>
 <p>（2）在ViewController中接入支付、登陆、上传角色信息等接口。充值和上传角色需要传入的数组（param）会在Lua脚本中配置。</p>
@@ -1450,19 +2359,19 @@
 <p>（2）打开生成热更包工具，生成热更文件。全部生成（lua，数据表，UI）约需要一个小时。</p>
 <h2 id="4-2-热更测试"><a href="#4-2-热更测试" class="headerlink" title="4.2 热更测试"></a>4.2 热更测试</h2><p>通知运维上传热更包，对接入SDK的功能模块进行测试。在测试支付时可向渠道方询问是否有账号可以用来进行支付的测试。或者配置一个临时的商品数据进行调试。</p>
 <h2 id="4-3出包"><a href="#4-3出包" class="headerlink" title="4.3出包"></a>4.3出包</h2><p>（1）测试无误后将SDK提供证书安装好。再次运行游戏测试。安装SDK提供的证书（双击打开添加至钥匙串，密码由渠道方提供），然后在Xcode中打出ipa包：</p>
-<p><img src="/2019/12/11/UnityIosSDK接入/屏幕快照 2019-04-28 下午3.16.52.png" alt="屏幕快照 2019-04-28 下午3.16.52"></p>
+<p><img src="/2019/12/11/UnityIosSDK接入/UnityIosSDK接入/屏幕快照 2019-04-28 下午3.16.52.png" alt="屏幕快照 2019-04-28 下午3.16.52"></p>
 <p>点击Distribute App：</p>
-<p><img src="/2019/12/11/UnityIosSDK接入/屏幕快照 2019-04-28 下午3.47.00.png" alt="屏幕快照 2019-04-28 下午3.47.00"></p>
+<p><img src="/2019/12/11/UnityIosSDK接入/UnityIosSDK接入/屏幕快照 2019-04-28 下午3.47.00.png" alt="屏幕快照 2019-04-28 下午3.47.00"></p>
 <p>根据需求选择对应的包：</p>
-<p><img src="/2019/12/11/UnityIosSDK接入/屏幕快照 2019-04-28 下午3.47.09.png" alt="屏幕快照 2019-04-28 下午3.47.09"></p>
+<p><img src="/2019/12/11/UnityIosSDK接入/UnityIosSDK接入/屏幕快照 2019-04-28 下午3.47.09.png" alt="屏幕快照 2019-04-28 下午3.47.09"></p>
 <p>选择ipa包运行的设备：</p>
-<p><img src="/2019/12/11/UnityIosSDK接入/屏幕快照 2019-04-28 下午3.47.54.png" alt="屏幕快照 2019-04-28 下午3.47.54"></p>
+<p><img src="/2019/12/11/UnityIosSDK接入/UnityIosSDK接入/屏幕快照 2019-04-28 下午3.47.54.png" alt="屏幕快照 2019-04-28 下午3.47.54"></p>
 <p>配置证书：</p>
-<p><img src="/2019/12/11/UnityIosSDK接入/屏幕快照 2019-04-28 下午3.48.31.png" alt="屏幕快照 2019-04-28 下午3.48.31"></p>
+<p><img src="/2019/12/11/UnityIosSDK接入/UnityIosSDK接入/屏幕快照 2019-04-28 下午3.48.31.png" alt="屏幕快照 2019-04-28 下午3.48.31"></p>
 <p>（2）检查ipa包是否正常，确认无误后交付给渠道方。</p>
 <h1 id="五-常见错误"><a href="#五-常见错误" class="headerlink" title="五 常见错误"></a>五 常见错误</h1><p>出现其他错误及时补充。</p>
 <h3 id="5-1未引入库引发的错误"><a href="#5-1未引入库引发的错误" class="headerlink" title="5.1未引入库引发的错误"></a>5.1未引入库引发的错误</h3><p>5.1.1 Undefined symbol：_OBJC_ClASS_ __$_SKMutablePayment/SKProductsRequest/SKPaymentQueue</p>
-<p><img src="/2019/12/11/UnityIosSDK接入/Image 0011556248919.png" alt="Image 0011556248919"></p>
+<p><img src="/2019/12/11/UnityIosSDK接入/UnityIosSDK接入/Image 0011556248919.png" alt="Image 0011556248919"></p>
 <p>解决办法：缺少StoreKit.framework（内购需要），添加至项目即可。</p>
 ]]></content>
       <categories>
@@ -1470,30 +2379,14 @@
       </categories>
       <tags>
         <tag>Unity</tag>
-        <tag>Lua</tag>
         <tag>iOS</tag>
+        <tag>Lua</tag>
         <tag>SDK</tag>
       </tags>
   </entry>
   <entry>
-    <title>OC入门笔记</title>
-    <url>/2019/12/11/ObjectC%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<p>OC学习笔记</p>
-<a id="more"></a>
-<h2 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@property(copy) NSString *name;</span><br><span class="line">@property(readonly) int age;</span><br></pre></td></tr></table></figure>
-<p>copy和readonly等等</p>
-<h2 id="动态类型"><a href="#动态类型" class="headerlink" title="动态类型"></a>动态类型</h2><h2 id="转发"><a href="#转发" class="headerlink" title="转发"></a>转发</h2><p>函数和方法</p>
-]]></content>
-      <categories>
-        <category>Program</category>
-      </categories>
-      <tags>
-        <tag>ObjectC-C</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Unity NavMesh和寻路插件使用</title>
-    <url>/2019/12/11/Unity%20NavMesh%E5%92%8C%E5%AF%BB%E8%B7%AF%E6%8F%92%E4%BB%B6%E4%BD%BF%E7%94%A8/</url>
+    <url>/2019/12/11/Unity%20NavMesh%E5%92%8C%E5%AF%BB%E8%B7%AF%E6%8F%92%E4%BB%B6%E4%BD%BF%E7%94%A8/Unity%20NavMesh%E5%92%8C%E5%AF%BB%E8%B7%AF%E6%8F%92%E4%BB%B6%E4%BD%BF%E7%94%A8/</url>
     <content><![CDATA[<p>该文档主要是介绍Unity的导航系统和寻路插件使用，不同场景下寻路的工作流程，以及工作原理，没有涉及太多API讲解以及如何与其他组件的集成开发。</p>
 <p>目录下包含一个简单的演示Demo，里面包括我作为练习写的几个Scene以及官方提供的实例，需要使用寻路导航系统的场景非常多，这些场景中彼此又具有较大的差异，如寻路时动态躲避障碍物，追逐某移动中的角色寻路，Demo中没有包含实际游戏中的全部情况，想了解更多可以去下载官网Demo，或看一些更专业的教程，下载地址和教程以及我学习时查询的资料的链接会在附录中给出。</p>
 <p>文档若出现错误，请及时指正。</p>
@@ -1522,9 +2415,9 @@
 <p>The navigation system needs its own data to represent the walkable areas in a game scene. The walkable areas define the places in the scene where the agent can stand and move. In Unity the agents are described as cylinders. The walkable area is built automatically from the geometry in the scene by testing the locations where the agent can stand. Then the locations are connected to a surface laying on top of the scene geometry. This surface is called the navigation mesh (NavMesh for short).<br>we store information about which polygons are neighbours to each other. This allows us to reason about the whole walkable area.</p>
 <p>Another thing to keep in mind is that the NavMesh is an approximation of the walkable surface.This can be seen for example in the stairs which are represented as a flat surface, while the source surface has steps</p>
 </blockquote>
-<p><img src="/2019/12/11/Unity NavMesh和寻路插件使用/31495094.jpg" alt="@"></p>
+<p><img src="/2019/12/11/Unity NavMesh和寻路插件使用/Unity NavMesh和寻路插件使用/31495094.jpg" alt="@"></p>
 <p>生成的蓝色NavMesh平面</p>
-<p>在烘焙（Bake）后，会在场景同级目录生成一个文件夹：<br><img src="/2019/12/11/Unity NavMesh和寻路插件使用/70165612.jpg" alt="文件夹"></p>
+<p>在烘焙（Bake）后，会在场景同级目录生成一个文件夹：<br><img src="/2019/12/11/Unity NavMesh和寻路插件使用/Unity NavMesh和寻路插件使用/70165612.jpg" alt="文件夹"></p>
 <p>文件夹</p>
 <p>原文链接：</p>
 <hr>
@@ -1533,7 +2426,7 @@
 <blockquote>
 <p>The NavMesh stores this surface as convex polygons. Convex polygons are a useful representation, since we know that there are no obstructions between any two points inside a polygon. In addition to the polygon boundaries,</p>
 </blockquote>
-<p><img src="/2019/12/11/Unity NavMesh和寻路插件使用/96097041.jpg" alt="@"></p>
+<p><img src="/2019/12/11/Unity NavMesh和寻路插件使用/Unity NavMesh和寻路插件使用/96097041.jpg" alt="@"></p>
 <p>AB两点无法通过直线相连</p>
 <p>原文链接:</p>
 <hr>
@@ -1558,7 +2451,7 @@
 <hr>
 <h4 id="Moving-the-Agent"><a href="#Moving-the-Agent" class="headerlink" title="Moving the Agent"></a>Moving the Agent</h4><p>在转向和避障之后，会得出最终的速度。在Unity里，寻路实体使用一个动力学的模型来模拟，通过计算加速度来使移动更自然和平滑。</p>
 <hr>
-<h4 id="Global-and-Local负责的工作"><a href="#Global-and-Local负责的工作" class="headerlink" title="Global and Local负责的工作"></a>Global and Local负责的工作</h4><p><img src="/2019/12/11/Unity NavMesh和寻路插件使用/94681976.jpg" alt="img"></p>
+<h4 id="Global-and-Local负责的工作"><a href="#Global-and-Local负责的工作" class="headerlink" title="Global and Local负责的工作"></a>Global and Local负责的工作</h4><p><img src="/2019/12/11/Unity NavMesh和寻路插件使用/Unity NavMesh和寻路插件使用/94681976.jpg" alt="img"></p>
 <p>Global 的工作是在场景世界中寻找corridor。 在场景世界各地寻找计算corridor很耗费性能。</p>
 <p>Local 的工作是通过线性存储的多边形导航关系路线corridor，来计算如何到达下一个拐点同时避开其他正在移动的物体。</p>
 <p>打个比方，从家到公司，Globel负责计算这段路的行进路线，比如坐先公交-地铁-最后步行，但途中我如何刷卡进地铁，怎么过马路就是Local的工作了。Global负责宏观的路线规划，Local负责微观的细节处理。</p>
@@ -1569,7 +2462,7 @@
 </blockquote>
 <hr>
 <h3 id="组件介绍"><a href="#组件介绍" class="headerlink" title="组件介绍*"></a>组件介绍*</h3><hr>
-<h4 id="1-Nav-Mesh-Agent"><a href="#1-Nav-Mesh-Agent" class="headerlink" title="1.Nav Mesh Agent"></a>1.Nav Mesh Agent</h4><p><img src="/2019/12/11/Unity NavMesh和寻路插件使用/99046946.jpg" alt="@Nav Mesh Agent| cente"></p>
+<h4 id="1-Nav-Mesh-Agent"><a href="#1-Nav-Mesh-Agent" class="headerlink" title="1.Nav Mesh Agent"></a>1.Nav Mesh Agent</h4><p><img src="/2019/12/11/Unity NavMesh和寻路插件使用/Unity NavMesh和寻路插件使用/99046946.jpg" alt="@Nav Mesh Agent| cente"></p>
 <table>
 <thead>
 <tr>
@@ -1651,7 +2544,7 @@
 <p>[1]</p>
 <p>[4]又名躲避精度。通过降低该值的方式可降低CPU开销，但如果寻路物体的躲避精度为none时，虽然寻路实体依然会绕开障碍物，但寻路实体之间不会发生碰撞（寻路实体会粘合在一起）</p>
 <hr>
-<h4 id="2-Nav-Mesh-Obstacle"><a href="#2-Nav-Mesh-Obstacle" class="headerlink" title="2.Nav Mesh Obstacle"></a>2.Nav Mesh Obstacle</h4><p><img src="/2019/12/11/Unity NavMesh和寻路插件使用/42872518.jpg" alt="@Nav Mesh Obstaclet"></p>
+<h4 id="2-Nav-Mesh-Obstacle"><a href="#2-Nav-Mesh-Obstacle" class="headerlink" title="2.Nav Mesh Obstacle"></a>2.Nav Mesh Obstacle</h4><p><img src="/2019/12/11/Unity NavMesh和寻路插件使用/Unity NavMesh和寻路插件使用/42872518.jpg" alt="@Nav Mesh Obstaclet"></p>
 <table>
 <thead>
 <tr>
@@ -1703,7 +2596,7 @@
 <p>两种障碍物的类型决定了计算的方式，Obstructing模式由Local负责处理，Carving模式由Global负责处理（代表着CPU开销更大）。</p>
 <p>移动的障碍物应该尽量避免使用Carving模式，因为Carve产生的洞会影响NavMesh，同时Global的计算量也会增加，使CPU和内存开销变大。</p>
 <hr>
-<h4 id="3-Off-Mesh-Link"><a href="#3-Off-Mesh-Link" class="headerlink" title="3.Off Mesh Link"></a>3.Off Mesh Link</h4><p><img src="/2019/12/11/Unity NavMesh和寻路插件使用/88655117.jpg" alt="@Off Mesh Link"></p>
+<h4 id="3-Off-Mesh-Link"><a href="#3-Off-Mesh-Link" class="headerlink" title="3.Off Mesh Link"></a>3.Off Mesh Link</h4><p><img src="/2019/12/11/Unity NavMesh和寻路插件使用/Unity NavMesh和寻路插件使用/88655117.jpg" alt="@Off Mesh Link"></p>
 <table>
 <thead>
 <tr>
@@ -1744,14 +2637,14 @@
 </table>
 <p><em>注：offmeshlink可以使用任何带有Transform的游戏对象作为开始和结束标记。</em></p>
 <hr>
-<h4 id="4-Navigation面板（window栏-Navigation）"><a href="#4-Navigation面板（window栏-Navigation）" class="headerlink" title="4.Navigation面板（window栏-Navigation）"></a>4.Navigation面板（window栏-Navigation）</h4><p><img src="/2019/12/11/Unity NavMesh和寻路插件使用/84206917.jpg" alt="@Navigation-Agents面板"></p>
+<h4 id="4-Navigation面板（window栏-Navigation）"><a href="#4-Navigation面板（window栏-Navigation）" class="headerlink" title="4.Navigation面板（window栏-Navigation）"></a>4.Navigation面板（window栏-Navigation）</h4><p><img src="/2019/12/11/Unity NavMesh和寻路插件使用/Unity NavMesh和寻路插件使用/84206917.jpg" alt="@Navigation-Agents面板"></p>
 <p>Agents面板用于代理和代理之间的躲避，该页的参数不参与Bake，只用于处理代理与代理，代理与障碍之间的躲避。<br>在使用章节有关于该面板如何使用的介绍。</p>
 <p>关于此Tab，unity社区的问答：<a href="https://answers.unity.com/questions/1376465/what-is-the-difference-between-configuration-of-ag.html">https://answers.unity.com/questions/1376465/what-is-the-difference-between-configuration-of-ag.html</a></p>
 <hr>
-<p><img src="/2019/12/11/Unity NavMesh和寻路插件使用/16669861.jpg" alt="@Navigation-Areas面板"></p>
+<p><img src="/2019/12/11/Unity NavMesh和寻路插件使用/Unity NavMesh和寻路插件使用/16669861.jpg" alt="@Navigation-Areas面板"></p>
 <p>Areas代表烘焙网格所在的图层， 有29种自定义类型和3种内置类型：Walkable，Not Walkable和Jump。<br>\1. Walkable是通用区域类型，可以在该区域上行走。<br>\2. Not Walkable是阻止导航的区域类型。<br>\3. Jump是分配给自动生成的离网链接的区域类型。<br>另外，每个NavMesh代理都有一个Area Mask，用于指定代理可以移动的区域。<br>Cost是寻路的代价（成本），比如角色可以选择两条路，一条是过河，一条是草地。这两种寻路方式可能消耗的成本不一样。或是一扇门，人类可以通过但是其他怪物不能通过。都需要通过控制cost和area来实现。具体使用看下面的寻路导航章节。</p>
 <hr>
-<p>Bake页面根据面板参数对当前场景进行烘焙地图，生成NavMesh，注意为了减少CPU和内存消耗，在烘焙设置中只能指定一种尺寸，如果需要生成多种NavMesh，<strong>参考下面章节。</strong><br><img src="/2019/12/11/Unity NavMesh和寻路插件使用/38863987.jpg" alt="@Navigation-Bake面板"></p>
+<p>Bake页面根据面板参数对当前场景进行烘焙地图，生成NavMesh，注意为了减少CPU和内存消耗，在烘焙设置中只能指定一种尺寸，如果需要生成多种NavMesh，<strong>参考下面章节。</strong><br><img src="/2019/12/11/Unity NavMesh和寻路插件使用/Unity NavMesh和寻路插件使用/38863987.jpg" alt="@Navigation-Bake面板"></p>
 <table>
 <thead>
 <tr>
@@ -1792,7 +2685,7 @@
 </table>
 <p>进阶设置具体在<strong>高级烘培设置</strong>章节看。</p>
 <hr>
-<p><img src="/2019/12/11/Unity NavMesh和寻路插件使用/21458525.jpg" alt="@Navigation-Object面板"></p>
+<p><img src="/2019/12/11/Unity NavMesh和寻路插件使用/Unity NavMesh和寻路插件使用/21458525.jpg" alt="@Navigation-Object面板"></p>
 <table>
 <thead>
 <tr>
@@ -1823,7 +2716,7 @@
 <p>Nav Mesh Agent的属性值代表代理如何与动态障碍物以及其他之间的碰撞。</p>
 <p>一般情况下两个半径设置大小相同。</p>
 <hr>
-<p>####高级烘培设置<br><img src="/2019/12/11/Unity NavMesh和寻路插件使用/55686986.jpg" alt="@高级烘培设置"></p>
+<p>####高级烘培设置<br><img src="/2019/12/11/Unity NavMesh和寻路插件使用/Unity NavMesh和寻路插件使用/55686986.jpg" alt="@高级烘培设置"></p>
 <table>
 <thead>
 <tr>
@@ -1855,8 +2748,8 @@
 </tbody>
 </table>
 <p>[1]<strong>Min Region Area</strong>不能完全的删除所以小于该值的多边形，因为会有下面这种情况：</p>
-<p><img src="/2019/12/11/Unity NavMesh和寻路插件使用/19669556.jpg" alt="@删除前">删除前</p>
-<p><img src="/2019/12/11/Unity NavMesh和寻路插件使用/85524153.jpg" alt="@删除后">删除后</p>
+<p><img src="/2019/12/11/Unity NavMesh和寻路插件使用/Unity NavMesh和寻路插件使用/19669556.jpg" alt="@删除前">删除前</p>
+<p><img src="/2019/12/11/Unity NavMesh和寻路插件使用/Unity NavMesh和寻路插件使用/85524153.jpg" alt="@删除后">删除后</p>
 <p>可以看到，图中四个正方体上的多边形区域被删掉了，但是小于正方体上多边形面积的，位于正方体中间的区域却没有被删除，这是因为如果移除该区域则可能无法访问或连通周围的区域。</p>
 <p>[2]<strong>Manual Voxel Size</strong>允许手动更改烘培的精准度，NavMesh是通过体素化场景内的物体生成的。 在生成NavMesh算法的开始，场景被栅格化为体素，然后提取可行走的表面，并将可行走的表面变成NavMesh。 <strong>voxel size</strong>表示生成的NavMesh的准确程度。</p>
 <p><strong>voxel size</strong>的默认精度始终是代理半径的1/3，也就是和代理半径保持着3倍的关系。这是Unity官方在精确度和烘焙速度之间的折衷方案。<strong>将体素大小减半会使内存使用量增加4倍</strong>，<strong>构建场景需要4倍的时间。</strong></p>
@@ -1870,16 +2763,16 @@
 <li>打开手动体素大小，这将采用当前体素大小并“冻结”。</li>
 <li>设置较小的Agent Radius，因为已经开启了手动修改体素大小，所以大小不会改变。</li>
 </ol>
-<p><img src="/2019/12/11/Unity NavMesh和寻路插件使用/./Image 0011544708028.png" alt="@提示voxel size和代理半径关系的文本，较好的倍数是2-8倍| center|"></p>
+<p><img src="/2019/12/11/Unity NavMesh和寻路插件使用/Unity NavMesh和寻路插件使用/./Image 0011544708028.png" alt="@提示voxel size和代理半径关系的文本，较好的倍数是2-8倍| center|"></p>
 <p>官方文档：<br><a href="https://docs.unity3d.com/2017.4/Documentation/Manual/nav-AdvancedSettings.html">https://docs.unity3d.com/2017.4/Documentation/Manual/nav-AdvancedSettings.html</a></p>
 <hr>
 <h4 id="寻路代价"><a href="#寻路代价" class="headerlink" title="寻路代价*"></a>寻路代价*</h4><p>通过cost可以定义通过该区域的困难程度(代价)，，成本更低的地方在寻路过程中优先级更高，cost可以控制角色寻路时偏好的区域。例如走草地要比走水路要快一些，就可以通过设置cost来实现。具体例子可以看<strong>演示章节</strong>。</p>
 <p>在进一步了解之前，首先先了解一下A<em> 寻路的工作原理：Unity使用A</em>算法来寻找导航的最短路径，其核心数据结构为图。算法从离寻路实体最近的网格进行遍历，接着不停地访问相邻网格节点，直到搜寻到终点所在的网格区域(起点到终点的网格连线就是导航路径（此时未带入估价函数，即非最短路径）)。</p>
 <p>因为导航网格是由一系列多边形组成的，所以寻路实体需要计算通过每块网格或者说节点的寻路代价。最短路径就是各节点连线的最低寻路代价。</p>
-<p><img src="/2019/12/11/Unity NavMesh和寻路插件使用/56907644.jpg" alt="@图中黄色的点就是节点"></p>
+<p><img src="/2019/12/11/Unity NavMesh和寻路插件使用/Unity NavMesh和寻路插件使用/56907644.jpg" alt="@图中黄色的点就是节点"></p>
 <p>在两个节点之间移动的花费取决于行进距离以及当前所属区域的成本，即距离<em> 成本。 这意味着，如果一个区域的成本是2，那么寻路实体通过该区域的距离相对于普通区域的距离要大两倍。 A </em> 算法要求所有成本必须不小于1。</p>
 <p>有时候可能会感觉在某些地方，寻路实体好像不会直接走最短路径。究其原因在于网格结点的放置位置。在空旷的地方有一个非常小的障碍物，这就会导致产生一大一小的网格。在这种情况下，网格结点可以放置在网格的任何地方，所以在我们看来，寻路实体好像并没有走最短路径。</p>
-<p><img src="/2019/12/11/Unity NavMesh和寻路插件使用/22999412.jpg" alt="@看起来黄线并没有规划出最短路径"></p>
+<p><img src="/2019/12/11/Unity NavMesh和寻路插件使用/Unity NavMesh和寻路插件使用/22999412.jpg" alt="@看起来黄线并没有规划出最短路径"></p>
 <p>当某区域网格有多种寻路代价时，寻路网格一般优先使用寻路代价最低的那种。当然也有例外，不可行区域的寻路代价虽然为1，但优先使用该种区域，用于阻挡寻路实体移动**。</p>
 <p>官网文档：<a href="https://docs.unity3d.com/2017.4/Documentation/Manual/nav-AreasAndCosts.html">https://docs.unity3d.com/2017.4/Documentation/Manual/nav-AreasAndCosts.html</a></p>
 <p><em>注：图中的寻路路径绘图（黄线）的显示方法是在hierarchy面板点击寻路角色，在Scene场景勾选如上图几项即可。</em></p>
@@ -1888,16 +2781,16 @@
 <p><strong>跳台式</strong>一般运用于高低平台之间的转换（跳下某平台）<strong>跳跃跨栏式</strong>主要在跳跃过某个缺口。</p>
 <p>具体流程：</p>
 <ol>
-<li><p><img src="/2019/12/11/Unity NavMesh和寻路插件使用/34063515.jpg" alt="@勾选Generate Off-Mesh Links属性"> </p>
+<li><p><img src="/2019/12/11/Unity NavMesh和寻路插件使用/Unity NavMesh和寻路插件使用/34063515.jpg" alt="@勾选Generate Off-Mesh Links属性"> </p>
 </li>
 <li><p>在Bake面板设置两个参数：</p>
 </li>
 </ol>
 <p>   解释：<br>   <strong>Drop Height：</strong>跳台式链接需要设置下落的高度。高度为0时，无法跳落。<br>   <strong>Jump-Across：</strong>可以跳跃的距离。跳跃的距离为0时，无法眺落。（最小值=寻路实体半径+始终点距离，且最小值要大于代理半径的二倍。）</p>
 <ol start="3">
-<li>设置完成后点击Bake：<br><img src="/2019/12/11/Unity NavMesh和寻路插件使用/48909730.jpg" alt="@Bake后的效果，黑色的点代表可跳跃的点"></li>
+<li>设置完成后点击Bake：<br><img src="/2019/12/11/Unity NavMesh和寻路插件使用/Unity NavMesh和寻路插件使用/48909730.jpg" alt="@Bake后的效果，黑色的点代表可跳跃的点"></li>
 </ol>
-<p><img src="/2019/12/11/Unity NavMesh和寻路插件使用/65051244.jpg" alt="@没有黑圈代表离网链接没有构建成功"></p>
+<p><img src="/2019/12/11/Unity NavMesh和寻路插件使用/Unity NavMesh和寻路插件使用/65051244.jpg" alt="@没有黑圈代表离网链接没有构建成功"></p>
 <p><em>注：生成的分离网格链接只能从上往下移动，如果需要从下往上则需要使用手动分离网格链接。</em></p>
 <p>官网链接：<a href="https://docs.unity3d.com/2017.4/Documentation/Manual/nav-BuildingOffMeshLinksAutomatically.html">https://docs.unity3d.com/2017.4/Documentation/Manual/nav-BuildingOffMeshLinksAutomatically.html</a></p>
 <hr>
@@ -1909,8 +2802,8 @@
 <p>While navigating, the NavMesh Agent is constrained on the surface of the NavMesh. Since the NavMesh is an approximation of the walkable space, some features are evened out when the NavMesh is being built. For example, stairs may appear as a slope in the NavMesh. If your game requires accurate placement of the agent, you should enable Height Mesh building when you bake the NavMesh. The setting can be found under the Advanced settings in Navigation window. Note that building Height Mesh will take up memory and processing at runtime, and it will take a little longer to bake the NavMesh.</p>
 </blockquote>
 <p>官方文档：<a href="https://docs.unity3d.com/2017.4/Documentation/Manual/nav-HeightMesh.html">https://docs.unity3d.com/2017.4/Documentation/Manual/nav-HeightMesh.html</a></p>
-<p><img src="/2019/12/11/Unity NavMesh和寻路插件使用/32907915.jpg" alt="@开启前"></p>
-<p><img src="/2019/12/11/Unity NavMesh和寻路插件使用/48197356.jpg" alt="@开启后"></p>
+<p><img src="/2019/12/11/Unity NavMesh和寻路插件使用/Unity NavMesh和寻路插件使用/32907915.jpg" alt="@开启前"></p>
+<p><img src="/2019/12/11/Unity NavMesh和寻路插件使用/Unity NavMesh和寻路插件使用/48197356.jpg" alt="@开启后"></p>
 <hr>
 <h4 id="对障碍物的补充"><a href="#对障碍物的补充" class="headerlink" title="对障碍物的补充"></a>对障碍物的补充</h4><p>1.一个物体不能同时开启NavMeshAget和NavMeshObstacle,但是可以在运行时实时修改其开关。同时开启会产生角色躲避自己的冲突。如果再同时的开启的基础上启用Carve，会出现更多的异常行为。</p>
 <hr>
@@ -1919,31 +2812,31 @@
 <h4 id="high-level-NavMesh-building-components"><a href="#high-level-NavMesh-building-components" class="headerlink" title="high-level NavMesh building components"></a>high-level NavMesh building components</h4><p>//</p>
 <p>官方文档：<a href="https://docs.unity3d.com/2017.4/Documentation/Manual/NavMesh-BuildingComponents.html">https://docs.unity3d.com/2017.4/Documentation/Manual/NavMesh-BuildingComponents.html</a></p>
 <hr>
-<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><p>下面的几个例子是我作为熟悉导航系统练习写的，想看标准的演示可以点击Windows-Navigation-Bake面板中的蓝色文本下载官方Demo。<br><img src="/2019/12/11/Unity NavMesh和寻路插件使用/43707615.jpg" alt="@点击蓝色链接可跳转至下载Demo网页"></p>
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><p>下面的几个例子是我作为熟悉导航系统练习写的，想看标准的演示可以点击Windows-Navigation-Bake面板中的蓝色文本下载官方Demo。<br><img src="/2019/12/11/Unity NavMesh和寻路插件使用/Unity NavMesh和寻路插件使用/43707615.jpg" alt="@点击蓝色链接可跳转至下载Demo网页"></p>
 <p>链接：<a href="https://github.com/Unity-Technologies/NavMeshComponents">https://github.com/Unity-Technologies/NavMeshComponents</a></p>
 <h4 id="静态场景："><a href="#静态场景：" class="headerlink" title="静态场景："></a>静态场景：</h4><p><strong>（1）</strong>首先将场景内的障碍物包括地板设置为Static（如图中的四面墙，黄色的cube以及绿色的地板）：</p>
-<p><img src="/2019/12/11/Unity NavMesh和寻路插件使用/24937663.jpg" alt="img"></p>
+<p><img src="/2019/12/11/Unity NavMesh和寻路插件使用/Unity NavMesh和寻路插件使用/24937663.jpg" alt="img"></p>
 <p>注意NAvigation Static要确定被勾选：</p>
-<p><img src="/2019/12/11/Unity NavMesh和寻路插件使用/50847199.jpg" alt="img"></p>
+<p><img src="/2019/12/11/Unity NavMesh和寻路插件使用/Unity NavMesh和寻路插件使用/50847199.jpg" alt="img"></p>
 <p><strong>（2）</strong> 打开Navigation面板（window-Navigation），点击Bake：</p>
-<p><img src="/2019/12/11/Unity NavMesh和寻路插件使用/./Image 007.png" alt="@|center| 350x0"></p>
+<p><img src="/2019/12/11/Unity NavMesh和寻路插件使用/Unity NavMesh和寻路插件使用/./Image 007.png" alt="@|center| 350x0"></p>
 <p>点击Bake后场景会显示可通过的区域：</p>
-<p><img src="/2019/12/11/Unity NavMesh和寻路插件使用/67341465.jpg" alt="img"></p>
+<p><img src="/2019/12/11/Unity NavMesh和寻路插件使用/Unity NavMesh和寻路插件使用/67341465.jpg" alt="img"></p>
 <p><strong>（3）</strong> 在需要寻路的物体(角色)上添加Nav Mesh Agent组件，并添加自定义的物体行走组件，通过调用NavMeshAgent中的SetDestination方法使物体寻路，例如:</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">_agent.SetDestination(tar);</span><br></pre></td></tr></table></figure>
-<p><strong>（4）</strong>效果如下（途中的路径红线显示要自己添加，具体角色的行走和绘图实现方式可以在Demo中找到对应脚本）：<br><img src="/2019/12/11/Unity NavMesh和寻路插件使用/94816236.jpg" alt="img"></p>
-<h4 id="动态场景："><a href="#动态场景：" class="headerlink" title="动态场景："></a>动态场景：</h4><p>NavMesh同时也支持动态规划路线，如果寻路过程中动态出现障碍可以重新规划路线，NavMesh对动态规划支持不好，相比插件的动态寻路，NavMesh差的很多。<br><strong>（1）</strong> 先按照静态场景的流程走一遍，注意活动的障碍物不要标记为Static：<br><img src="/2019/12/11/Unity NavMesh和寻路插件使用/80234410.jpg" alt="img"></p>
+<p><strong>（4）</strong>效果如下（途中的路径红线显示要自己添加，具体角色的行走和绘图实现方式可以在Demo中找到对应脚本）：<br><img src="/2019/12/11/Unity NavMesh和寻路插件使用/Unity NavMesh和寻路插件使用/94816236.jpg" alt="img"></p>
+<h4 id="动态场景："><a href="#动态场景：" class="headerlink" title="动态场景："></a>动态场景：</h4><p>NavMesh同时也支持动态规划路线，如果寻路过程中动态出现障碍可以重新规划路线，NavMesh对动态规划支持不好，相比插件的动态寻路，NavMesh差的很多。<br><strong>（1）</strong> 先按照静态场景的流程走一遍，注意活动的障碍物不要标记为Static：<br><img src="/2019/12/11/Unity NavMesh和寻路插件使用/Unity NavMesh和寻路插件使用/80234410.jpg" alt="img"></p>
 <p><strong>（2）</strong> 在动态运动物体上添加 Nav Mesh Obstacle组件。</p>
-<p><strong>（3）</strong>效果如下：<br><img src="/2019/12/11/Unity NavMesh和寻路插件使用/52457988.jpg" alt="img"></p>
-<p>如果发现角色寻路困难，会在动态障碍物前停滞，可以更改Agent Radius的值来修改障碍物的半径，通过调大障碍物的占地面积让角色行走更流畅，或修改代理的自身半径：<br><img src="/2019/12/11/Unity NavMesh和寻路插件使用/97970624.jpg" alt="img"></p>
-<h4 id="离网链接场景："><a href="#离网链接场景：" class="headerlink" title="离网链接场景："></a>离网链接场景：</h4><p>有的时候场景中会出现一些传送点，跳跃点，如果需要在寻路时将传送点也包括在寻路计算内，则需要添加Off-Mesh-Line组件。<br>1.准备两个cube，分别命名为Start和End。作为传送点：<br><img src="/2019/12/11/Unity NavMesh和寻路插件使用/56354906.jpg" alt="@图中的两个白色的板子"><br>2.在Start的cube上添加Off-Mesh-Line组件，在Start和End属性添加对应的两个Cube（Start和End）：<br><img src="/2019/12/11/Unity NavMesh和寻路插件使用/19088313.jpg" alt="img"><br>3.若添加成功则传送点上会出现黑色的线：<br><img src="/2019/12/11/Unity NavMesh和寻路插件使用/61300703.jpg" alt="img"><br>4.可以看到现在代理在寻路时会将跳跃点计算在内：<br><img src="/2019/12/11/Unity NavMesh和寻路插件使用/68085785.jpg" alt="img"></p>
-<h4 id="区域寻路场景"><a href="#区域寻路场景" class="headerlink" title="区域寻路场景"></a>区域寻路场景</h4><p>有时可能会用不到Bake整个场景的地图，只生成局部的NavMesh就够了，比如RPG游戏中玩家在可见区域选路，其他地方被战争迷雾覆盖，无法自动前往。这时需要生成局部的NavMesh并实时刷新。<br>\1. 新建一个空物体，添加Local Nav Mesh Builder，Size为需要实时计算的NavMesh大小，并在Tracked位置填写需要使用局部网格的角色。<br><img src="/2019/12/11/Unity NavMesh和寻路插件使用/72400628.jpg" alt="img"></p>
+<p><strong>（3）</strong>效果如下：<br><img src="/2019/12/11/Unity NavMesh和寻路插件使用/Unity NavMesh和寻路插件使用/52457988.jpg" alt="img"></p>
+<p>如果发现角色寻路困难，会在动态障碍物前停滞，可以更改Agent Radius的值来修改障碍物的半径，通过调大障碍物的占地面积让角色行走更流畅，或修改代理的自身半径：<br><img src="/2019/12/11/Unity NavMesh和寻路插件使用/Unity NavMesh和寻路插件使用/97970624.jpg" alt="img"></p>
+<h4 id="离网链接场景："><a href="#离网链接场景：" class="headerlink" title="离网链接场景："></a>离网链接场景：</h4><p>有的时候场景中会出现一些传送点，跳跃点，如果需要在寻路时将传送点也包括在寻路计算内，则需要添加Off-Mesh-Line组件。<br>1.准备两个cube，分别命名为Start和End。作为传送点：<br><img src="/2019/12/11/Unity NavMesh和寻路插件使用/Unity NavMesh和寻路插件使用/56354906.jpg" alt="@图中的两个白色的板子"><br>2.在Start的cube上添加Off-Mesh-Line组件，在Start和End属性添加对应的两个Cube（Start和End）：<br><img src="/2019/12/11/Unity NavMesh和寻路插件使用/Unity NavMesh和寻路插件使用/19088313.jpg" alt="img"><br>3.若添加成功则传送点上会出现黑色的线：<br><img src="/2019/12/11/Unity NavMesh和寻路插件使用/Unity NavMesh和寻路插件使用/61300703.jpg" alt="img"><br>4.可以看到现在代理在寻路时会将跳跃点计算在内：<br><img src="/2019/12/11/Unity NavMesh和寻路插件使用/Unity NavMesh和寻路插件使用/68085785.jpg" alt="img"></p>
+<h4 id="区域寻路场景"><a href="#区域寻路场景" class="headerlink" title="区域寻路场景"></a>区域寻路场景</h4><p>有时可能会用不到Bake整个场景的地图，只生成局部的NavMesh就够了，比如RPG游戏中玩家在可见区域选路，其他地方被战争迷雾覆盖，无法自动前往。这时需要生成局部的NavMesh并实时刷新。<br>\1. 新建一个空物体，添加Local Nav Mesh Builder，Size为需要实时计算的NavMesh大小，并在Tracked位置填写需要使用局部网格的角色。<br><img src="/2019/12/11/Unity NavMesh和寻路插件使用/Unity NavMesh和寻路插件使用/72400628.jpg" alt="img"></p>
 <ol>
-<li>为场景内的障碍物，地形添加Nav Mesh Source Tag组件。<br><img src="/2019/12/11/Unity NavMesh和寻路插件使用/42188782.jpg" alt="img"></li>
+<li>为场景内的障碍物，地形添加Nav Mesh Source Tag组件。<br><img src="/2019/12/11/Unity NavMesh和寻路插件使用/Unity NavMesh和寻路插件使用/42188782.jpg" alt="img"></li>
 </ol>
 <p>3.像其他场景一样为角色添加代理组件。</p>
-<p>4.效果（不需要在Editor时Bake）：<br><img src="/2019/12/11/Unity NavMesh和寻路插件使用/319203.jpg" alt="img"></p>
-<h4 id="有寻路代价的场景"><a href="#有寻路代价的场景" class="headerlink" title="有寻路代价的场景"></a>有寻路代价的场景</h4><p>如果想让干预代理决定两条路该走哪条，比如走沼泽会扣血而草地不会，可以为行走区域添加<strong>代价</strong><br>1.添加路径需要的代价，默认是1，小于1的区域表示代价比标准低，大于1代表比标准代价高。<br><img src="/2019/12/11/Unity NavMesh和寻路插件使用/66303692.jpg" alt="@添加water,grass,ice三个自定义代价的区域"><br>2.将行走区域修改为对应图层<br><img src="/2019/12/11/Unity NavMesh和寻路插件使用/20822682.jpg" alt="@选中的地板设置为Water区域"><br>3.对应区域设置好后，点击Bake，如图。<br><img src="/2019/12/11/Unity NavMesh和寻路插件使用/44968356.jpg" alt="@三个颜色的区域代表了不同的代价区域"><br>4.现在代理寻路时会考虑代价花费，倾向于花费低的路线。<br><img src="/2019/12/11/Unity NavMesh和寻路插件使用/83227170.jpg" alt="img"></p>
+<p>4.效果（不需要在Editor时Bake）：<br><img src="/2019/12/11/Unity NavMesh和寻路插件使用/Unity NavMesh和寻路插件使用/319203.jpg" alt="img"></p>
+<h4 id="有寻路代价的场景"><a href="#有寻路代价的场景" class="headerlink" title="有寻路代价的场景"></a>有寻路代价的场景</h4><p>如果想让干预代理决定两条路该走哪条，比如走沼泽会扣血而草地不会，可以为行走区域添加<strong>代价</strong><br>1.添加路径需要的代价，默认是1，小于1的区域表示代价比标准低，大于1代表比标准代价高。<br><img src="/2019/12/11/Unity NavMesh和寻路插件使用/Unity NavMesh和寻路插件使用/66303692.jpg" alt="@添加water,grass,ice三个自定义代价的区域"><br>2.将行走区域修改为对应图层<br><img src="/2019/12/11/Unity NavMesh和寻路插件使用/Unity NavMesh和寻路插件使用/20822682.jpg" alt="@选中的地板设置为Water区域"><br>3.对应区域设置好后，点击Bake，如图。<br><img src="/2019/12/11/Unity NavMesh和寻路插件使用/Unity NavMesh和寻路插件使用/44968356.jpg" alt="@三个颜色的区域代表了不同的代价区域"><br>4.现在代理寻路时会考虑代价花费，倾向于花费低的路线。<br><img src="/2019/12/11/Unity NavMesh和寻路插件使用/Unity NavMesh和寻路插件使用/83227170.jpg" alt="img"></p>
 <hr>
 <hr>
 ]]></content>
@@ -1951,107 +2844,14 @@
         <category>Program</category>
       </categories>
       <tags>
-        <tag>Unity</tag>
         <tag>游戏寻路</tag>
         <tag>Untiy插件</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>LuaInterface简介</title>
-    <url>/2019/12/11/C%E5%92%8CLua%E4%BA%A4%E4%BA%92/</url>
-    <content><![CDATA[<p>LuaInterface</p>
-<p><a href="https://www.cnblogs.com/sifenkesi/p/3901831.html">https://www.cnblogs.com/sifenkesi/p/3901831.html</a></p>
-<a id="more"></a>
-<h1 id="一-介绍"><a href="#一-介绍" class="headerlink" title="一 介绍"></a>一 介绍</h1><h1 id="二-使用"><a href="#二-使用" class="headerlink" title="二 使用"></a>二 使用</h1><h2 id="1-C-中调用Lua"><a href="#1-C-中调用Lua" class="headerlink" title="1.C#中调用Lua"></a>1.C#中调用Lua</h2><p>下载LuaInterface。<a href="http://luaforge.net/projects/luainterface/">下载地址</a></p>
-<p>里面有两个文件：<code>lua51.dll</code>，<code>LuaInterface.dll</code></p>
-<p>新建c#控制台，添加引用（引用右键-添加引用）：</p>
-<p><img src="/2019/12/11/C和Lua交互/Image 0011557124613.png" alt="Image 0011557124613"></p>
-<p>c#：</p>
-<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> System.Linq;</span><br><span class="line"><span class="keyword">using</span> System.Text;</span><br><span class="line"><span class="keyword">using</span> System.Threading.Tasks;</span><br><span class="line"><span class="keyword">using</span> LuaInterface;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">LuajinterfaceTest</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">class</span> <span class="title">Program</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="keyword">string</span>[] args</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="comment">// 新建一个Lua解释器，每一个Lua实例都相互独立</span></span><br><span class="line">            Lua lua = <span class="keyword">new</span> Lua();</span><br><span class="line">            </span><br><span class="line">            <span class="comment">// Lua的索引操作[]可以创建、访问、修改global域，括号里面是变量名</span></span><br><span class="line">            <span class="comment">// 创建global域num和str</span></span><br><span class="line">            lua[<span class="string">"num"</span>] = <span class="number">2</span>;</span><br><span class="line">            lua[<span class="string">"str"</span>] = <span class="string">"a string"</span>;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 创建空table</span></span><br><span class="line">            lua.NewTable(<span class="string">"tab"</span>);</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 执行lua脚本，着两个方法都会返回object[]记录脚本的执行结果</span></span><br><span class="line">            lua.DoString(<span class="string">"num = 100; print(\"i am a lua string\")"</span>);</span><br><span class="line">            <span class="keyword">object</span>[] retVals = lua.DoString(<span class="string">"return num,str"</span>);</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 访问global域num和str</span></span><br><span class="line">            <span class="keyword">double</span> num = (<span class="keyword">double</span>)lua[<span class="string">"num"</span>];</span><br><span class="line">            <span class="keyword">string</span> str = (<span class="keyword">string</span>)lua[<span class="string">"str"</span>];</span><br><span class="line">            lua.DoFile(<span class="string">"E:\\Personal\\Test_Personal\\LuainterfaceTest\\LuajinterfaceTest\\LuajinterfaceTest\\testLuaInterface.lua"</span>);</span><br><span class="line">            Console.WriteLine(<span class="string">"num = &#123;0&#125;"</span>, num);</span><br><span class="line">            Console.WriteLine(<span class="string">"str = &#123;0&#125;"</span>, str);</span><br><span class="line">            Console.WriteLine(<span class="string">"width = &#123;0&#125;"</span>, lua[<span class="string">"width"</span>]);</span><br><span class="line">            Console.WriteLine(<span class="string">"height = &#123;0&#125;"</span>, lua[<span class="string">"height"</span>]);</span><br><span class="line">            Console.ReadLine();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>Lua：</p>
-<figure class="highlight lua"><table><tr><td class="code"><pre><span class="line"><span class="keyword">local</span> width = <span class="number">99999</span></span><br><span class="line"><span class="keyword">local</span> height = <span class="number">888888</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">"fuck"</span>)</span><br></pre></td></tr></table></figure>
-<p>dofile使用相对路径？？</p>
-<h3 id="1-1-LuaInterface与CLR类型对应"><a href="#1-1-LuaInterface与CLR类型对应" class="headerlink" title="1.1 LuaInterface与CLR类型对应"></a>1.1 LuaInterface与CLR类型对应</h3><table>
-<thead>
-<tr>
-<th style="text-align:center">LuaInterface</th>
-<th style="text-align:center">CSharp</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">nil</td>
-<td style="text-align:center">null</td>
-</tr>
-<tr>
-<td style="text-align:center">string</td>
-<td style="text-align:center">System.String</td>
-</tr>
-<tr>
-<td style="text-align:center">number</td>
-<td style="text-align:center">System.Double</td>
-</tr>
-<tr>
-<td style="text-align:center">boolean</td>
-<td style="text-align:center">System.Boolean</td>
-</tr>
-<tr>
-<td style="text-align:center">table</td>
-<td style="text-align:center">LuaInterface.LuaTable</td>
-</tr>
-<tr>
-<td style="text-align:center">function</td>
-<td style="text-align:center">LuaInterface.LuaFunction</td>
-</tr>
-</tbody>
-</table>
-<p>其他类型传给lua会被视为是userdata。lua将userdata传给c#时还会是原来的数据结构。</p>
-<p>　*<em>LuaTable和LuaUserData都有索引操作[]，用来访问或修改域值，索引可以为string或number。</em><br>　　LuaFunction和LuaUserData都有call方法用来执行函数，可以传入任意多个参数并返回多个值。*</p>
-<h3 id="1-2-使用Luainterface的一些问题"><a href="#1-2-使用Luainterface的一些问题" class="headerlink" title="1.2 使用Luainterface的一些问题"></a>1.2 使用Luainterface的一些问题</h3><p>（1）异常：混合模式程序集是针对“v2.0.50727”版的运行时生成的，在没有配置其他信息的情况下，无法在 4.0 运行时中加载该程序集。</p>
-<p>解决办法：</p>
-<p>在App.config文件中添加如下配置节：</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">startup</span> <span class="attr">useLegacyV2RuntimeActivationPolicy</span>=<span class="string">"true"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">supportedRuntime</span> <span class="attr">version</span>=<span class="string">"v4.0"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">startup</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h2 id="2-Lua中调用C"><a href="#2-Lua中调用C" class="headerlink" title="2.Lua中调用C"></a>2.Lua中调用C</h2><p><em>第一种是纯lua中进行测试：</em></p>
-<h3 id="2-1-获取类，访问构造函数"><a href="#2-1-获取类，访问构造函数" class="headerlink" title="2.1 获取类，访问构造函数"></a>2.1 获取类，访问构造函数</h3><p>在c#工程中测试：</p>
-<p>　    luanet.load_assembly函数：加载CLR程序集（程序集的名字在工程右键属性可以看到）；</p>
-<p>　　luanet.import_type函数：加载程序集中的类；</p>
-<p>　　luanet.get_constructor_bysig函数：手动匹配某个构造函数</p>
-<p>Lua代码：</p>
-<figure class="highlight lua"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 加载自定义类型，先加载程序集，在加载类型</span></span><br><span class="line">luanet.load_assembly(<span class="string">"LuajinterfaceTest"</span>)</span><br><span class="line">TestClass = luanet.import_type(<span class="string">"LuajinterfaceTest.TestClass2"</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">obj1 = TestClass(<span class="number">2</span>, <span class="number">3</span>)    <span class="comment">-- 匹配public TestClass2(int n1, int n2)</span></span><br><span class="line">obj1:PrintSomthing()</span><br><span class="line">obj2 = TestClass(<span class="string">"x"</span>)    <span class="comment">-- 匹配public TestClass2(string str)</span></span><br><span class="line">obj3 = TestClass(<span class="number">3</span>)        <span class="comment">-- 匹public TestClass2(string str)</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">TestClass_cons2 = luanet.get_constructor_bysig(TestClass, <span class="string">'System.Int32'</span>)</span><br><span class="line">obj3 = TestClass_cons2(<span class="number">3</span>)    <span class="comment">-- 匹配public TestClass2(int n)</span></span><br></pre></td></tr></table></figure>
-<p><em>注意先执行构造函数再进行方法调用</em></p>
-<h3 id="2-2-访问对象的字段和方法"><a href="#2-2-访问对象的字段和方法" class="headerlink" title="2.2 访问对象的字段和方法"></a>2.2 访问对象的字段和方法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">-- 加载自定义类型，先加载程序集，在加载类型</span><br><span class="line">luanet.load_assembly(&quot;LuajinterfaceTest&quot;)</span><br><span class="line">TestClass = luanet.import_type(&quot;LuajinterfaceTest.TestClass2&quot;)</span><br><span class="line"></span><br><span class="line">obj1 = TestClass(2, 3)    -- 匹配public TestClass2(int n1, int n2)</span><br><span class="line">obj1:PrintSomthing()</span><br></pre></td></tr></table></figure>
-<p>访问对象的字段和table一样：button.Text… button[“Text”]</p>
-<p>访问对象就是obj1:PrintSomthing()</p>
-<h3 id="2-3-重载方法的匹配"><a href="#2-3-重载方法的匹配" class="headerlink" title="2.3 重载方法的匹配"></a>2.3 重载方法的匹配</h3><p>luanet.get_method_bysig</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">　　setMethod=luanet.get_method_bysig(obj,&apos;setValue&apos;,&apos;System.String&apos;)&quot;</span><br><span class="line">　　setMethod(&apos;str&apos;)</span><br></pre></td></tr></table></figure>
-<p>Luainterface匹配重载方法（包括构造函数）的规律是自动匹配第一个能够匹配的方法（构造函数）</p>
-<p>LuaInterface匹配第一个能够匹配的构造函数，在这个过程中，numerical string（数字字符串）会自动匹配number，而number可以自动匹配string，所以TestClass(3)匹配到了参数为string的构造函数。</p>
-<p>out和ref参数的方法，参数和方法返回值同时返回。out参数不需要传入。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">-- calling int obj::OutMethod1(int,out int,out int)</span><br><span class="line">  retVal,out1,out2 = obj:OutMethod1(inVal)</span><br><span class="line">  -- calling void obj::OutMethod2(int,out int)</span><br><span class="line">  retVal,out1 = obj:OutMethod2(inVal) -- retVal ser´a nil</span><br><span class="line">  -- calling int obj::RefMethod(int,ref int)</span><br></pre></td></tr></table></figure>
-<h3 id="2-4-接口"><a href="#2-4-接口" class="headerlink" title="2.4 接口"></a>2.4 接口</h3><p>两个接口：</p>
-<p>IFoo.method()和IBar.method()，这种情况下obj[“IFoo.method”]</p>
-<h3 id="2-7事件，委托"><a href="#2-7事件，委托" class="headerlink" title="2.7事件，委托"></a>2.7事件，委托</h3><figure class="highlight lua"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">handle_mouseup</span><span class="params">(sender,args)</span></span></span><br><span class="line">　　<span class="built_in">print</span>(sender:ToString() .. ’ MouseUp!’)</span><br><span class="line">　　button.MouseUp:Remove(handler)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line">handler = button.MouseUp:Add(handle_mouseup)</span><br></pre></td></tr></table></figure>
-<p>add（）会将lua方法转换为CLR委托，并会返回这个委托。</p>
-<h3 id="2-6-扩展interface的方法"><a href="#2-6-扩展interface的方法" class="headerlink" title="2.6 扩展interface的方法"></a>2.6 扩展interface的方法</h3><p>太难了 等会再看吧</p>
-<p>差一个c#调lua方法</p>
-<p>lua报错输出</p>
-<p><em>Lua中button.Text… button[“Text”]的区别</em></p>
-<p>vscode控制台中文乱码<a href="https://blog.csdn.net/xjk2017/article/details/81388493">https://blog.csdn.net/xjk2017/article/details/81388493</a></p>
-<p>CLR</p>
-<p>构造方法</p>
-<p><img src="/2019/12/11/C和Lua交互/Image 0011555992894.png" alt="Image 0011555992894"></p>
-]]></content>
-      <categories>
-        <category>Program</category>
-      </categories>
-      <tags>
-        <tag>CSharp</tag>
-        <tag>Lua</tag>
+        <tag>Unity</tag>
       </tags>
   </entry>
   <entry>
     <title>Unity下C#调用纯C动态链接库</title>
-    <url>/2019/12/11/CandCSharpDll/</url>
+    <url>/2019/12/11/CandCSharpDll/CandCSharpDll/</url>
     <content><![CDATA[<p>链接库可以解决在项目中需要调用其他语言代码（如C/C++）的需求。库中保存了其他程序需要调用的方法。</p>
 <p>注：C++下导出链接库和使用方法和C有区别</p>
 <a id="more"></a>
@@ -2288,351 +3088,6 @@
         <tag>Unity</tag>
         <tag>C</tag>
         <tag>Android</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>CSharp笔记</title>
-    <url>/2019/12/11/CSharp%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<p>iOS的SDK接入流程</p>
-<p>基础笔记</p>
-<a id="more"></a>
-<h2 id="一-Net框架"><a href="#一-Net框架" class="headerlink" title="一 .Net框架"></a>一 .Net框架</h2><h3 id="1-2-net框架构成"><a href="#1-2-net框架构成" class="headerlink" title="1.2 .net框架构成"></a>1.2 .net框架构成</h3><p><img src="/2019/12/11/CSharp笔记/Image 0011559550021.png" alt="Image 0011559550021"></p>
-<p>eeee</p>
-<pre class="mermaid">graph TD;
-    A-->B;
-    A-->C;
-    B-->D;
-    C-->D;</pre>
-
-
-
-<p>eeeeee</p>
-<p>CLR：Common Language Runtime 公共语言运行库</p>
-<p>BCL：Base Class Library  基础类库</p>
-<p>（或者称为框架类库 Framework Class Library ， FCL）</p>
-<p>自己写程序时可以调用BCL</p>
-<h3 id="1-3编译成CIL"><a href="#1-3编译成CIL" class="headerlink" title="1.3编译成CIL"></a>1.3编译成CIL</h3><p><img src="/2019/12/11/CSharp笔记/Image 0011559550351.png" alt="Image 0011559550351"></p>
-<p>使用编程语言写好的文件需要使用编译器生成<strong>程序集</strong>文件，程序集文件只能是可执行的，或者是<strong>DLL</strong>。并且程序集中的不是本机代码，而是CIL（Common Intermediate Language）公共中间语言的中间语言。</p>
-<p>和CIL有关的还有IL和MSIL 不过已经很少用到了</p>
-<h3 id="1-4编译成本机代码并执行"><a href="#1-4编译成本机代码并执行" class="headerlink" title="1.4编译成本机代码并执行"></a>1.4编译成本机代码并执行</h3><p>CIL被调用运行时才会被编译成本机代码。</p>
-<p>（先检查程序集的安全特性）</p>
-<p>JIT: Just-in-Time 实施编译器</p>
-<p><img src="/2019/12/11/CSharp笔记/Image 0011559550866.png" alt="Image 0011559550866"></p>
-<p>程序集中的可执行代码只有在需要时才会有JIT编译，编译后被缓存起来以备后面的程序执行。不被调用的代码将不会被编译。并且被调用的代码只编译一次。</p>
-<p>CIL被JIT编译为本机代码后，在运行时会被CLR管理，执行GC检查数组边界参数类型异常管理的任务。</p>
-<p>托管代码managed code：.net编写的代码成为托管代码。</p>
-<p>非托管代码 unmanaged code：不在CLR控制之下的代码，如Win32，C/C++ DLL。</p>
-<p>Ngen工具可以将程序集转换成当前处理器的本机代码。Ngen处理过的代码可以面去运行时的JIT编译过程。</p>
-<p><img src="/2019/12/11/CSharp笔记/Image 0011559552606.png" alt="Image 0011559552606"></p>
-<h3 id="CLR"><a href="#CLR" class="headerlink" title="CLR"></a>CLR</h3><p>CLR是核心组件，</p>
-<p><img src="/2019/12/11/CSharp笔记/Image 0011559552740.png" alt="Image 0011559552740"></p>
-<p>可以看到，非托管代码CLR不提供服务。</p>
-<h3 id="CLI"><a href="#CLI" class="headerlink" title="CLI"></a>CLI</h3><p>CLI （Common Language Infrastructure,公共语言基础结构）一组数据结构 系统标准</p>
-<p><img src="/2019/12/11/CSharp笔记/Image 0011559553121.png" alt="Image 0011559553121"></p>
-<p>CLI的重要组成部分是：</p>
-<p>1.CTS（COmmon Type System 公共类型系统）定义了托管代码中一定会使用的类型特征。.net兼容的编程语言的类型通常会映射到CTS中已定义的类型。</p>
-<p>CTS最重要的特征是，所有类型都继承公共的基类 object</p>
-<p>使用CTS可以确保系统类型和用户定义类型能被任何.net兼容的语言所使用</p>
-<p>2.CLS（COmmon Language Soecification公共语言规范）详细说明了.net兼任语言的规则和行为，包括参数传递，类结构，数据类型。</p>
-<p><img src="/2019/12/11/CSharp笔记/Image 0011559553490.png" alt="Image 0011559553490"></p>
-<p>c#的演化可以单独说一下</p>
-<p><img src="/2019/12/11/CSharp笔记/Image 0011559553508.png" alt="Image 0011559553508"></p>
-<h2 id="二"><a href="#二" class="headerlink" title="二"></a>二</h2><p><code>csc HelloWord.cs</code>  命令行启动csc C#编译器对文件进行编译。</p>
-<h3 id="1-有的没的"><a href="#1-有的没的" class="headerlink" title="1.有的没的"></a>1.有的没的</h3><p>标识符：</p>
-<p><img src="/2019/12/11/CSharp笔记/Image 0011559553699.png" alt="Image 0011559553699"></p>
-<p>关键字：</p>
-<p>上下关键字是仅在特定语言结构中充当关键字的标识符。上下文关键字可以在代码的其他部分被用做标识符。</p>
-<p><img src="/2019/12/11/CSharp笔记/Image 0011559553802.png" alt="Image 0011559553802"></p>
-<p>块：</p>
-<p>大括号包围的多条语句和序列，<strong>在语法上相当于一条语句</strong></p>
-<p>用途：</p>
-<p>语法上只需要一条语句，但执行的动作无法用一条简单语句表达。</p>
-<p>有一些特定的程序结构只能使用块，哪些结构？？</p>
-<p>块后面不跟分号</p>
-<p>WriteLine</p>
-<p>{0} {1} 这叫替换值</p>
-<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line">Console.WriteLine(<span class="string">"aaaa &#123;0&#125; and &#123;1&#125;"</span>,<span class="number">3</span>,<span class="number">6</span>);</span><br></pre></td></tr></table></figure>
-<p>也可以：</p>
-<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line">Console.WriteLine(<span class="string">"aaaa &#123;0&#125; and &#123;1&#125;"</span>,<span class="number">3</span>,<span class="number">6</span>);</span><br></pre></td></tr></table></figure>
-<p>不要试图引用替换值长度列以外位置的值，比如{2}</p>
-<p>格式化数字字符串</p>
-<p>这{1：C}叫格式说明符或者对齐说明符</p>
-<p><img src="/2019/12/11/CSharp笔记/Image 0011559554329.png" alt="Image 0011559554329"></p>
-<p>格式说明符如：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Console.WriteLine(&quot;aaaa &#123;0:C&#125;&quot;,3);</span><br></pre></td></tr></table></figure>
-<p>对齐说明符如：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Console.WriteLine(&quot;aaaa &#123;0,10&#125;&quot;,3);</span><br></pre></td></tr></table></figure>
-<p>负数表示左对齐</p>
-<p><img src="/2019/12/11/CSharp笔记/Image 0011559554667.png" alt="Image 0011559554667"></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Console.WriteLine(&quot;aaaa &#123;0:F4&#125;&quot;,3.123);</span><br></pre></td></tr></table></figure>
-<p>像这种就表示显示四位小数点。</p>
-<p>格式说明符可以去查表</p>
-<p>文档注释</p>
-<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span><span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span>这是说明</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span><span class="doctag">&lt;/summary&gt;</span></span></span><br></pre></td></tr></table></figure>
-<p>文档注释包含XML文本，可以生成程序文档，25章会讲。</p>
-<h2 id="三"><a href="#三" class="headerlink" title="三"></a>三</h2><p><strong>c是一组函数和数据类型，c++是一组函数和类，但是c#的程序是一组类型声明</strong>。</p>
-<p>C#程序或DLL源代码是一组类型声明</p>
-<p>Main方法当然也是必须的。</p>
-<p><strong>命名空间</strong>是一种把相关的类型声明分组并命名的办法。</p>
-<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">namespace</span> <span class="title">Game</span></span><br><span class="line">&#123;</span><br><span class="line">    DeclarationOfTypeA</span><br><span class="line">    </span><br><span class="line">    DeclarationOfTypeB</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">class</span> <span class="title">C</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>三个类型被声明在Game命名空间中。命名空间会在21章讲。</p>
-<p>类就是一个模板，它本身并不是数据结构，但他说明了由模板构造的对象的特征。</p>
-<p>BCL或者其他库也会提供一些类。</p>
-<p>类里面的叫数据成员和函数成员。</p>
-<h3 id="预定义类型"><a href="#预定义类型" class="headerlink" title="预定义类型"></a>预定义类型</h3><p>和C/C++不一样，c#数字不具有布尔意义。</p>
-<p>16中预定义类型：</p>
-<p><img src="/2019/12/11/CSharp笔记/Image 0011559555414.png" alt="Image 0011559555414"></p>
-<p>c#的类型名称就是.net类型的别名。.net类型可以在c#中使用（不推荐）。</p>
-<p><img src="/2019/12/11/CSharp笔记/Image 0011559555497.png" alt="Image 0011559555497"></p>
-<p>用户定义的类型：</p>
-<p><img src="/2019/12/11/CSharp笔记/Image 0011559555552.png" alt="Image 0011559555552"></p>
-<p>预定义类型可以直接用，如int。用户定义类型必须先声明后实例化。</p>
-<h3 id="堆和栈"><a href="#堆和栈" class="headerlink" title="堆和栈"></a>堆和栈</h3><p>栈是内存数组，</p>
-<p>堆是一块内存区域，GC会自动清除堆对象。</p>
-<p><strong>类型决定了对象的存储位置。</strong></p>
-<p>类型有两种：值类型和引用类型。值类型存放在栈里。</p>
-<p>引用类型需要两端内存，一个存实际的数据，在堆中。另一个存引用，指向堆的存放位置，可能在堆中也可能在栈中。</p>
-<p><strong>对于一个引用类型，其实例数据部分始终存放在堆里</strong> 无论值还是引用</p>
-<p>int var ， float var1这种是不可以的</p>
-<p>stirng是引用类型 </p>
-<p><img src="/2019/12/11/CSharp笔记/Image 0011559559689.png" alt="Image 0011559559689"></p>
-<p>dynamic关键字的类型在运行时才会被解析。</p>
-<h2 id="四"><a href="#四" class="headerlink" title="四"></a>四</h2><p>字段是数据成员 方法是函数成员</p>
-<p>c#和c++不同，不能再类型的外部声明全局变量。所有的字段都属于类型。也没有全局方法（在类型的外部)。</p>
-<p>不带修饰符默认私有成员</p>
-<h2 id="五"><a href="#五" class="headerlink" title="五"></a>五</h2><p>方法体也是个块</p>
-<p><img src="/2019/12/11/CSharp笔记/Image 0011559561349.png" alt="Image 0011559561349"></p>
-<p>var关键字不是特定类型变量的符号，只是语法速记。表示可以从右侧推断出类型。</p>
-<p>var只能用于本地变量，不能用于字段，只能在变量声明中包括初始化时使用，一点推断出类型则是固定不可更改的。</p>
-<p>和js的var不一样。</p>
-<p>本地变量的生存周期只在块里，直到声明他的那个块的尾部结束。</p>
-<p>c#和c++不一样 不允许在第一个有效范围内声明另一个同名本地变量。</p>
-<p>const 关键字不是修饰符，是核心声明的一部分必须放在类型前面。</p>
-<p>const必须在声明时初始化，且后面不能改变。</p>
-<p>const 必须有初始化语句。</p>
-<p>const也可以是null引用，但不能是某个对象的引用，因为对象的引用实在运行时决定的。</p>
-<p>return； 这种只能用在void方法。</p>
-<p>实参可以隐式转换为形参</p>
-<p>几种参数类别</p>
-<p><strong>值参数</strong>是把实参的值复制给形参。所以会复制引用，对于值类型会复制值。实参同时必须是变量，在用作实参前必须被赋值。如果是引用需要复制引用或者null</p>
-<p>值参数系统在栈上为形参分配内存。</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">void</span> MyMethod（ref <span class="keyword">int</span> val）｛...｝</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> y = <span class="number">10</span>；</span><br><span class="line"></span><br><span class="line">MyMethod（ref y）；</span><br></pre></td></tr></table></figure>
-<p><strong>引用参数</strong>，<strong>声明和调用</strong>都使用ref修饰符。<strong>实参同时必须是变量</strong>，在用作实参前必须被赋值。如果是引用需要复制引用或者null</p>
-<p>必须是变量的意思是  xxx(ref 3+4)这种是不可以的。</p>
-<p>引用参数不会在栈上分配内存，实际上，形参的参数名作为了实参变量的别名。指向相同的内存位置。</p>
-<p>所以改了形参，实参也会变。</p>
-<p>引用类型作为值参数和引用参数</p>
-<p>无论是值参数还是引用参数，都可以在方法内部修改它的成员。但实质上还是有区别的：</p>
-<p>1.作为值参数传递：如果在方法内创建一个新对象并赋值给形参，实参和形参的关联会切断。 方法调用结束后，新对象也就不在了。</p>
-<p><img src="/2019/12/11/CSharp笔记/Image 0011559813651.png" alt="Image 0011559813651"></p>
-<p>2.作为引用参数传递，如果在方法内创建一个新对象并赋值给形参，在方法结束后该对象依然存在，并且是实参所引用的值。</p>
-<p><img src="/2019/12/11/CSharp笔记/Image 0011559813682.png" alt="Image 0011559813682"></p>
-<p><strong>输出参数</strong></p>
-<p>输出参数用于方法体内把数据传出到调用代码。</p>
-<p>必须在声明和调用中都使用out修饰符。</p>
-<p>实参同时也必须是变了，不能是其他类型的表达式，因为方法需要内存位置保存返回值。</p>
-<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Method</span>(<span class="params"><span class="keyword">out</span> <span class="keyword">int</span> val</span>)</span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> y = <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line">Method(<span class="keyword">out</span> y)</span><br></pre></td></tr></table></figure>
-<p>和引用参数相似，形参担当实参的别名，实参和形参是同一块内存。所以对形参的更改会改变实参。</p>
-<p>输出参数有几个要求：</p>
-<p>在方法中，输出参数在能够被读取前<strong>必须被赋值</strong>。这意味着参数的初始值是无关的，并且没必要在方法调用之前为实参赋值。</p>
-<p>在方法返回前，内部贯穿的任何可能路径都必须为所有输出参数进行一次赋值。</p>
-<p>此外，因为在方法内读取输出变量之前必须对其写入，所以不可能使用输出参数把数据传入方法。如果在赋值之前试图读取他，编译器会有错误信息。</p>
-<p><strong>参数数组</strong></p>
-<p>允许零个或多个实参对应一个特殊的形参，有几个要求：</p>
-<p>1.参数列表中只能有一个参数数组。并且是最后一个</p>
-<p>2.参数数组表示的所有参数必须有相同的类型。</p>
-<p>声明参数数组必须做的事：</p>
-<p>1.数据类型前使用params修饰符。</p>
-<p>2.放一个方括号</p>
-<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ListInts</span>(<span class="params"><span class="keyword">params</span> <span class="keyword">int</span>[] invals</span>)</span></span><br></pre></td></tr></table></figure>
-<p>参数数组是一个数组，数组是引用类型，所以所有数据都保存在堆中。</p>
-<p>可以通过两种方式给参数数组传参：</p>
-<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line">ListInts（<span class="number">10</span>,<span class="number">20</span>,<span class="number">30</span>）；</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span>[] intarray = &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;;</span><br><span class="line">ListInts（intarray）;</span><br></pre></td></tr></table></figure>
-<p>params修饰符不需要再调用时使用。</p>
-<p>如果对应的形参数组没有实参，编译器会创建一个有零个元素的数组使用。</p>
-<p>当数组在堆中被创建时，实参的值是被<strong>复制</strong>到数组中，像值参数。</p>
-<p>如果数组是值类型，则值被复制，实参不受方法内部影响。</p>
-<p>如果数组是应用类，那引用被复制，实参可能会收到方法内部影响。</p>
-<p>数组作为实参</p>
-<p>数组作为实参传递，便一起会使用实参数组而不是创建新的</p>
-<p><img src="/2019/12/11/CSharp笔记/Image 0011559817803.png" alt="Image 0011559817803"></p>
-<p>重载</p>
-<p>重载必须有和其他方法不一样的签名</p>
-<p>签名包括：方法名称，参数数目，参数数据类型和顺序，参数修饰符。</p>
-<p><strong>返回类型不是签名的一部分，形参的名称也不是签名的一部分。</strong></p>
-<p>命名参数</p>
-<p>之前用的都叫位置参数。</p>
-<p>named parameter只要指定参数的名字，就可以任意顺序在方法调用中列出实参。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Method（c:2,a:4,B:3）;</span><br></pre></td></tr></table></figure>
-<p>可以同时使用位置参数和命名参数，但位置参数必须先列出来。</p>
-<p>可选参数</p>
-<p>optional parameter</p>
-<p>表明某个参数是可选的，需要在方法声明时为参数提供默认值。</p>
-<p>不是所有的参数类型都可以作为可选参数：</p>
-<p>只有值类型的默认值可以在编译时确定，才可以将值类型作为可选参数</p>
-<p>只有默认值是null的时候引用类型才可以作为可选参数使用</p>
-<p><img src="/2019/12/11/CSharp笔记/Image 0011559818761.png" alt="Image 0011559818761"></p>
-<p>所有必填参数必须在可选参数声明之前声明。如果有params参数必须在所有可选参数之后声明。</p>
-<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line">｛intx,<span class="keyword">decimal</span> y ...<span class="keyword">int</span> op = <span class="number">19</span>,<span class="keyword">double</span> op2 = <span class="number">32</span>; ... <span class="keyword">params</span> <span class="keyword">int</span>[] intVals｝</span><br></pre></td></tr></table></figure>
-<p>省略参数必须在最后开始，也就是说不能前面省略，后面不省略。</p>
-<p>如果需要随意省略可选参数，必须使用命名参数的特性来实现，使用可选参数的名字来消除歧义。</p>
-<p>栈帧</p>
-<p>调用方法时内存从栈的顶部开始分配，保存和方法关联的数据项。这块内存叫栈帧stack frame</p>
-<p>栈帧包括如下内容：</p>
-<p>返回地址，方法退出时继续执行的位置。</p>
-<p>方法的值参数，或者参数数组。</p>
-<p>和方法调用相关的其他数据管理项。</p>
-<p><img src="/2019/12/11/CSharp笔记/2019-06-07-11-24-16.png" alt="2019-06-07-11-24-16"></p>
-<p>递归的调用会产生很多不同的独立栈帧。</p>
-<p>（递归为什么会产生不同的独立栈帧？？）</p>
-<h2 id="六"><a href="#六" class="headerlink" title="六"></a>六</h2><p>类成员类型有9种</p>
-<p><img src="/2019/12/11/CSharp笔记/2019-06-07-11-27-45.png" alt="2019-06-07-11-27-45"></p>
-<p>声明类成员的方式： [][]   [特性]   [修饰符]  核心声明</p>
-<p>顺序必须是这个。多个特性和多个修饰符内部可以顺序随意，但整体上必须是这个顺序。</p>
-<p>静态字段被类的所有实例共享，所有实例都访问内存同一位置。</p>
-<p>static和const是不一样的</p>
-<p>如果静态字段有初始化语句，那会在使用任何静态成员之前初始化该字段。但是不会在程序执行开始就初始化。</p>
-<p>静态方法不能访问实例成员，但是能访问其他静态成员。</p>
-<p>静态的成员当然也是在堆上。</p>
-<p>成员常量不能被声明为静态的。</p>
-<p>成员常量和本地常量差不多。同时成员常量的值必须是编译时可计算的。</p>
-<p>和静态量不同，常量没有自己的存储位置，而是在编译时被编译器替换，类似于c和c++的define。</p>
-<p>属性</p>
-<p>它是命名的类成员</p>
-<p>它不为数据存储分配内存</p>
-<p>和字段不同，它执行代码</p>
-<p>set 和 get访问器有预定义的语法和语义。set有一个隐式的值参数value，返回类型是void。get没有参数，且get所有路径必须包含一条return语句，返回和属性相同的类型。</p>
-<p>属性上不允许有除了get和set以外的其他方法。</p>
-<p>访问器不能显示调用。</p>
-<p>属性可以是只读或者只写的。</p>
-<p><strong>属性和公共字段</strong></p>
-<p>属性是函数性成员，不是数据成员允许处理输入输出。公共字段不行。</p>
-<p>属性可以只读或者只写，字段不行。</p>
-<p><strong>编译后的变量和编译后的属性语义不同。</strong></p>
-<p><img src="/2019/12/11/CSharp笔记/2019-06-07-11-57-54.png" alt="2019-06-07-11-57-54"></p>
-<p>自动实现属性（有什么意义？）</p>
-<p>允许只声明属性而不声明后备字段。编译器会创建隐藏的后备字段，并自动挂接到get和set访问器上。</p>
-<p><img src="/2019/12/11/CSharp笔记/2019-06-07-12-01-22.png" alt="2019-06-07-12-01-22"></p>
-<p>eg：</p>
-<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">int</span> MyValue</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">set</span>; <span class="keyword">get</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>自动属性使开发者在倾向于声明一个公有字段的地方很容易的插入一个属性</p>
-<p>（插入一个问题  1-6章什么时候讲了修饰符 private protect public这些东西了）</p>
-<p>静态属性：不能访问实例成员，只能被实例成员访问。不管有没有实例都是存在的。外部访问使用类名。</p>
-<p>实例构造函数</p>
-<p>构造函数声明为public可以从类的外部创建实例</p>
-<p>构造函数没有返回值</p>
-<p>构造函数可以被重载</p>
-<p>如果用户声明了任何构造方法，则编译器不会提供默认的构造方法。</p>
-<p>构造方法可以声明为static，</p>
-<p>用于初始化类级别的项，静态字段这种。</p>
-<p><strong>类中只能有一个静态构造函数，而且不能带参数</strong></p>
-<p>静态构造函数不能有任何访问修饰符。</p>
-<p>静态构造函数和静态方法一样，不能访问实例成员，因此不能使用<strong>this访问器</strong></p>
-<p>不能从程序中显示调用静态构造方法，系统会自动调用它：</p>
-<p>引用任何静态成员之前，创建类的任何实例之前。</p>
-<p>对象初始化有两种</p>
-<ol>
-<li>new xxx()</li>
-<li>new xxx(){在此初始化设置公有字段的值}  大括号里就是初始化</li>
-</ol>
-<p>第二种也叫<strong>对象初始化语句</strong> 扩展了对象创建的语法</p>
-<p>需要注意，初始化发生在构造方法执行之后，因此构造方法中设置的值可能会在之后对象初始化中重置为相同或不相同的值。</p>
-<p>析构函数  destructor</p>
-<p>析构函数具体在后面讲  执行类的实例被销毁之前需要的清理或释放非托管资源的行为。</p>
-<p>非托管资源是指通过win32api获得的文件句柄 如果坚持使用。net类就不用编写析构方法</p>
-<p>readonly修饰符</p>
-<p>字段可以用readonly修饰符声明 作为类似const  一旦值被设定就不能改变。</p>
-<p>但有一些却别：</p>
-<p>const字段只能在声明语句中初始化，readonly可以在 声明语句和任何构造函数中初始化。如果readonly的字段是static的则需要在静态构造函数中初始化。</p>
-<p>const字段的值必须在编译的时候决定，但readonly可以在运行时决定。也就是说可以在不同的构造方法中设置不同的值。</p>
-<p>const的行为是静态的，readonly是实例字段，也可以说静态字段，在内存中有存储位置</p>
-<p>this关键字</p>
-<p>在类中使用，对当前实例的引用。只能被用在 <strong>实例</strong>构造函数、实例方法、属性和索引器的实例访问器</p>
-<p>不能再静态方法中使用this</p>
-<p>this的目的是区分累的成员和本地变量或者参数，或者作为调用方法的实参。</p>
-<p>索引器</p>
-<p>和属性差不多：</p>
-<p>和属性意义，不用分配内存来存储</p>
-<p>索引器和属性都是主要被用来访问其他数据成员</p>
-<p>属性通常表示单独的数据成员 索引通常表示多个数据成员</p>
-<p>索引器不能被声明为static</p>
-<p>需要注意：</p>
-<p>索引器没有名称，在名称的位置关键字是this</p>
-<p>参数列表再方括号中间</p>
-<p>参数列表至少声明一个参数</p>
-<p><img src="/2019/12/11/CSharp笔记/2019-06-16-12-10-11.png" alt="2019-06-16-12-10-11"></p>
-<p>索引器的set访问器接受两项数据：1.隐式参数value持有要保存的数据，2.一个或更多索引参数表示数据应该保存到哪。</p>
-<p><img src="/2019/12/11/CSharp笔记/2019-06-16-12-15-09.png" alt="2019-06-16-12-15-09"></p>
-<p>get、访问器必须检查索引参数确定他表示那个字段，并返回字段值。</p>
-<p><img src="/2019/12/11/CSharp笔记/2019-06-16-12-16-18.png" alt="2019-06-16-12-16-18"></p>
-<p>补充</p>
-<p>set和get是不能显示调用的，当索引器在表达式中取值时将自动调用get 赋值时自动调用set</p>
-<p>emp[0] = “q”;</p>
-<p>string name = emp[0];</p>
-<p>例子</p>
-<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">Empolyee</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">string</span> LastName;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">string</span> FirstName;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">string</span> City;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">string</span> <span class="keyword">this</span>[<span class="keyword">int</span> index]</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">set</span>&#123;</span><br><span class="line">            <span class="keyword">switch</span>(idnex)&#123;</span><br><span class="line">                <span class="keyword">case</span> <span class="number">0</span>:lastName = <span class="keyword">value</span>; <span class="keyword">break</span>;</span><br><span class="line">                    ...</span><br><span class="line">                        <span class="keyword">default</span>: <span class="keyword">throw</span> <span class="keyword">new</span> ArgumentOutOfRangeexception(<span class="string">"index"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">		&#125;</span><br><span class="line">        <span class="keyword">get</span>&#123;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">0</span>:<span class="keyword">return</span> LastName; <span class="keyword">break</span>;</span><br><span class="line">                    ...</span><br><span class="line">                        <span class="keyword">default</span>: <span class="keyword">throw</span> <span class="keyword">new</span> ArgumentOutOfRangeexception(<span class="string">"index"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">Class1</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">int</span> tmp1;</span><br><span class="line">    <span class="keyword">int</span> tmp2;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> <span class="keyword">this</span>[<span class="keyword">int</span> index]</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span>&#123;</span><br><span class="line">            <span class="keyword">return</span> (<span class="number">0</span> == index)</span><br><span class="line">                	? tmp1</span><br><span class="line">                	:tmp1;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">set</span>&#123;</span><br><span class="line">            <span class="keyword">if</span>(<span class="number">0</span> == idnex)</span><br><span class="line">                tmp1 = <span class="keyword">value</span>;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">                tmp2 = <span class="keyword">value</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>索引器可以重载，一定要保持有不同的参数列表。</p>
-<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">Class1</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">int</span> tmp1;</span><br><span class="line">    <span class="keyword">int</span> tmp2;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> <span class="keyword">this</span>[<span class="keyword">int</span> index]</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span>&#123;</span><br><span class="line">           ...</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">set</span>&#123;</span><br><span class="line">  			...</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">int</span> <span class="keyword">this</span>[<span class="keyword">int</span> index，<span class="keyword">int</span> index]</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span>&#123;</span><br><span class="line">           ...</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">set</span>&#123;</span><br><span class="line">  			...</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>访问器的修饰符</strong> 看好了 是访问器 不是索引器</p>
-<p>属性和索引器是函数成员，并自带了get和set索引器</p>
-<p>可以对get和set设置不同的访问级别 可以用于在对象的外部，只能读取该属性 是一个非常重要的封装工具</p>
-<p>但要注意</p>
-<p>必须同时有gat和set访问器时，访问器才能有修饰符，并且只能有一个访问修饰符</p>
-<p>访问器的修饰符必须比成员的级别更严格。 也就是访问器的访问级别必须要比成员的访问级别的位置低，也不能等于属性的访问级别</p>
-<p>访问级别：</p>
-<p>public –&gt; protected ——&gt;protected——–&gt; private</p>
-<p>​                  internal———-&gt;internal———–&gt;private</p>
-<p>分部类和分部类型：</p>
-<p>分部类可以生命在不同或相同的文件中  ，局部声明要被标注为partial class。</p>
-<p>partial不是关键字，在程序中可以用于标识符。但在class struct（局部结构） interface（局部借口）前它表示分布类型。</p>
-<p>分部方法：</p>
-<p>分布方法是声明在分部类中不同部分的方法，也可以声明在同一个类中</p>
-<p>分为两个部分：</p>
-<p>定义分布方法声明：给出签名和返回类型，声明的实现部分知识一个分号。</p>
-<p>实现分部方法声明：给出签名和返回类型，是以正常形式的语句块实现。</p>
-<p>需要注意的内容：</p>
-<p>定义和实现的签名和返回类型必须匹配。返回类型必须是void，签名不能包括访问修饰符，也就是说分部方法是私有的，列表不能包含out参数。定义和实现必须包含上下文关键字partial，直接放在关键字void之前。</p>
-<p>可以有定义而没有实现 编译器会把方法的声明以及方法内部任何对方法的调用移除。</p>
-<p>例子：</p>
-<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Myclass</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">partial</span> <span class="keyword">void</span> <span class="title">PrintSum</span>(<span class="params"><span class="keyword">int</span> x , <span class="keyword">int</span> y</span>)</span>; </span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Add</span>(<span class="params"><span class="keyword">int</span> x, <span class="keyword">int</span> y</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        PrintSum(x,y);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">partial</span> <span class="keyword">class</span> <span class="title">Myclass</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">partial</span> <span class="keyword">void</span> <span class="title">PrintSum</span>(<span class="params"><span class="keyword">int</span> x, <span class="keyword">int</span> y</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        console.writeLine(<span class="string">"xxx:"</span> , x +y);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="七"><a href="#七" class="headerlink" title="七"></a>七</h1><p>已存在类的成为基类 (base class) 新类叫派生类derived class</p>
-<p>要声明一个派生类，类名后要加入基类规格说明 就是冒号+基类</p>
-<p>派生类被描述为直接继承自列出的基类</p>
-<p>所有类都派生自object类 即时没有任何基类规格说明(继承)的类 </p>
-<p>object是唯一的非派生类  它是继承层次结构的基础</p>
-<p>没有基类规格说明的类隐式派生自object</p>
-<p>c#是单继承 但继承的层次没有限制</p>
-<p>屏蔽基类成员</p>
-<p>无法删除父类的任何成员 但是可以通过声明和父类一样名字的成员来屏蔽（mask）基类成员：</p>
-<p>1.声明一个相同名称相同类型的成员</p>
-<p>2.屏蔽方法需要在派生类中声明新的带有相同签名的函数成员。</p>
-<p><strong>签名是有名称和参数列表组成，不包括返回类型。</strong></p>
-<p>3.使用new修饰符告诉编译器正在故意屏蔽继承的成员，否则程序会成功编译但会警告你隐藏了一个继承的成员。</p>
-<p>比如：</p>
-<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">Someclass</span></span><br><span class="line"> ｛</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">string</span> a;</span><br><span class="line">   ｝</span><br><span class="line"><span class="keyword">class</span> <span class="title">someclass2</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">new</span> <span class="keyword">public</span> <span class="keyword">string</span> a;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>可以使用基类访问（base access）表达式访问隐藏的继承成员。</p>
-<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line">Console.WriteLine(<span class="string">"&#123;0&#125;"</span> , <span class="keyword">base</span>.a);</span><br></pre></td></tr></table></figure>
-<p>(屏蔽基类成员再使用基类访问并不是好的设计方式)</p>
-<h3 id="7-6使用基类的引用"><a href="#7-6使用基类的引用" class="headerlink" title="7.6使用基类的引用"></a>7.6使用基类的引用</h3><p>派生类的实例由基类的实例加上派生类新增的成员组成。派生类的引用指向整个类对象，包括基类部分。</p>
-<p><img src="/2019/12/11/CSharp笔记/2019-07-05-23-59-36.png" alt="2019-07-05-23-59-36"></p>
-<h4 id="虚方法和覆写方法"><a href="#虚方法和覆写方法" class="headerlink" title="虚方法和覆写方法"></a>虚方法和覆写方法</h4><p>基类引用调用派生类（derived class）方法：</p>
-<p>1.派生类的方法和基类的方法有享用的签名和返回类型</p>
-<p>2.基类的方法使用virtual标注</p>
-<p>3.派生类的方法使用override标注</p>
-<p>（注意此方式和new隐藏基类成员在行为上的区别。）</p>
-<p>这样就实现了基类方法调用了子类中的方法</p>
-<p>需要注意：</p>
-<p>1，覆写和被覆写的方法必须具有相同的可访问性。</p>
-<p>2.不能覆写static方法或<strong>非虚方法</strong></p>
-<p>（override的其他用途？）</p>
-<p>3.方法，属性，索引器，以及事件，都可以被声明为virtual和override</p>
-<h4 id="覆写标记为override的方法"><a href="#覆写标记为override的方法" class="headerlink" title="覆写标记为override的方法"></a>覆写标记为override的方法</h4>]]></content>
-      <categories>
-        <category>Program</category>
-      </categories>
-      <tags>
-        <tag>CSharp</tag>
       </tags>
   </entry>
 </search>

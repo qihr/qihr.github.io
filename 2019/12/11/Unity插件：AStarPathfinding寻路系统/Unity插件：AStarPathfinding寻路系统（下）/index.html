@@ -1,0 +1,1579 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/myselficon.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/myselficon32.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/myselficon16.png?v=7.1.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.1.0',
+    sidebar: {"position":"left","width":200,"display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: true,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="本文为AStarPathfinding插件的进阶内容，如果需要简单的使用寻路功能可以看上和中。 AI漫游以及扩展系统暂时没有做介绍，感兴趣的可以去官网看。">
+<meta name="keywords" content="游戏寻路,Untiy插件,Unity">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unity插件：AStarPathfinding寻路系统（下）">
+<meta property="og:url" content="http://yoursite.com/2019/12/11/Unity插件：AStarPathfinding寻路系统/Unity插件：AStarPathfinding寻路系统（下）/index.html">
+<meta property="og:site_name" content="Note">
+<meta property="og:description" content="本文为AStarPathfinding插件的进阶内容，如果需要简单的使用寻路功能可以看上和中。 AI漫游以及扩展系统暂时没有做介绍，感兴趣的可以去官网看。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011546871877.png">
+<meta property="og:image" content="http://yoursite.com/2019/12/11/Unity插件：AStarPathfinding寻路系统/Unity插件：AStarPathfinding寻路系统（下）/Image%200011546871977.png">
+<meta property="og:image" content="http://yoursite.com/2019/12/11/Unity插件：AStarPathfinding寻路系统/Unity插件：AStarPathfinding寻路系统（下）/Image%200011546931837.png">
+<meta property="og:image" content="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011546945990.png">
+<meta property="og:image" content="http://yoursite.com/2019/12/11/Unity插件：AStarPathfinding寻路系统/Unity插件：AStarPathfinding寻路系统（下）/Image%200011546943710.png">
+<meta property="og:image" content="http://yoursite.com/2019/12/11/Unity插件：AStarPathfinding寻路系统/Unity插件：AStarPathfinding寻路系统（下）/disable_collisions.png">
+<meta property="og:image" content="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011547030156.png">
+<meta property="og:image" content="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011547032327.png">
+<meta property="og:image" content="http://yoursite.com/2019/12/11/Unity插件：AStarPathfinding寻路系统/Unity插件：AStarPathfinding寻路系统（下）/Honeycam%202019-03-11%2016-39-23.gif">
+<meta property="og:image" content="http://yoursite.com/2019/12/11/Unity插件：AStarPathfinding寻路系统/Unity插件：AStarPathfinding寻路系统（下）/Image%200011552293900.png">
+<meta property="og:image" content="http://yoursite.com/2019/12/11/Unity插件：AStarPathfinding寻路系统/Unity插件：AStarPathfinding寻路系统（下）/Image%200011552295310.png">
+<meta property="og:image" content="http://yoursite.com/2019/12/11/Unity插件：AStarPathfinding寻路系统/Unity插件：AStarPathfinding寻路系统（下）/Image%200011552296107.png">
+<meta property="og:image" content="http://yoursite.com/2019/12/11/Unity插件：AStarPathfinding寻路系统/Unity插件：AStarPathfinding寻路系统（下）/Image%200011552547742.png">
+<meta property="og:image" content="http://yoursite.com/2019/12/11/Unity插件：AStarPathfinding寻路系统/Unity插件：AStarPathfinding寻路系统（下）/Image%200011552548056.png">
+<meta property="og:image" content="http://yoursite.com/2019/12/11/Unity插件：AStarPathfinding寻路系统/Unity插件：AStarPathfinding寻路系统（下）/Image%200011552639822.png">
+<meta property="og:updated_time" content="2019-12-11T15:37:07.760Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Unity插件：AStarPathfinding寻路系统（下）">
+<meta name="twitter:description" content="本文为AStarPathfinding插件的进阶内容，如果需要简单的使用寻路功能可以看上和中。 AI漫游以及扩展系统暂时没有做介绍，感兴趣的可以去官网看。">
+<meta name="twitter:image" content="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011546871877.png">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://yoursite.com/2019/12/11/Unity插件：AStarPathfinding寻路系统/Unity插件：AStarPathfinding寻路系统（下）/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Unity插件：AStarPathfinding寻路系统（下） | Note</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Note</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">How more than you show,speak less than you know.</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/11/Unity插件：AStarPathfinding寻路系统/Unity插件：AStarPathfinding寻路系统（下）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sayi">
+      <meta itemprop="description" content="Just noob.">
+      <meta itemprop="image" content="/images/myselelogin.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Note">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Unity插件：AStarPathfinding寻路系统（下）
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-12-11 23:37:07" itemprop="dateCreated datePublished" datetime="2019-12-11T23:37:07+08:00">2019-12-11</time>
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Program/" itemprop="url" rel="index"><span itemprop="name">Program</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">27k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">25 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>本文为AStarPathfinding插件的进阶内容，如果需要简单的使用寻路功能可以看上和中。</p>
+<p>AI漫游以及扩展系统暂时没有做介绍，感兴趣的可以去官网看。</p>
+<a id="more"></a>
+<h1 id="Navmesh-Cutting（付费功能）"><a href="#Navmesh-Cutting（付费功能）" class="headerlink" title="Navmesh Cutting（付费功能）"></a>Navmesh Cutting（付费功能）</h1><p><a href="https://arongranberg.com/astar/docs/navmeshcutting.html">官方文档</a></p>
+<p>Navmesh Cutting用于动态添加一个物体时，移除（切割）Navmesh或Recast图中被障碍物阻挡的部分。Navmesh Cutting很适用于动态添加物体/障碍物的场景。（通常情况下Navmesh/Recast只允许更改现有的节点参数，不允许添加新内容或更改节点的位置）</p>
+<p>官方文档不知道为什么没有写如何使用Navmesh Cutting是如何使用的，下面给出我使用此功能的流程：</p>
+<p>1.首先新建一个具有Recast图并能正确使用的场景。</p>
+<p>2.添加一个空物体，命名为Helper，为Helper添加Tile Handler Helper组件。</p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011546871877.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011546871877.png" alt="Image 0011546871877.png"></a></p>
+<p>（Tile Handler Helper组件干嘛用的）</p>
+<p>3.添加一个障碍物，并为其添加NavMesh Cut组件，并按下图中所示调整参数：</p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding上/Image 0011546871977.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统/Unity插件：AStarPathfinding寻路系统（下）/Image 0011546871977.png" alt="Image 0011546871977.png"></a></p>
+<p>4.运行游戏，拖动障碍物时NavMesh被遮挡的部分会不可用。</p>
+<p>需要注意的是，切割的形状是XZ轴投影到Navmeshi平面的2D图形，不是3D，但2D图形通过拉伸也形成了高度，高度用于判断物体距离平面多高就需要切割的高度：</p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding上/Image 0011546931837.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统/Unity插件：AStarPathfinding寻路系统（下）/Image 0011546931837.png" alt="Image 0011546931837.png"></a></p>
+<p>所以只有物体在navmeshcut组件中设置的图形与NavMesh的接触部分才会被切割，包括高度和半径。</p>
+<p>Is dual功能到底干嘛的</p>
+<p>在3.x中，navmesh切割只能与重铸图一起使用，但在4.x中，它们可以与重铸和导航网图一起使用。</p>
+<p>切割的形状可以自定义，自定义形状时有一些需要注意的细节，具体自行查看官方文档。</p>
+<p>Navmesh Cutting会定期检查切割的应用，但也可以通过代码立即更新：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">// Schedule pending updates to be done as soon as the pathfinding threads</span><br><span class="line">// are done with what they are currently doing.</span><br><span class="line">AstarPath.active.navmeshUpdates.ForceUpdate();</span><br><span class="line">// Block until the updates have finished</span><br><span class="line">AstarPath.active.FlushGraphUpdates();</span><br><span class="line"></span><br><span class="line">也可以通过代码控制检查navmeshcut是否变化的时间:</span><br><span class="line"></span><br><span class="line">// Check every frame (the default)</span><br><span class="line">AstarPath.active.navmeshUpdates.updateInterval = 0;</span><br><span class="line"></span><br><span class="line">// Check every 0.1 seconds</span><br><span class="line">AstarPath.active.navmeshUpdates.updateInterval = 0.1f;</span><br><span class="line"></span><br><span class="line">// Never check for changes</span><br><span class="line">AstarPath.active.navmeshUpdates.updateInterval = -1;</span><br><span class="line">// You will have to schedule updates manually using</span><br><span class="line">AstarPath.active.navmeshUpdates.ForceUpdate();</span><br></pre></td></tr></table></figure>
+<p>（代码都不好使）</p>
+<p>也可以通过Update Interval来更改。（这个值的更改位置不对 版本不同？？ ）</p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011546945990.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011546945990.png" alt="Image 0011546945990.png"></a></p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding上/Image 0011546943710.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统/Unity插件：AStarPathfinding寻路系统（下）/Image 0011546943710.png" alt="Image 0011546943710.png"></a></p>
+<p>因为navmesh切割可以很好地修改navmesh中的三角形，所以在更新图形时不可能保留标签和惩罚。对于在应用更新时保持完全相同的节点，将保留标签和惩罚。</p>
+<p>如果您需要使用标记，唯一可靠的方法是保留它们是应用所有图形更新，每次完成导航网格剪切更新时都会设置它们。这当然相对较慢，但它至少会起作用。</p>
+<h1 id="RVO（付费）"><a href="#RVO（付费）" class="headerlink" title="RVO（付费）"></a>RVO（付费）</h1><h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><h3 id="概览"><a href="#概览" class="headerlink" title="概览"></a>概览</h3><p>到底躲的是谁  需不需要操作</p>
+<p>AStarPathfinding使用了基于RVO的局部回避系统（Low level），RVO的性能良好，根据开发者的测试，i7处理器的电脑上可以以50-100FPS模拟五千个具有RVO系统的Agent。关于本章节，以及压力测试请看：<a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/localavoidance.html">https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/localavoidance.html</a></p>
+<p>RVO是路径规划中的Low level底层避障算法，用于躲避不可预估的障碍。具体看：</p>
+<p>RVO基于采样检测和gradient descent算法来找到最佳躲避方案。它非常适合于移动的类人代理。但不太适合不能快速变换速度的物体。</p>
+<p>RVO系统分为两个部分，一是完全独立不依赖Unity的核心代码，唯一使用到的Unity类是Math。核心代码控制着所有使用ROV的Agent。</p>
+<blockquote>
+<p>The RVO system is divided into two parts. First there is the core simulation code. It is completely independent of Unity specific objects such as GameObjects and MonoBehaviours. The only really Unity specific classes it uses are math classes which are easily interchangeable. This core handles all simulation of rvo (local avoidance) agents.</p>
+</blockquote>
+<p>第二部分是Unity接口，大多数的类只是对应核心代码的包装类。例如RVOSimulator类只是Pathfinding.RVO.Simulator的包装类，为了更方便的集成使用，接口还包括一些帮助类。如会经常使用到的RVOController，似于Unity的Character Controller的类，支持Move等等功能，也可以更改如速度之类的属性。</p>
+<blockquote>
+<p>The second part is the Unity interface. Many of those classes are just wrappers for the corresponding core classes. The RVOSimulator class is for example just a wrapper class for the Pathfinding.RVO.Simulator class. The Unity interface also contains helper classes for much easier local avoidance integration. One of those is the RVOController which you will probably use quite a lot. It is written to be similar to the Unity Character Controller, supporting functions such as Move and has properties such as velocity which you can easily access.</p>
+</blockquote>
+<p>Unity接口部分的所有脚本都假设场景中有且只有一个RVOSimulator，并会找到RVOSimulator获取核心代码部分。RVOSimulator可以被添加到任何游戏物体，通过一些简单的设置就可以正常工作。但注意，不要在场景内添加多个RVOSimulator，接口脚本通过FindObjectOfType 来找到RVOSimulator，FindObjectOfType无法精确控制将返回哪一个RVOSimulator。</p>
+<blockquote>
+<p>All of the scripts in the Unity interface part share common assumptions on how the scene should be set up: There should always be one (1) RVOSimulator in the scene, other scripts will look for it and get the core simulator instance it is a wrapper for. You can simply add it to any GameObject, edit the few settings if you want and it will work. You should never have more than one, all scripts which look for it use FindObjectOfType and there is no easy way to control exactly which of the multiple RVOSimulators it will return, so keep it to one for simplicity’s sake.</p>
+</blockquote>
+<h3 id="集成"><a href="#集成" class="headerlink" title="集成"></a>集成</h3><p>插件的AI脚本中，AIPath, RichAI支持RVOController，在挂载AIPath或RichAI脚本的物体上添加RVOController即可使用。（下面的Demo中不也是添加即可使用吗）</p>
+<p>（3.x版本RVO在Rigidbody或CharacterController也被挂载的情况下不能很好地工作。因为RVO系统想要完全控制代理的移动。 在4.x中，可以将它与Rigidbody或CharacterController组件一起使用。需要注意的是，本地回避系统不使用碰撞系统，也不会试图避开碰撞体。）</p>
+<p>AILerp脚本设计用于沿路径插入并完全跟随它，因此它没有意义偏离路径，因此它不支持本地回避。（AIlerp是怎么工作的）</p>
+<h3 id="物理系统"><a href="#物理系统" class="headerlink" title="物理系统"></a>物理系统</h3><p>在拥挤情况下对Agent使用碰撞（或刚体）组件可能会使RVO的性能急剧下降，因为当拥挤时Agent可能会彼此重叠一部分。虽然Unity的物理系统会防止这种情况发生，但它并没有RVO系统做的好，还会产生错误的运动路线。</p>
+<blockquote>
+<p>Often you want to have colliders on your agents, maybe to be able to hit them with bullets or something. However if you just add colliders (plus a rigidbody) to your agents you may see that the local avoidance quality goes down drastically in crowded scenarios. This is because when it is very crowded agents may overlap a tiny bit, the physics system will prevent that, but it will not do it in as nice a way as the local avoidance system, and this may lead to worse movement.</p>
+</blockquote>
+<p>如果Agent上有碰撞器，作者建议的解决办法是禁用代理之间的物理碰撞，将所有的代理放到一个单独的图层中，在Unity的物理系统设置中将该图层自身的碰撞关闭。</p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding下/disable_collisions.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统/Unity插件：AStarPathfinding寻路系统（下）/disable_collisions.png" alt="disable_collisions.png"></a></p>
+<h3 id="保持代理在图中"><a href="#保持代理在图中" class="headerlink" title="保持代理在图中"></a>保持代理在图中</h3><p>在局部躲避时，在拥挤的情况下会出现Agent将另一个Agent推出图外的情况。</p>
+<p>如果使用RichAI，则会自动处理被推出的情况。因为RichAI的移动需要它。如果使用AIPath，可以通过启用constrainInsideGraph来避免。</p>
+<p>还有一种办法是使用RVONavmesh 组件，组件会将图的边界转化为障碍物添加进RVO系统。RVONavmesh计算成本偏高，尤其是在图较大或者运行时更新图的时候，但它允许RVO系统更好地预测障碍，而不是当撞到时才找到墙壁。</p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011547030156.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011547030156.png" alt="Image 0011547030156.png"></a></p>
+<p>如图所示，组件在图的边缘围一堵墙。但这样会增加一些性能开销（尤其是较大的图或者在运行期间更新图。）</p>
+<p>使用方法：在场景中的任意物体添加RVONavmesh组件即可，可以通过RVOSimulator组件中的Draw Obstacles显示如图橙色的线。</p>
+<h3 id="障碍"><a href="#障碍" class="headerlink" title="障碍"></a>障碍</h3><p>将障碍添加至本地躲避系统后，代理将不会通过并且会使用本地躲避系统躲开障碍。</p>
+<p>在Component-Pathfinding-Localavoidance中可以找到用于添加障碍物的组件，如图：</p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding寻路系统/Image 0011547032327.png"><img src="http://img.dongbeigtl.top/A%E6%96%87%E7%AB%A0%E9%9C%80%E8%A6%81%E7%9A%84%E6%88%AA%E5%9B%BE/Unity%E6%8F%92%E4%BB%B6%EF%BC%9AAStarPathfinding%E5%AF%BB%E8%B7%AF%E7%B3%BB%E7%BB%9F/Image%200011547032327.png" alt="Image 0011547032327.png"></a></p>
+<p>也可以自己写碰撞器，看下章。</p>
+<p>内置的碰撞体可以移动，并且可以适当的更新。但因为可以在周围移动并不代表移动的内置碰撞体可以将代理推开。事实上移动的内置碰撞体并不擅长这样。当碰撞体移动很慢时可以实现推开，但移动很快时会导致代理卡住。</p>
+<p>内置的障碍物组件有一个属性很重要，Obstacle Mode，有两个值：Keep out会阻止代理进入障碍物，但如果处于某种原因留在了里面则会很容易出来。Keep in会将代理留在障碍物内部自由移动。</p>
+<p>（需要一个例子 gif）</p>
+<h2 id="使用RVO组件"><a href="#使用RVO组件" class="headerlink" title="使用RVO组件"></a>使用RVO组件</h2><p>首先根据官方Demo做一个简单的练习：</p>
+<p>1.创建一个新场景，添加一个平面尽量大一点。然后添加一个空物体命名为Simulator，并为其添加RVOSimulator组件。</p>
+<p>2.添加一个新的圆柱体，并为其添加RVOController组件，将RVOController组件中的高度参数设置为圆柱体的高度，RVOController的作用和Character Controller差不多。</p>
+<p>3.编写一个脚本，让圆柱体动起来：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">using UnityEngine;</span><br><span class="line">using System.Collections;</span><br><span class="line">using Pathfinding.RVO;</span><br><span class="line"></span><br><span class="line">public class SimpleRVOAI : MonoBehaviour &#123;</span><br><span class="line">RVOController controller;</span><br><span class="line"></span><br><span class="line">// Use this for initialization</span><br><span class="line">void Awake () &#123;</span><br><span class="line">controller = GetComponent&lt;RVOController&gt;();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// Update is called once per frame</span><br><span class="line">public void Update () &#123;</span><br><span class="line">// Just some point far away</span><br><span class="line">var targetPoint = transform.position + transform.forward * 100;</span><br><span class="line"></span><br><span class="line">// Set the desired point to move towards using a desired speed of 10 and a max speed of 12</span><br><span class="line">controller.SetTarget(targetPoint, 10, 12);</span><br><span class="line"></span><br><span class="line">// Calculate how much to move during this frame</span><br><span class="line">// This information is based on movement commands from earlier frames</span><br><span class="line">// as local avoidance is calculated globally at regular intervals by the RVOSimulator component</span><br><span class="line">var delta = controller.CalculateMovementDelta(transform.position, Time.deltaTime);</span><br><span class="line">transform.position = transform.position + delta;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>4.复制几个圆柱体并调整至相对，运行游戏可以看到圆柱体会尝试躲避其他圆柱体。</p>
+<p>可以从代码看出来，<strong>RVOController本身不处理移动</strong>。因为一旦其他脚本也在控制移动，就会引起混乱。（在4.0之前RVOController是处理移动的）</p>
+<p>RVOSimulator实际上是 <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/simulator.html">Pathfinding.RVO.Simulator</a>的包装类。</p>
+<p>rvo面板介绍</p>
+<h2 id="添加RVO障碍"><a href="#添加RVO障碍" class="headerlink" title="添加RVO障碍"></a>添加RVO障碍</h2><p>可以通过代码获取到RVOSimulator：</p>
+<p>Pathfinding.RVO.Simulator sim = (FindObjectOfType(typeof(RVOSimulator)) as RVOSimulator).GetSimulator ();</p>
+<p>通过以下代码可以添加一个障碍物到RVO系统</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">using UnityEngine;</span><br><span class="line">using System.Collections;</span><br><span class="line"></span><br><span class="line">public class SimpleRVOObstacle : MonoBehaviour &#123;</span><br><span class="line"></span><br><span class="line">void Start () &#123;</span><br><span class="line">//Get the simulator for this scene</span><br><span class="line">Pathfinding.RVO.Simulator sim = (FindObjectOfType(typeof(RVOSimulator)) as RVOSimulator).GetSimulator ();</span><br><span class="line"></span><br><span class="line">//Define the vertices of our obstacle</span><br><span class="line">Vector3[] verts = new Vector3[] &#123;new Vector3(1,0,-1), new Vector3(1,0,1), new Vector3 (-1,0,1), new Vector3 (-1,0,-1)&#125;;</span><br><span class="line"></span><br><span class="line">//Add our obstacle to the simulation, we set the height to 2 units</span><br><span class="line">sim.AddObstacle (verts, 2);</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>需要注意添加向量的方向不同会有不同的结果：</p>
+<p>System.Array.Reverse (verts);</p>
+<p>顺时针是keep in，逆时针使keep out。</p>
+<p>也可以把一条线作为障碍物添加至系统：<br>sim.AddObstacle (firstPoint, secondPoint, height);</p>
+<h1 id="Tag和GraphUpdateScene"><a href="#Tag和GraphUpdateScene" class="headerlink" title="Tag和GraphUpdateScene"></a>Tag和GraphUpdateScene</h1><p>GraphUpdateScene是一个功能很强的组件，可以划分自定义区域并更改惩罚值。</p>
+<p>Tag是插件的新功能，可以控制每个代理的行走区域。例如场景中有闲逛的动物和人，那他们可以走的区域是不一样的（动物不会走入人住的房子），这时就需要使用Tag来实现。</p>
+<p><strong>划分自定义代价值区域的使用方法：</strong></p>
+<p><strong>1.</strong>在场景中创建一个空物体命名为GUO（不是必须的），添加组件<strong>Graph Update Scene。</strong></p>
+<p><strong>2.</strong>点击GUO，在场景中按住左Shift键，然后点击你想划分区域的地方，会出现一个点，再点击一下会将两个点连接起来。这样就可以创建出一块自定义的区域：</p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding下/Honeycam 2019-03-11 16-39-23.gif"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统/Unity插件：AStarPathfinding寻路系统（下）/Honeycam 2019-03-11 16-39-23.gif" alt="Honeycam 2019-03-11 16-39-23.gif"></a></p>
+<p>节点的位置信息可以在组件的Points属性里进行修改。</p>
+<p><strong>3.</strong>根据组件中的Penalty Delta来修改区域的代价值，不同的代价会让Agent在寻路时选择最优的路线，避开代价较大的区域。也可以设置为不可走区域。</p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding下/Image 0011552293900.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统/Unity插件：AStarPathfinding寻路系统（下）/Image 0011552293900.png" alt="Image 0011552293900.png"></a></p>
+<p><strong>4.</strong>如图所示，代理会尝试绕过代价高的区域</p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding下/Image 0011552295310.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统/Unity插件：AStarPathfinding寻路系统（下）/Image 0011552295310.png" alt="Image 0011552295310.png"></a></p>
+<p><strong>Tag的使用方法：</strong></p>
+<p>Tag可以使两个Agent在同样的区域有不同的寻路结果.</p>
+<p>0.新建一个场景，场景中像之前的流程一样，保持有地板，寻路目标，Agent，并可以正常寻路。</p>
+<p>1.利用<strong>Graph Update Scene</strong>划分一片区域，并为区域添加一个Tag，命名为Grass（Tag的名称可以在A*组件的面板中修改。）</p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding下/Image 0011552296107.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统/Unity插件：AStarPathfinding寻路系统（下）/Image 0011552296107.png" alt="Image 0011552296107.png"></a></p>
+<p>2.添加两个agent，并附加Seeker脚本。修改Seeker的Tag属性，一个Agent将tag的Traversable取消勾选，另一个保持勾选。</p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding下/Image 0011552547742.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统/Unity插件：AStarPathfinding寻路系统（下）/Image 0011552547742.png" alt="Image 0011552547742.png"></a></p>
+<p>3.运行游戏，两个Agent会规划出不同的路径。</p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding下/Image 0011552548056.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统/Unity插件：AStarPathfinding寻路系统（下）/Image 0011552548056.png" alt="Image 0011552548056.png"></a></p>
+<p>也可以对每个Agent的每个Tag设置不同的惩罚值，可以实现开头说的场景。</p>
+<hr>
+<p>NavMesh下有问题</p>
+<p>公共惩罚值和个人惩罚值的计算关系</p>
+<p>能做的：</p>
+<p>自定义区域的惩罚值</p>
+<p>自定义区域为不可走</p>
+<p>讲某区域更改为a可走b不可走</p>
+<p>将某区域更改为a的惩罚值高，b的低</p>
+<p>GraphUpdateScene是什么</p>
+<h1 id="实时更新图"><a href="#实时更新图" class="headerlink" title="实时更新图"></a>实时更新图</h1><p>对于实时更新，不同场景有不同的需求，比如可能只更改了一部分，需要更新一部分地图。如果更改了整张地图则需要更新全部。还有可能需要加载/保存地图（具体介绍不在本章）等等。不同的需求需要不同的功能，下面的表列出了开发时会遇到的场景，以及对应的解决策略。</p>
+<table>
+<thead>
+<tr>
+<th>需求</th>
+<th>解决办法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>重新计算整张图</td>
+<td>阅读重新计算整张图</td>
+</tr>
+<tr>
+<td>精准的设置哪些节点可走，哪些不可以</td>
+<td>阅读直接使用图数据或应用于回合制游戏章节</td>
+</tr>
+<tr>
+<td>在某些物体移动或创建销毁时更新图</td>
+<td>阅读重计算部分图或<a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/dynamicgridobstacle.html">DynamicGridObstacle</a>类或<a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/navmeshcutting.html">Navmesh Cutting</a>章节</td>
+</tr>
+<tr>
+<td>修改某单个节点的属性</td>
+<td>阅读直接使用图数据或GraphUpdateScene</td>
+</tr>
+<tr>
+<td>动态加载或卸载地图</td>
+<td>阅读保存和加载地图</td>
+</tr>
+<tr>
+<td>创建一小块图在角色周围</td>
+<td>阅读<a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/proceduralgridmover.html">ProceduralGridMover</a>类</td>
+</tr>
+<tr>
+<td>创建新节点并使用代码连接他们</td>
+<td>See <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/pointgraph.html#AddNode">PointGraph.AddNode</a> and <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/writinggraphgenerators.html">Writing Graph Generators</a></td>
+</tr>
+<tr>
+<td>使图的一部分成本变高</td>
+<td>See <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdates.html#smaller-updates">Recalculating parts of graphs</a>, <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdates.html#direct">Using direct access to graph data</a> and <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdatescene.html">GraphUpdateScene</a></td>
+</tr>
+<tr>
+<td>阻止一些单位穿过某个节点，但是其他节点可以穿过</td>
+<td>See <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/tags.html">Working with tags</a>, <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdates.html#smaller-updates">Recalculating parts of graphs</a>, <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdatescene.html">GraphUpdateScene</a> and <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdates.html#direct">Using direct access to graph data</a></td>
+</tr>
+<tr>
+<td>移动物体的寻路（如一艘船）</td>
+<td>See the example scene called ‘Moving’ (pro version only). This is not that well documented at the moment.</td>
+</tr>
+<tr>
+<td>添加一个障碍物，但首先确定障碍物没有困住或覆盖任何其他单位（TD游戏）</td>
+<td>See <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdates.html#blocking">Check for blocking placements</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="需要更新的内容"><a href="#需要更新的内容" class="headerlink" title="需要更新的内容"></a>需要更新的内容</h2><p>当需要更新图时，通常会需要做两件事情中的一件。</p>
+<p>你可能希望使用与最初生成图时相同的设置重新计算图形，但如果为了更新一部分区域而重新计算了整个图似乎很浪费（<a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/astarpath.html#Scan">AstarPath.Scan</a>），比如，玩家可能只是TD游戏中放置了一座新塔。</p>
+<p>或者只想要更改现有图的某些设置。例如，更改某些节点上的tag或代价。</p>
+<p>可以对除了NavMesh之外的图重新计算一小部分，navmesh只有完全重新计算才有意义。使用脚本和GraphUpdateScene组件执行此操作，将名为“updatePhysics”的字段设置为true。</p>
+<p>Grid 图会正常工作，只需指定边界，它就会为你完成所有操作。但是，考虑到侵蚀等问题，它可能会重新计算一个比指定边界略大的区域。</p>
+<p>Recast  图只能全部重新计算。因此，使用较小的tile尺寸可以缩短重新计算的时间。但是如果太小，Recast图会退化为Grid图。如果使用多线程，则会将大部分重新计算放置到单独的线程中，以避免过多地影响FPS。</p>
+<p>点图将重新计算通过边界的所有连接。但是，它不会寻找以GameObject形式新添加的新节点，为此你需要使用  <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/astarpath.html#Scan">AstarPath.Scan</a>.</p>
+<p>如想更改节点的属性，有一些东西可供你修改</p>
+<p>你可以更改node的tag以实现不同单位行走不同区域，也可以修改节点的惩罚值</p>
+<p>可以更改节点上的惩罚。这用于使某些节点比其他节点更难/更慢地遍历，以便代理在其他节点之前更喜欢某些路径。但是有一些限制。您不能指定负惩罚，因为使用的算法无法处理（如果可能，系统会慢得多）。然而，常见的技巧是设置非常大的初始惩罚（可以在图形设置中完成），然后从该高值减少惩罚。但请注意，由于必须搜索更多节点，因此这将使路径寻找更慢。所需的惩罚值非常高。没有真正的“惩罚单位”，但罚款1000大致相当于一个世界旅行单位。</p>
+<blockquote>
+<p>You can change the penalty on the nodes. This is used to make some nodes harder/slower to traverse compared the other nodes so that an agent will prefer some paths before others. There are some limitations though. You cannot specify negative penalties since the algorithms used cannot handle that (and if they could, the system would be a lot slower). However a common trick is to set a very large initial penalty (which can be done in the graph settings) and then decrease the penalty from that high value. Note however that this will make pathfinding slower overall since it has to search more nodes. The penalty values that are required are quite high. There is no real “penalty unit” however a penalty of 1000 corresponds roughly to one world unit of travel.</p>
+</blockquote>
+<p>也可以直接修改节点的可步行性。 因此，您可以使某些边界内的所有节点都可以步行或全部无法行走。</p>
+<p>有关如何使用GraphUpdateScene组件的信息。 查看该课程的文档。 GraphUpdateScene组件设置几乎将1到1映射到GraphUpdateObject，在使用脚本更新图形时使用GraphUpdateObject。 因此，即使您只是使用脚本，我也建议您阅读该页面。</p>
+<hr>
+<h2 id="重新计算整张图"><a href="#重新计算整张图" class="headerlink" title="重新计算整张图"></a>重新计算整张图</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">// Recalculate all graphs</span><br><span class="line">AstarPath.active.Scan();</span><br><span class="line"></span><br><span class="line">// Recalculate only the first grid graph</span><br><span class="line">var graphToScan = AstarPath.active.data.gridGraph;</span><br><span class="line">AstarPath.active.Scan(graphToScan);</span><br><span class="line"></span><br><span class="line">// Recalculate only the first and third graphs</span><br><span class="line">var graphsToScan = new [] &#123; AstarPath.active.data.graphs[0], AstarPath.active.data.graphs[2] &#125;;</span><br><span class="line">AstarPath.active.Scan(graphsToScan);</span><br></pre></td></tr></table></figure>
+<p>协程加载 但不能保证良好的FPS，但至少可以显示加载屏幕</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">IEnumerator Start () &#123;</span><br><span class="line">foreach (Progress progress in AstarPath.active.ScanAsync()) &#123;</span><br><span class="line">Debug.Log(&quot;Scanning... &quot; + progress.description + &quot; - &quot; + (progress.progress*100).ToString(&quot;0&quot;) + &quot;%&quot;);</span><br><span class="line">yield return null;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>看一下这俩</p>
+<p><a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/astarpath.html#Scan">AstarPath.Scan</a></p>
+<p><a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/astarpath.html#ScanAsync">AstarPath.ScanAsync</a></p>
+<h2 id="重新计算部分图"><a href="#重新计算部分图" class="headerlink" title="重新计算部分图"></a>重新计算部分图</h2><p>可以使用GraphUpdateScene组件或使用脚本,调用AstarPath类中的方法完成部分图更新，脚本通过使用Bounds对象或Pathfinding.GraphUpdateObject（就是GraphUpdateScene组件，实际上是在后台就是这么运行的）。</p>
+<blockquote>
+<p>Smaller graph updates can either be done using the GraphUpdateScene component which can be edited in the Unity inspector or using scripting which is done by calling a method in the AstarPath class with either a Bounds object or a Pathfinding.GraphUpdateObject (which is what the GraphUpdateScene component actually does in the background).</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Bounds bounds = GetComponent&lt;Collider&gt;().bounds;</span><br><span class="line">AstarPath.active.UpdateGraphs(bounds);</span><br><span class="line">// using Pathfinding; //At top of script</span><br><span class="line"></span><br><span class="line">// As an example, use the bounding box from the attached collider</span><br><span class="line">Bounds bounds = GetComponent&lt;Collider&gt;().bounds;</span><br><span class="line">var guo = new GraphUpdateObject(bounds);</span><br><span class="line"></span><br><span class="line">// Set some settings</span><br><span class="line">guo.updatePhysics = true;</span><br><span class="line">AstarPath.active.UpdateGraphs(guo);</span><br></pre></td></tr></table></figure>
+<p>然后，该方法将任务放入队列中，以便在下一个路径计算之前执行。它必须放在一个队列中，因为如果它直接执行会干扰寻路，特别是多线程开启的情况下，会导致无法直接看到图形的更新，所以它将始终在下一次寻路计算开始之前更新。</p>
+<blockquote>
+<p>The method will then put the task in a queue to be carried out before the next path calculation. It has to be put in a queue because if it carried out directly, it might interfere with pathfinding, especially if multithreading is on, and cause all kinds of errors. This means that you might not see an update of the graph directly, but it will always be updated before the next pathfinding calculation starts (almost always, see AstarPath.limitGraphUpdates ).</p>
+</blockquote>
+<p>Recast图也可以使用<a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/navmeshcutting.html">navmesh cutting</a>伪更新，<a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/navmeshcutting.html">navmesh cutting</a>可以使障碍物在Navmesh中切出一个洞，但无法添加更多的Navmesh平面。See <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/navmeshcut.html">Pathfinding.NavmeshCut</a>，比重新计算整张图快的多，但是有更有限。</p>
+<p>如果在Unity的Editor中编辑修改已知的图形，那么使用GraphUpdateScene组件是最方便简单的，使用组件你可以轻松更改特定区域的tag而无需任何代码。 但是，如果需要在游戏中动态执行，则使用代码更新图会更方便。 例如，在塔防游戏中新放置的建筑物的更新部分表操作。</p>
+<h2 id="使用脚本"><a href="#使用脚本" class="headerlink" title="使用脚本"></a>使用脚本</h2><p>需要创建GraphUpdateObject并设置所需的参数，然后调用AstarPath.UpdateGraphs方法，将更新任务添加至队列中。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">// using Pathfinding; //At top of script</span><br><span class="line"></span><br><span class="line">// As an example, use the bounding box from the attached collider</span><br><span class="line">Bounds bounds = GetComponent&lt;Collider&gt;().bounds;</span><br><span class="line">var guo = new GraphUpdateObject(bounds);</span><br><span class="line"></span><br><span class="line">// Set some settings</span><br><span class="line">guo.updatePhysics = true;</span><br><span class="line">AstarPath.active.UpdateGraphs(guo);</span><br></pre></td></tr></table></figure>
+<p>bounds变量是UnityEngine.Bounds对象，它定义了一个轴对齐的框，用于更新图形，通常你会想围绕着新创建的对象更新图，通常情况下，更新部分图都是围绕新创建的对象的周围进行更新的，所以在示例中，Bounds取自新对象附加的collider</p>
+<p>但是要确保该对象可以被图识别，对于Grid图应该确保对象的图层包含在碰撞检测图层（collision testing mask）或者高度检测图层（ height teting mask）中。</p>
+<p>如果在使用网格图或者点图时，不需要重新计算所有节点的参数，可以将updatePhysics 设置为 false以避免不必要的计算</p>
+<p>（我的理解是如果局部计算的话，需要将这个选项关闭以避免不必要的计算）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">guo.updatePhysics = false;</span><br></pre></td></tr></table></figure>
+<p>For details about exactly what fields to set, take a look at the class documentation for the <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdateobject.html">GraphUpdateObject </a>.</p>
+<h3 id="直接使用图数据"><a href="#直接使用图数据" class="headerlink" title="直接使用图数据"></a>直接使用图数据</h3><p>有时可能需要直接对图数据进行操作。</p>
+<p><a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/accessingdata.html">Accessing graph data</a> for information about how to access graph data.</p>
+<p><a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/usingnodes.html#node-properties">Node properties</a> and <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphnode.html">Pathfinding.GraphNode</a> for information about what properties a node has.</p>
+<p>下面是一个更改网格图中所有节点并使用perlin噪声来决定节点是否应该可以行走的示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">AstarPath.active.AddWorkItem(new AstarWorkItem(ctx =&gt; &#123;</span><br><span class="line">var gg = AstarPath.active.data.gridGraph;</span><br><span class="line">for (int z = 0; z &lt; gg.depth; z++) &#123;</span><br><span class="line">for (int x = 0; x &lt; gg.width; x++) &#123;</span><br><span class="line">var node = gg.GetNode(x, z);</span><br><span class="line">// This example uses perlin noise to generate the map</span><br><span class="line">node.Walkable = Mathf.PerlinNoise(x * 0.087f, z * 0.087f) &gt; 0.4f;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// Recalculate all grid connections</span><br><span class="line">// This is required because we have updated the walkability of some nodes</span><br><span class="line">gg.GetNodes(node =&gt; gg.CalculateConnections((GridNodeBase)node));</span><br><span class="line"></span><br><span class="line">// Update the &apos;area&apos; information in the graph.</span><br><span class="line">// This is required because we have updated the connectivity of the graph</span><br><span class="line">ctx.QueueFloodFill();</span><br><span class="line">&#125;));</span><br></pre></td></tr></table></figure>
+<p>经过修改后的图：</p>
+<p><a href="http://img.dongbeigtl.top/A文章需要的截图/Unity插件：AStarPathfinding下/Image 0011552639822.png"><img src="/2019/12/11/Unity插件：AStarPathfinding寻路系统/Unity插件：AStarPathfinding寻路系统（下）/Image 0011552639822.png" alt="Image 0011552639822.png"></a></p>
+<p>只有在安全的情况下才能修改图表数据。路径查找可能随时在运行，因此必须先暂停路径寻找线程，然后更新数据。最简单的方法是使用<a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/astarpath.html#AddWorkItem">AstarPath.AddWorkItem</a>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">AstarPath.active.AddWorkItem(() =&gt; &#123;</span><br><span class="line">// Safe to update graphs here</span><br><span class="line">var node = AstarPath.active.GetNearest(transform.position).node;</span><br><span class="line">node.position = (Int3)transform.position;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>更改图数据后要及时更新图。如果更改了任何节点的Walkable或连接，则需要更新Area的信息，系统通过Area来确定哪些节点可以到达哪些其他节点，而这些节点又用于快速确定路径是否可行。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">AstarPath.active.AddWorkItem(new AstarWorkItem(ctx =&gt; &#123;</span><br><span class="line">var node = AstarPath.active.GetNearest(transform.position).node;</span><br><span class="line">node.Walkable = false;</span><br><span class="line">ctx.QueueFloodFill();</span><br><span class="line">&#125;));</span><br></pre></td></tr></table></figure>
+<p>QueueFloodFill()是根据性能进行批处理的，因此在连续更新的多个图更新时不需要多次调用QueueFloodFill()。如果需要Area的信息是最新的，则应该调用<a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/iworkitemcontext.html#EnsureValidFloodFill">ctx.EnsureValidFloodFill</a>方法。但是通常开发中不会用到。</p>
+<blockquote>
+<p>The flood fill calls are batched for performance so that multiple graph updates which are executed directly after each other do not have to run the flood fill more than once. If your work item requires that the area information is up to date you should call the ctx.EnsureValidFloodFill method first. Usually this is not something that work items require however.</p>
+</blockquote>
+<p>如果修改了walkability，需要重新计算节点之间的链接。对于Grid图来说非常重要，可以使用<a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/gridgraph.html#CalculateConnections5">GridGraph.CalculateConnections</a>方法。注意，这需要在你更改了walkability的节点以及与其相邻的节点上调用，因为他们可能必须更改其连接以添加或删除该节点作为连接。</p>
+<p>AddWorkItem方法也可以以更高级的方式使用。例如，它允许您在必要时将计算分布在多个帧上：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">AstarPath.active.AddWorkItem(new AstarWorkItem(</span><br><span class="line">        () =&gt; &#123;</span><br><span class="line">    // Called once, right before the</span><br><span class="line">    // first call to the method below</span><br><span class="line">&#125;,</span><br><span class="line">        force =&gt; &#123;</span><br><span class="line">    // Called every frame until complete.</span><br><span class="line">    // Signal that the work item is</span><br><span class="line">    // complete by returning true.</span><br><span class="line">    // The &quot;force&quot; parameter will</span><br><span class="line">    // be true if the work item is</span><br><span class="line">    // required to complete immediately.</span><br><span class="line">    // In that case this method should</span><br><span class="line">    // block and return true when done.</span><br><span class="line">    return true;</span><br><span class="line">&#125;</span><br><span class="line">        ));</span><br></pre></td></tr></table></figure>
+<p>debug记得写一下</p>
+<h2 id="工作原理"><a href="#工作原理" class="headerlink" title="工作原理"></a>工作原理</h2><p>当使用GraphUpdateObject进行实时更新时， 所有可以更新的内置的图都会循环调用自身的UpdateArea 方法。</p>
+<p>图将每一个需要被更新或受影响的节点发送给<a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdateobject.html#Apply">Pathfinding.GraphUpdateObject.Apply </a>， Apply方法会更改惩罚值，walkablity或者其他指定的参数，图也可以使用特定的更新逻辑，如GridGraph(see <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdates.html#gridgraphs">GridGraph specific details</a>)。你不需要明白这些更新方法的不同，这些方法的具体细节的了解适合想使用源码的人。</p>
+<blockquote>
+<p>When updating is carried out using a GraphUpdateObject, all graphs will be looped over and those which can be updated (all built in ones) will have their UpdateArea function called (i.e be updated).<br>Each node is updated by the graphs calling <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdateobject.html#Apply">Pathfinding.GraphUpdateObject.Apply</a> sending each affected node to it, the Apply function will then change penalty, walkability or other parameters specified. Graphs can also use custom updating logic, such as the GridGraph (see <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdates.html#gridgraphs">GridGraph specific details</a>). You do not have to understand all different function calls to be able to use it, those are mostly for people who want to mess around with the source code.</p>
+</blockquote>
+<h3 id="Gird图的特殊细节"><a href="#Gird图的特殊细节" class="headerlink" title="Gird图的特殊细节"></a>Gird图的特殊细节</h3><p><a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdateobject.html#updatePhysics">updatePhysics</a>是更新Gird图时非常重要的属性，如果设置为true，所有被影响的节点都会重新计算他们的高度，然后检查自身是否可走。当更新Grid图时，最好保持为true。</p>
+<p>当更新Grid图时，GraphUpdateObject的Apply方法会被更新范围内的所有节点调用，节点会检查<a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdateobject.html#updatePhysics">updatePhysics</a>变量，如果<a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdateobject.html#updatePhysics">updatePhysics</a>设置为true（默认值是true），则更新区域会根据Collision Testing设置的直径扩张，并且在其中的每个节点都会做碰撞检测，如果是false，则只有更新区域内的节点会调用Apply方法，并不会做其他事情。</p>
+<blockquote>
+<p>The updatePhysics variable matters a lot when updating grid graphs. If it is set to true, all nodes affected will have their height recalculated and then checked if they are still walkable. You usually want to leave this to true when updating a grid graph.</p>
+<p>When updating a GridGraph, the GraphUpdateObject’s Apply function (which changed walkability, tags and penalties) will be called for each node inside the bounds, it will check the updatePhysics variable, if it is true (which is the default value), the area will be expanded by the diameter of the specified in the Collision Testing settings and every node inside the area will be checked for collisions. If it is false, however, only the Apply function will be called for the nodes inside the area (not expanded) and nothing else will be done.</p>
+</blockquote>
+<h3 id="基于Navmesh的图"><a href="#基于Navmesh的图" class="headerlink" title="基于Navmesh的图"></a>基于Navmesh的图</h3><p>基于navmesh的图（Navmesh和RecastGraph）只支持更新已存在的节点的惩罚，walkablity等以更新整个图，GraphUpdateObjects 不能添加新的节点（更新整个图除外），GraphUpdateObject 会更新所有交叉接触的节点/多边形，或者在GUO范围内的所有节点。对于recast也可以通过Nacmesh cut快速更新图。</p>
+<blockquote>
+<p>Navmesh based graphs (NavMeshGraph and RecastGraph) only have support for updating penalty, walkability and similar on already existing nodes or for recast graphs, to completely recalculate whole tiles. New nodes cannot be created using GraphUpdateObjects (unless recalculating whole tiles). The GraphUpdateObject will affect all nodes/triangles which intersect or are contained by the GUO’s bounds.<br>For recast graphs you can also use <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/navmeshcut.html">navmesh cutting </a>to update the graph in a fast way.</p>
+</blockquote>
+<h3 id="点图（PointGraphs）"><a href="#点图（PointGraphs）" class="headerlink" title="点图（PointGraphs）"></a>点图（PointGraphs）</h3><p>点图的更新会调用边界内的所有节点的Apply方法，GraphUpdateObject.updatePhysics如果设置为true，它还会重新计算经过更新区域的所有链接点。</p>
+<h2 id="Graph-Update-Object"><a href="#Graph-Update-Object" class="headerlink" title="Graph Update Object"></a>Graph Update Object</h2><p>The GraphUpdateObject contains some basic variables on how to update each node. See documentation for the <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdateobject.html">Pathfinding.GraphUpdateObject</a> for more info.</p>
+<h4 id="从GraphUpdateObject继承"><a href="#从GraphUpdateObject继承" class="headerlink" title="从GraphUpdateObject继承"></a>从GraphUpdateObject继承</h4><p>GraphUpdateObject可以被继承，覆写某些方法。下面是一个例子，执行父类Apply方法的同时移动节点：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">using UnityEngine;</span><br><span class="line">using Pathfinding;</span><br><span class="line"></span><br><span class="line">public class MyGUO : GraphUpdateObject &#123;</span><br><span class="line">public Vector3 offset = Vector3.up;</span><br><span class="line">public override void Apply (GraphNode node) &#123;</span><br><span class="line">// Keep the base functionality</span><br><span class="line">base.Apply(node);</span><br><span class="line">// The position of a node is an Int3, so we need to cast the offset</span><br><span class="line">node.position += (Int3)offset;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>也可以这样：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public void Start () &#123;</span><br><span class="line">    MyGUO guo = new MyGUO();</span><br><span class="line"></span><br><span class="line">    guo.offset = Vector3.up*2;</span><br><span class="line">    guo.bounds = new Bounds(Vector3.zero, Vector3.one*10);</span><br><span class="line">    AstarPath.active.UpdateGraphs(guo);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="检查是否阻塞（塔防）"><a href="#检查是否阻塞（塔防）" class="headerlink" title="检查是否阻塞（塔防）"></a>检查是否阻塞（塔防）</h2><p>在塔防游戏中很重要的一点是，玩家放置的塔没有使出兵点和目标点直接堵塞，插件为此提供了对应的API。</p>
+<p><a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdateutilities.html#UpdateGraphsNoBlock">Pathfinding.GraphUpdateUtilities.UpdateGraphsNoBlock</a>方法会检查给定的graph update object是否会引起两个或更多的点引起堵塞，然而该方法会比常规更新图速度要慢，所以你可能不会经常使用它。</p>
+<p>举个例子，当玩家再塔防游戏中放置一个防御塔的时候，你可以初始化防御塔，然后调用UpdateGraphsNoBlock方法检查新添加的防御塔是否会阻挡路径，如果是则立即移除防御塔并提示玩家选择的位置不符合规则。你也可以传递节点列表给UpdateGraphsNoBlock方法，这样不仅可以确定初始点和目标点之间没有堵塞，并且在单位行走时可以放置防御塔的情况下，所有单位都能到达目标。</p>
+<blockquote>
+<p>The <a href="https://arongranberg.com/astar/documentation/4_1_16_7f164ebc/graphupdateutilities.html#UpdateGraphsNoBlock">Pathfinding.GraphUpdateUtilities.UpdateGraphsNoBlock</a> method can be used to first check if a given graph update object will cause the path between two or more points to become blocked. This is however slower than a normal graph update so you probably don’t want to use it too often.</p>
+<p>For example when a player in a tower defence game places a tower, you could instantiate it, then call the UpdateGraphsNoBlock method to check if the newly placed tower will block the path. If it did then remove the tower immediately and notify the player that the choosen position was not valid. You can pass a list of nodes to the UpdateGraphsNoBlock method so you could for example make sure that not only is the path from the start to the goal not blocked, but also that all units can still reach the goal (if it is possible to place towers when enemies are walking around).</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">var guo = new GraphUpdateObject(tower.GetComponent&lt;Collider&gt;().bounds);</span><br><span class="line">var spawnPointNode = AstarPath.active.GetNearest(spawnPoint.position).node;</span><br><span class="line">var goalNode = AstarPath.active.GetNearest(goalPoint.position).node;</span><br><span class="line"></span><br><span class="line">if (GraphUpdateUtilities.UpdateGraphsNoBlock(guo, spawnPointNode, goalNode, false)) &#123;</span><br><span class="line">    // Valid tower position</span><br><span class="line">    // Since the last parameter (which is called &quot;alwaysRevert&quot;) in the method call was false</span><br><span class="line">    // The graph is now updated and the game can just continue</span><br><span class="line">&#125; else &#123;</span><br><span class="line">    // Invalid tower position. It blocks the path between the spawn point and the goal</span><br><span class="line">    // The effect on the graph has been reverted</span><br><span class="line">    Destroy(tower);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="保存和加载图表"><a href="#保存和加载图表" class="headerlink" title="保存和加载图表"></a>保存和加载图表</h1><p> 图的设置通过Unity的序列化来保存，但图没有通过序列化保存和加载，而是被保存至一个字节数组中，通过数组完成了保存和加载。</p>
+<p>可以A* inspector面板中可以看到Save&amp;Load选项。</p>
+<p>[需要一张图片]</p>
+<h2 id="图的计算缓存"><a href="#图的计算缓存" class="headerlink" title="图的计算缓存"></a>图的计算缓存</h2><p>通常你希望游戏启动时重新计算图，但有的时候，尤其是使用RecastGraph或者在移动设备上开发，游戏开始时的延迟会非常烦。</p>
+<p>打开Save&amp;Load面板，点击Generate Cache来创建缓存。它将会询问你是否保存之前重新扫描图。现在游戏启动时会加载缓存读取图的节点信息和其他参数，不需要另外的计算时间。</p>
+<p>[需要一张图片]</p>
+<h2 id="将图保存至文件并读取"><a href="#将图保存至文件并读取" class="headerlink" title="将图保存至文件并读取"></a>将图保存至文件并读取</h2><p>您可能还希望将图表保存到稍后可以加载的文件中。您甚至可以在运行时从服务器加载它。</p>
+<p>如果想保存你的图，点击Save to file 按钮，你可以只保存配置参数或者保存配置参数和节点数据。如果只保存设置配置参数，则在图被加载后，你需要重新计算他在任何角色使用图进行导航之前。你可以使用以下代码重新计算所有的图：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">AstarPath.active.Scan();</span><br></pre></td></tr></table></figure>
+<p>如果要再次加载图形，只需按“从文件加载”按钮并找到该文件。请注意，这将替换您当前的图表。</p>
+<p>问题：只保存设置，还如何加载图形？？保存的设置是什么？？？</p>
+<h2 id="使用代码进行保存和加载"><a href="#使用代码进行保存和加载" class="headerlink" title="使用代码进行保存和加载"></a>使用代码进行保存和加载</h2><p>如果需要实时加载或保存图，则需要在代码里进行操作。</p>
+<p><code>SerializeGraphs()</code>方法会将图的参数序列化为数组，默认情况下包含节点信息（假设序列化之前保存过图形）。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">byte</span>[] bytes = AstarPath.active.data.SerializeGraphs();</span><br></pre></td></tr></table></figure>
+<p>可以近一步配置</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> settings = <span class="keyword">new</span> Pathfinding.Serialization.SerializeSettings();</span><br><span class="line"></span><br><span class="line"><span class="comment">// Only save settings</span></span><br><span class="line">settings.nodes = <span class="literal">false</span>;</span><br><span class="line"><span class="keyword">byte</span>[] bytes = AstarPath.active.data.SerializeGraphs(settings);</span><br></pre></td></tr></table></figure>
+<p>加载保存的数据：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">AstarPath.active.data.DeserializeGraphs(bytes);</span><br></pre></td></tr></table></figure>
+<p>如果只加载了设置，你可能需要调用Scan方法在加载设置后：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">AstarPath.active.data.DeserializeGraphs(bytes);</span><br><span class="line">AstarPath.active.Scan();</span><br></pre></td></tr></table></figure>
+<p>如果不是替换当前图，可以使用附加的方式加载图：</p>
+<blockquote>
+<p>Instead of replacing the currently loaded graphs, you can additively load graphs using</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">AstarPath.active.data.DeserializeGraphsAdditive(bytes);</span><br></pre></td></tr></table></figure>
+<p>使用以下方法卸载图：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var data = AstarPath.active.data;</span><br><span class="line">var myGraph = data.gridGraph;</span><br><span class="line">data.RemoveGraph(myGraph);</span><br></pre></td></tr></table></figure>
+<h3 id="Including-Data-in-a-TextAsset"><a href="#Including-Data-in-a-TextAsset" class="headerlink" title="Including Data in a TextAsset"></a>Including Data in a TextAsset</h3><p>图表数据可以被包含在TextAsset中，当你将数据保存为文件，把文件重命名为入“myGraph.bytes”，然后将它放入你的Unity工程中，这样会告诉Unity将文件视作二进制文件。如果使用.txt的后缀会使出现问题，因为Unity会尝试用text读取文件。一些操作系统会隐藏扩展名，所以如果Unity无法识别.bytes请检查文件后缀是否真的是bytes。zip（或者其他）后缀名可能会被隐藏。<strong>然后，您可以通过在变量访问.bytes字段来加载text asse的图形，访问.bytes文件。</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Graph data can be included in textassets for easier inclusion in the build. When you have saved the data to a file, rename that file to something like &quot;myGraph.bytes&quot; and place it in your Unity Project. This will tell Unity to handle it as binary information. With an extension like .txt the data would get corrupted because Unity would try to read it as text. Some operating systems like to hide the extension, so if Unity doesn&apos;t seem to recognize the file with the .bytes extension make sure it really has a .bytes extension, the .zip (or other) extension might just be hidden. Then you can load the graph from a text asset by referencing it in a variable, and accessing the .bytes field.</span><br></pre></td></tr></table></figure>
+<h3 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h3><p>所有的参数设置都会被序列化为JSON，可以很好的保持向前或向后兼容。下面提到的所有文件都会被压缩进单独的zip文件，缩小尺寸，使数据更容易处理。这也意味着你可以打开zip文件进行手动处理。</p>
+<p>【需要一章图片】</p>
+<p><strong>meta</strong></p>
+<p>meta.json文件会在所有的序列化中出现，A meta.json file is present in all serializations. This file contains information which is not connected to a specific graph, or is needed to load the other graphs.</p>
+<ul>
+<li>Version number for the system</li>
+<li>Number of graphs which are saved</li>
+<li>GUID values for each graph, to identify them</li>
+<li>Type of each graph</li>
+</ul>
+<p>例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;version&quot;: &quot;3.0.9.5&quot;,</span><br><span class="line">    </span><br><span class="line">    &quot;graphs&quot;: 1,</span><br><span class="line">    </span><br><span class="line">    &quot;guids&quot;: </span><br><span class="line">        [</span><br><span class="line">            &quot;0d83c93fc4928934-8362a8662ec4fb9d&quot;</span><br><span class="line">        ],</span><br><span class="line">    </span><br><span class="line">    &quot;typeNames&quot;: </span><br><span class="line">        [</span><br><span class="line">            &quot;Pathfinding.GridGraph&quot;</span><br><span class="line">        ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Graph-Settings"><a href="#Graph-Settings" class="headerlink" title="Graph Settings"></a>Graph Settings</h3><p>每个图的配置参数会被保存为”graph#.json”，#代表图的编号。下面是一个grid图的参数序列化的例子（删除了一些参数以保持代码不会很长）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">   &quot;aspectRatio&quot;:1,</span><br><span class="line">   &quot;rotation&quot;:&#123;</span><br><span class="line">      &quot;x&quot;:0,</span><br><span class="line">      &quot;y&quot;:0,</span><br><span class="line">      &quot;z&quot;:0</span><br><span class="line">   &#125;,</span><br><span class="line">   &quot;center&quot;:&#123;</span><br><span class="line">      &quot;x&quot;:0,</span><br><span class="line">      &quot;y&quot;:-0.1,</span><br><span class="line">      &quot;z&quot;:0</span><br><span class="line">   &#125;,</span><br><span class="line">   &quot;unclampedSize&quot;:&#123;</span><br><span class="line">      &quot;x&quot;:100,</span><br><span class="line">      &quot;y&quot;:100</span><br><span class="line">   &#125;,</span><br><span class="line">   &quot;nodeSize&quot;:1,</span><br><span class="line">   &quot;maxClimb&quot;:0.4,</span><br><span class="line">   &quot;maxClimbAxis&quot;:1,</span><br><span class="line">   &quot;maxSlope&quot;:90,</span><br><span class="line">   &quot;erodeIterations&quot;:0,</span><br><span class="line">   &quot;autoLinkGrids&quot;:false,</span><br><span class="line">   &quot;autoLinkDistLimit&quot;:10,</span><br><span class="line">   &quot;neighbours&quot;:&quot;Eight&quot;,</span><br><span class="line">   &quot;cutCorners&quot;:true,</span><br><span class="line">   &quot;penaltyPositionOffset&quot;:0,</span><br><span class="line">   &quot;penaltyPosition&quot;:false,</span><br><span class="line">   &quot;penaltyPositionFactor&quot;:1,</span><br><span class="line">   &quot;penaltyAngle&quot;:false,</span><br><span class="line">   &quot;penaltyAngleFactor&quot;:100,</span><br><span class="line">   &quot;open&quot;:true,</span><br><span class="line">   &quot;infoScreenOpen&quot;:false</span><br><span class="line">   ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>节点信息使用json来保存会占用很多空间，所以被替代为使用二进制文件写入。每个图类型都有自己的序列化保存节点代码。这由每个图上的SerializeExtraInfo和DeserializeExtraInfo方法处理。</p>
+<h1 id="多种Agent类型"><a href="#多种Agent类型" class="headerlink" title="多种Agent类型"></a>多种Agent类型</h1><p> 不同尺寸的Agent通常有不同的寻路结果，最简单的方法是创建多个图，每一个图对应一种Agent。如果拥有很多代理，您可能希望将它们分组为具有大量图形将增加内存使用量并且扫描将花费更长时间。</p>
+<h1 id="编辑器寻路"><a href="#编辑器寻路" class="headerlink" title="编辑器寻路"></a>编辑器寻路</h1><h1 id="GraphUpdateScene-组件"><a href="#GraphUpdateScene-组件" class="headerlink" title="GraphUpdateScene 组件"></a>GraphUpdateScene 组件</h1><h1 id="Accessing-graph-data"><a href="#Accessing-graph-data" class="headerlink" title="Accessing graph data"></a>Accessing graph data</h1><h1 id="应用于回合制游戏"><a href="#应用于回合制游戏" class="headerlink" title="应用于回合制游戏"></a>应用于回合制游戏</h1><h1 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h1>
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/游戏寻路/" rel="tag"># 游戏寻路</a>
+          
+            <a href="/tags/Untiy插件/" rel="tag"># Untiy插件</a>
+          
+            <a href="/tags/Unity/" rel="tag"># Unity</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/12/11/Unity插件：AStarPathfinding寻路系统/Unity插件：AStarPathfinding寻路系统（上）/" rel="next" title="Unity插件：AStarPathfinding寻路系统（上）">
+                <i class="fa fa-chevron-left"></i> Unity插件：AStarPathfinding寻路系统（上）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/12/11/Unity插件：AStarPathfinding寻路系统/Unity插件：AStarPathfinding寻路系统（中）/" rel="prev" title="Unity插件：AStarPathfinding寻路系统（中）">
+                Unity插件：AStarPathfinding寻路系统（中） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+ 
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/myselelogin.png" alt="Sayi">
+            
+              <p class="site-author-name" itemprop="name">Sayi</p>
+              <div class="site-description motion-element" itemprop="description">Just noob.</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">7</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                    <span class="site-state-item-count">1</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">9</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/qihr" title="GitHub &rarr; https://github.com/qihr" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:qhr.geek@gmail.com" title="E-Mail &rarr; mailto:qhr.geek@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Navmesh-Cutting（付费功能）"><span class="nav-text">Navmesh Cutting（付费功能）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RVO（付费）"><span class="nav-text">RVO（付费）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#介绍"><span class="nav-text">介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#概览"><span class="nav-text">概览</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#集成"><span class="nav-text">集成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#物理系统"><span class="nav-text">物理系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#保持代理在图中"><span class="nav-text">保持代理在图中</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#障碍"><span class="nav-text">障碍</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用RVO组件"><span class="nav-text">使用RVO组件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加RVO障碍"><span class="nav-text">添加RVO障碍</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Tag和GraphUpdateScene"><span class="nav-text">Tag和GraphUpdateScene</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实时更新图"><span class="nav-text">实时更新图</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#需要更新的内容"><span class="nav-text">需要更新的内容</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#重新计算整张图"><span class="nav-text">重新计算整张图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#重新计算部分图"><span class="nav-text">重新计算部分图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用脚本"><span class="nav-text">使用脚本</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#直接使用图数据"><span class="nav-text">直接使用图数据</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#工作原理"><span class="nav-text">工作原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Gird图的特殊细节"><span class="nav-text">Gird图的特殊细节</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基于Navmesh的图"><span class="nav-text">基于Navmesh的图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#点图（PointGraphs）"><span class="nav-text">点图（PointGraphs）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Graph-Update-Object"><span class="nav-text">Graph Update Object</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#从GraphUpdateObject继承"><span class="nav-text">从GraphUpdateObject继承</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#检查是否阻塞（塔防）"><span class="nav-text">检查是否阻塞（塔防）</span></a></li></ol><li class="nav-item nav-level-1"><a class="nav-link" href="#保存和加载图表"><span class="nav-text">保存和加载图表</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#图的计算缓存"><span class="nav-text">图的计算缓存</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#将图保存至文件并读取"><span class="nav-text">将图保存至文件并读取</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用代码进行保存和加载"><span class="nav-text">使用代码进行保存和加载</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Including-Data-in-a-TextAsset"><span class="nav-text">Including Data in a TextAsset</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据类型"><span class="nav-text">数据类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Graph-Settings"><span class="nav-text">Graph Settings</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#多种Agent类型"><span class="nav-text">多种Agent类型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#编辑器寻路"><span class="nav-text">编辑器寻路</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GraphUpdateScene-组件"><span class="nav-text">GraphUpdateScene 组件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Accessing-graph-data"><span class="nav-text">Accessing graph data</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#应用于回合制游戏"><span class="nav-text">应用于回合制游戏</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#优化"><span class="nav-text">优化</span></a></li></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sayi</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">站点总字数：</span>
+    
+    <span title="站点总字数">124k</span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    
+    <span title="站点阅读时长">1:53</span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+  <script src="https://unpkg.com/mermaid@7.1.2/dist/mermaid.min.js"></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize("");
+    }
+  </script>
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.0"></script>
+
+  <script src="/js/motion.js?v=7.1.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.1.0"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.0"></script>
+<script src="/js/post-details.js?v=7.1.0"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.0"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+<script>
+if ($('body').find('pre.mermaid').length) {
+  $.ajax({
+    type: 'GET',
+    url: '',
+    dataType: 'script',
+    cache: true,
+    success: function() {
+      mermaid.initialize({
+        theme: '',
+        logLevel: 3,
+        flowchart: { curve: 'linear' },
+        gantt: { axisFormat: '%m/%d/%Y' },
+        sequence: { actorMargin: 50 }
+      });
+    }
+  });
+}
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
