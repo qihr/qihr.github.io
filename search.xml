@@ -1617,120 +1617,102 @@ id3-->id4[private]</pre>
       </tags>
   </entry>
   <entry>
-    <title>CSharp基础10 枚举类型</title>
-    <url>/2019/12/17/CSharp%E5%9F%BA%E7%A1%80/CSharp%E5%9F%BA%E7%A1%8010%20%E6%9E%9A%E4%B8%BE%E7%B1%BB%E5%9E%8B/</url>
-    <content><![CDATA[<p>Ienumerator接口</p>
+    <title>CSharp基础11 LINQ</title>
+    <url>/2019/12/17/CSharp%E5%9F%BA%E7%A1%80/CSharp%E5%9F%BA%E7%A1%8011%20LINQ/</url>
+    <content><![CDATA[<p>LINQ基础</p>
 <a id="more"></a>
-<h1 id="1-1-概述"><a href="#1-1-概述" class="headerlink" title="1.1 概述"></a>1.1 概述</h1><p>数组能使用foreach语句是因为，数组提供了一个叫做枚举器的对象。枚举器实现了Getenumerator方法，可以依次返回请求的数组中的元素，枚举器知道项的次序并跟踪他在序列中的位置。</p>
-<p>获取一个枚举器的方法：调用对象的Getenumerator方法。</p>
-<p>foreach要和可枚举类型一起使用，只要遍历对象是可枚举类型，它就会执行以下行为：</p>
+<h1 id="1-1概述"><a href="#1-1概述" class="headerlink" title="1.1概述"></a>1.1概述</h1><p>LINQ发音为Link 语言集成查询的缩写（language interated query）</p>
+<p>LINQ是.net框架的扩展，它允许我们以使用SQL查询数据库的方式查询数据集合。</p>
+<p>LINQ可以从数据库，程序对象的集合以及XML文档中查询数据。</p>
+<h1 id="1-2-LINQ提供程序"><a href="#1-2-LINQ提供程序" class="headerlink" title="1.2 LINQ提供程序"></a>1.2 LINQ提供程序</h1><p>每一种数据源类型，在其背后一定有根据该数据源类型实现LINQ查询的代码模块。这些模块叫做LINQ提供程序（provider）。</p>
+<p>关于LINQ提供程序：</p>
 <ul>
-<li>调用Getenumerator获取对象枚举器。</li>
-<li>从枚举器中请求每一项并且把它作为迭代变量，代码可以读取变量但不可以改变。</li>
+<li>微软为常见的数据源类型提供了LINQ提供程序。</li>
+<li>可以使用任何支持LINQ的语言来查询有LINQ提供程序的数据源类型。</li>
+<li>第三方也会提供各种数据源类型的提供程序。</li>
 </ul>
-<h1 id="1-2-Ienumerator接口"><a href="#1-2-Ienumerator接口" class="headerlink" title="1.2 Ienumerator接口"></a>1.2 Ienumerator接口</h1><p>实现了ienumerator接口的枚举器包含了3个函数成员：<code>current()</code>, <code>movenext()</code> ,<code>reset()</code>。</p>
-<ul>
-<li>Current 返回序列中当前位置项的属性，它是只读属性，它返回object类型的引用，所以可以返回任何类型。</li>
-<li>Movenext把枚举器位置前进到集合中下一项的方法，它也返回布尔值，指示新的位置是有效的位置还是超过了序列的尾部。</li>
-<li>Reset是把位置重置为原始状态的方法。</li>
-</ul>
-<p>编写foreach循环时，编译器会生成与下面类似的代码：</p>
-<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span>[] array = &#123;<span class="number">10</span>,<span class="number">20</span>,<span class="number">12</span>,<span class="number">31</span>&#125;;</span><br><span class="line">	IEnumerator ie = array.GetEnumerator();</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">while</span>( ie.MoveNext())</span><br><span class="line">	&#123;	</span><br><span class="line">		<span class="keyword">int</span> i = (<span class="keyword">int</span>) ie.Current;</span><br><span class="line">		Console.WriteLine(<span class="string">"&#123;0&#125;"</span>,i);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="1-3-Ienumerable-接口"><a href="#1-3-Ienumerable-接口" class="headerlink" title="1.3  Ienumerable 接口"></a>1.3  Ienumerable 接口</h1><p>和上面说的ienumerator是不一样的接口。</p>
-<p>可枚举类是指实现了ienumerable接口的类，只有一个成员：Getenumerator方法，它返回对象的枚举器（实现了ienumerator接口）。</p>
-<p>一个例子：</p>
-<p>1.先实现一个枚举器，实现ienumerator接口：</p>
-<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">using</span> System.Collection;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title">ColorEnumerator</span>:<span class="title">IEnumerator</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">string</span>[] colors;</span><br><span class="line">    <span class="keyword">int</span> position = <span class="number">-1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ColorEnumerator</span>(<span class="params"><span class="keyword">string</span>[] thecolors</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        colors = <span class="keyword">new</span> <span class="keyword">string</span>[thecolors.Length];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; thoColors.Length; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            colors[i] = thecolors[i];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">object</span> Current</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span>&#123;</span><br><span class="line">            <span class="keyword">if</span> (position == <span class="number">-1</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> InvalidOperationException();</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (position &gt;= colors.Length)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> InvalidOperationException();</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span>  colors[position];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">bool</span> <span class="title">MoveNext</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">if</span> (position &lt; colors.Length - <span class="number">1</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            position ++ ;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Reset</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        position = <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>2.类实现Ienumerable 接口：</p>
-<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span>  <span class="title">Spectrum</span>:<span class="title">IEnumerable</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">string</span>[] Colors = &#123;<span class="string">"1"</span>,<span class="string">"2"</span>,<span class="string">"3"</span>&#125;;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> IEnumerable <span class="title">GerEnumerator</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ColorEnumerator(Colors);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span>  <span class="title">Program</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        Spectrum spectrum = <span class="keyword">new</span> Spectrum();</span><br><span class="line">        <span class="keyword">foreach</span> (<span class="keyword">string</span> color <span class="keyword">in</span> spectrum)</span><br><span class="line">        &#123;</span><br><span class="line">            Console.WriteLine(color);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//控制台输出：1，2，3</span></span><br></pre></td></tr></table></figure>
-<h1 id="1-4-泛型枚举接口"><a href="#1-4-泛型枚举接口" class="headerlink" title="1.4 泛型枚举接口"></a>1.4 泛型枚举接口</h1><p>大多数情况下应该使用泛型版本的枚举接口：</p>
-<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line">Ienumerable&lt;T&gt;</span><br><span class="line">Ienumerator&lt;T&gt;</span><br></pre></td></tr></table></figure>
-<p>泛型和非泛型枚举接口的差异：</p>
-<p>对于非泛型接口的形式：</p>
-<ul>
-<li>IEnumerable接口的GetEnumerator方法返回实现Ienumerator枚举器的示例；</li>
-<li>实现了IEnumerable的类实现了Current属性，它返回object的引用，然后我们必须把它转换为实际类型的对象。</li>
-</ul>
-<p>对于泛型接口形式：</p>
-<ul>
-<li>IEnumerable<T>接口的GetEnumerator方法返回实现IEnumator<T>的枚举器类的实例。</T></T></li>
-<li>实现IEnumerator<T>的类实现了Current属性，他返回实际类型的对象，而不是object基类的引用。</T></li>
-</ul>
-<p>为什么推荐使用泛型枚举接口：</p>
-<ul>
-<li>非泛型接口的实现是不安全的，它们返回object类型的引用，然后必须转化为实际类型。</li>
-<li>泛型接口的枚举器是类型安全的，它返回实际类型的引用，如果要创建自己的可枚举类，应该实现这些泛型接口。</li>
-</ul>
-<h1 id="1-5-迭代器"><a href="#1-5-迭代器" class="headerlink" title="1.5 迭代器"></a>1.5 迭代器</h1><p>可以把手动写的，替换为迭代器生成的可枚举类型和枚举器。</p>
-<h2 id="1-5-1-迭代器块"><a href="#1-5-1-迭代器块" class="headerlink" title="1.5.1 迭代器块"></a>1.5.1 迭代器块</h2><p>迭代器块是有一个或多个yield语句的代码块。</p>
-<p> 以下3种类型的代码块中的任意一种都可以是迭代器块：</p>
+<h2 id="1-2-1-匿名类型"><a href="#1-2-1-匿名类型" class="headerlink" title="1.2.1 匿名类型"></a>1.2.1 匿名类型</h2><p>无名类类型的特性叫做匿名类型，常用于LINQ查询的结果之中。</p>
+<p>匿名类型的变量使用和初始化对象一样的表达式（new关键字，类名。或构造方法以及对象初始化语句。），但没有类名和构造函数，且必须使用var声明的对象来赋值。</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> stu = <span class="keyword">new</span>&#123;name = <span class="string">"123"</span>,age = <span class="number">1</span>&#125;;</span><br></pre></td></tr></table></figure>
+<p>注意：</p>
 <ol>
-<li>方法主体</li>
-<li>访问器主体</li>
-<li>运算符主体</li>
+<li>匿名类型只能和局部变量配合使用，不能用于类成员。</li>
+<li>匿名类型没有名字，必须使用var关键字作为变量类型。</li>
+<li>不能设置匿名类型对象的属性，编译器为匿名对象创建的属性都是只读的。</li>
 </ol>
-<p>两个版本的迭代器块：</p>
-<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//版本1</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> IEnumerator&lt;<span class="keyword">string</span>&gt; <span class="title">BlackAndWhite</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">yield</span> <span class="keyword">return</span> <span class="string">"Black"</span>;</span><br><span class="line">    <span class="keyword">yield</span> <span class="keyword">return</span> <span class="string">"gray"</span>;</span><br><span class="line">    <span class="keyword">yield</span> <span class="keyword">return</span> <span class="string">"white"</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//版本2</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> IEnumerator&lt;<span class="keyword">string</span>&gt; <span class="title">BlackAndWhite</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">string</span>[] colors = &#123;<span class="string">"Black"</span>,<span class="string">"gray"</span>,<span class="string">"white"</span>&#125;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; colors.Length; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">yield</span> <span class="keyword">return</span> thoColors[i];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="1-5-2-yield关键字"><a href="#1-5-2-yield关键字" class="headerlink" title="1.5.2 yield关键字"></a>1.5.2 yield关键字</h2><blockquote>
-<p>使用 <code>yield return</code> 语句可一次返回一个元素。</p>
-<p>可通过使用 <a href="https://docs.microsoft.com/zh-cn/dotnet/csharp/language-reference/keywords/foreach-in">foreach</a> 语句或 LINQ 查询来使用从迭代器方法返回的序列。 <code>foreach</code> 循环的每次迭代都会调用迭代器方法。 迭代器方法运行到 <code>yield return</code> 语句时，会返回一个 <code>expression</code>，并保留当前在代码中的位置。 下次调用迭代器函数时，将从该位置重新开始执行。</p>
-<p>可以使用 <code>yield break</code> 语句来终止迭代。</p>
-</blockquote>
-<h2 id="1-5-3-使用迭代器创建枚举器"><a href="#1-5-3-使用迭代器创建枚举器" class="headerlink" title="1.5.3 使用迭代器创建枚举器"></a>1.5.3 使用迭代器创建枚举器</h2><figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">Myclass</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> IEnumerable&lt;<span class="keyword">string</span>&gt; <span class="title">GerEnumerator</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">return</span> BlackAndWhite();</span><br><span class="line">    &#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> IEnumerator&lt;<span class="keyword">string</span>&gt; <span class="title">BlackAndWhite</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>	&#123;</span><br><span class="line">    	<span class="keyword">yield</span> <span class="keyword">return</span> <span class="string">"Black"</span>;</span><br><span class="line">    	<span class="keyword">yield</span> <span class="keyword">return</span> <span class="string">"gray"</span>;</span><br><span class="line">    	<span class="keyword">yield</span> <span class="keyword">return</span> <span class="string">"white"</span>;</span><br><span class="line">	&#125;	</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span>  <span class="title">Program</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        Myclass myclass = <span class="keyword">new</span> Myclass();</span><br><span class="line">        <span class="keyword">foreach</span> (<span class="keyword">string</span> color <span class="keyword">in</span> myclass)</span><br><span class="line">        &#123;</span><br><span class="line">            Console.WriteLine(color);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>可以看到，比手动实现IEnumerator要方便一些。实际上编译器在<code>BlackAndWhite()</code>方法内部用一个嵌套类自动实现了枚举器,并且还生成了一个方法<code>BlackAndWhite()</code>。</p>
-<h2 id="1-5-4使用迭代器创建可枚举类"><a href="#1-5-4使用迭代器创建可枚举类" class="headerlink" title="1.5.4使用迭代器创建可枚举类"></a>1.5.4使用迭代器创建可枚举类</h2><p> 这个例子中，<code>BlackAndWhite()</code>方法实现了一个可枚举类，在类中<code>GetEnumerator()</code>返回了这个枚举类。</p>
-<p>此时编译器生成的类既是<code>IEnumerable</code>又是<code>IEnumerator</code>的，并且还生成了一个方法<code>BlackAndWhite()</code>。</p>
-<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">Myclass</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> IEnumerator <span class="title">GetEnumerator</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        IEnumerable&lt;<span class="keyword">string</span>&gt; enumable = BlackAndWhite();</span><br><span class="line">        <span class="keyword">return</span> enumable.GetEnumerator();</span><br><span class="line">    &#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> IEnumerable&lt;<span class="keyword">string</span>&gt; <span class="title">BlackAndWhite</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>	&#123;</span><br><span class="line">    	<span class="keyword">yield</span> <span class="keyword">return</span> <span class="string">"Black"</span>;</span><br><span class="line">    	<span class="keyword">yield</span> <span class="keyword">return</span> <span class="string">"gray"</span>;</span><br><span class="line">    	<span class="keyword">yield</span> <span class="keyword">return</span> <span class="string">"white"</span>;</span><br><span class="line">	&#125;	</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span>  <span class="title">Program</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        Myclass myclass = <span class="keyword">new</span> Myclass();</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//使用类对象迭代</span></span><br><span class="line">        <span class="keyword">foreach</span> (<span class="keyword">string</span> color <span class="keyword">in</span> myclass)</span><br><span class="line">        &#123;</span><br><span class="line">            Console.WriteLine(color);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//使用类的枚举器方法。</span></span><br><span class="line">        <span class="keyword">foreach</span> (<span class="keyword">string</span> color <span class="keyword">in</span> myclass.BlackAndWhite())</span><br><span class="line">        &#123;</span><br><span class="line">            Console.WriteLine(color);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="1-5-5-常见迭代器模式"><a href="#1-5-5-常见迭代器模式" class="headerlink" title="1.5.5 常见迭代器模式"></a>1.5.5 常见迭代器模式</h2><p>先说一下前两节的不同</p>
-<p>1.5.3：<code>BlackAndWhite()</code>生成了一个<code>Enumerator</code>枚举器。</p>
-<p>1.5.4：<code>BlackAndWhite()</code>生成了一个<code>Enumerable</code>枚举类，而枚举类中包含了<code>Enumerator</code>枚举器，类中还包含一个<code>GetEnumerator()</code>方法。</p>
-<p>所以说1.5.4这种方法要更全面一些，实际上，这两节正是迭代器的常用法：</p>
-<ol>
-<li><p>枚举器的迭代器模式：</p>
-<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">Myclass</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> IEnumerable&lt;<span class="keyword">string</span>&gt; <span class="title">GerEnumerator</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">return</span> IteratorMethod();</span><br><span class="line">    &#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> IEnumerator&lt;<span class="keyword">string</span>&gt; <span class="title">IteratorMethod</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>	&#123;</span><br><span class="line">    	<span class="keyword">yield</span> <span class="keyword">return</span> ....;</span><br><span class="line">	&#125;	</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="keyword">foreach</span> (<span class="keyword">string</span> color <span class="keyword">in</span> myclass)</span><br><span class="line">   &#123;</span><br><span class="line">      Console.WriteLine(color);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>可枚举类型的迭代器模式</p>
-<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">Myclass</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> IEnumerable&lt;<span class="keyword">string</span>&gt; <span class="title">GerEnumerator</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">return</span> IteratorMethod().GerEnumerator();</span><br><span class="line">    &#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> IEnumerable&lt;<span class="keyword">string</span>&gt; <span class="title">IteratorMethod</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>	&#123;</span><br><span class="line">    	<span class="keyword">yield</span> <span class="keyword">return</span> ....;</span><br><span class="line">	&#125;	</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="keyword">foreach</span> (<span class="keyword">string</span> color <span class="keyword">in</span> myclass)</span><br><span class="line">   &#123;</span><br><span class="line">      Console.WriteLine(color);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-]]></content>
-      <categories>
-        <category>Program</category>
-      </categories>
-      <tags>
-        <tag>CSharp</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>CSharp基础14 异常</title>
-    <url>/2019/12/17/CSharp%E5%9F%BA%E7%A1%80/CSharp%E5%9F%BA%E7%A1%8014%20%E5%BC%82%E5%B8%B8/</url>
-    <content><![CDATA[<p> 异常相关内容</p>
-<a id="more"></a>
-<h1 id="1-1概述"><a href="#1-1概述" class="headerlink" title="1.1概述"></a>1.1概述</h1><p>系统捕获错误，并抛出一个异常，如果程序没有提供处理该异常的代码，系统会挂起这个程序。</p>
-<h1 id="1-2-Try语句"><a href="#1-2-Try语句" class="headerlink" title="1.2 Try语句"></a>1.2 Try语句</h1><p>try语句由三个部分组成：</p>
+<p>除了对象初始化语句的赋值形式，匿名类型的对象初始化语句还可以使用简单标识符和成员访问表达式，这两种形式叫做投影初始化语句。如：</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">string</span> something = <span class="string">""</span>;</span><br><span class="line"><span class="comment">//name 赋值形式，someclass.obj成员访问，something标识符</span></span><br><span class="line"><span class="keyword">var</span> stu = <span class="keyword">new</span>&#123;name = <span class="string">"123"</span>,someclass.obj，something&#125;;</span><br><span class="line">Console.Write(stu.name,stu.obj,stu.somthing);</span><br><span class="line"><span class="comment">//等同于：</span></span><br><span class="line"><span class="keyword">var</span> stu = <span class="keyword">new</span>&#123;name = <span class="string">"123"</span>, obj = someclass.obj，something = something&#125;;</span><br></pre></td></tr></table></figure>
+<h1 id="1-3-方法语法和查询语法"><a href="#1-3-方法语法和查询语法" class="headerlink" title="1.3 方法语法和查询语法"></a>1.3 方法语法和查询语法</h1><p>LINQ查询有两种形式的语法：查询语法和方法语法。在一个查询中可以组合这两种形式。</p>
 <ul>
-<li>try块：避免出现异常被保护的语句。</li>
-<li>catch语句：处理try块抛出的异常。</li>
-<li>finally块：无论是否有异常都会执行的代码。</li>
+<li>方法语法： 标准方法调用，使用一组标准查询运算符。是命令式的，指明了查询方法的调用的顺序。方法语法使用了lambda表达式。</li>
+<li>查询语法：类似于SQL，使用查询表达式形式书写。是声明式的，查询描述了你需要返回的数据。但没有指明如何执行这个查询。 </li>
 </ul>
-<p>catch子句可以有多个。注意finally和catch的顺序，异常一旦被捕获，就不会挂起或者有报错信息。</p>
-<h1 id="1-3-异常类"><a href="#1-3-异常类" class="headerlink" title="1.3 异常类"></a>1.3 异常类</h1><p>BCL中定义了许多表示异常类型的异常类，所有异常类都派生自<code>System.exception</code>类。</p>
-<h1 id="1-4-catch语句"><a href="#1-4-catch语句" class="headerlink" title="1.4 catch语句"></a>1.4 catch语句</h1><p>catch语句处理异常，有三种不同级别的处理：</p>
+<p>官方推荐查询语法。但有些运算符必须使用方法语法书写。</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span>[] numbers = &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,&#125;;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//查询语法</span></span><br><span class="line">    <span class="keyword">var</span> numsQuery = <span class="keyword">from</span> n <span class="keyword">in</span> numbers <span class="keyword">where</span> n &lt; <span class="number">20</span>  <span class="keyword">select</span> n;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//方法语法</span></span><br><span class="line">    <span class="keyword">var</span> numsMethod = numbers.<span class="keyword">where</span>(x=&gt;x &lt; <span class="number">20</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//结合</span></span><br><span class="line">    <span class="keyword">int</span> numscount = (<span class="keyword">from</span> n <span class="keyword">in</span> numbers <span class="keyword">where</span> n&lt;<span class="number">20</span> <span class="keyword">select</span> n).Count();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="1-4-查询变量"><a href="#1-4-查询变量" class="headerlink" title="1.4  查询变量"></a>1.4  查询变量</h1><p>LINQ查询可以返回两种类型的结果：可以是一个可枚举的一组数据，满足查询参数的项列表。也可以是一个叫做标量的单一值。它满足查询条件的结果的某种摘要形式。比如说<code>Count()</code>返回的就是标量。</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span>[] numbers = &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,&#125;;</span><br><span class="line">    </span><br><span class="line">    IEnumerable&lt;<span class="keyword">int</span>&gt; lownums = <span class="keyword">from</span> n <span class="keyword">in</span> numbers <span class="keyword">where</span> n &lt; <span class="number">20</span>  <span class="keyword">select</span> n;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span> numscount = (<span class="keyword">from</span> n <span class="keyword">in</span> numbers <span class="keyword">where</span> n&lt;<span class="number">20</span> <span class="keyword">select</span> n).Count();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在执行上面的代码后，lowNums查询变量不会包含查询结果。编译器会创建能够执行这个查询的代码。</p>
+<p>查询变量numcount包含的是真实的整数值，但只能通过真实运行查询后获得。</p>
+<p>上图两个查询变量有很大的区别，主要是查询执行的时间：</p>
 <ul>
-<li>catch { Statements } ：捕捉任何出现的异常。</li>
-<li>catch(ExceptionType) { Statements }：捕捉匹配任何该名称类型的异常。</li>
-<li>catch(ExceptionType someobj) { Statements }：捕捉匹配任何该名称类型的异常，并接受一个异常变量，用于访问该对象的信息。</li>
+<li>如果查询表达式返回的是枚举（可枚举类型），查询会在处理枚举时才执行。</li>
+<li>如果枚举被处理多次，查询就会执行多次。</li>
+<li>如果在进行被查询的数据遍历后，查询执行之前数据有改动，则查询会使用新的数据。</li>
+<li>如果查询表达式返回标量，查询立即执行，并会把结果保存在查询变量之中。</li>
 </ul>
-<p>带对象的特点catch子句提供异常的最多信息，匹配该类或派生自它的类的异常。还会给出一个异常实例，一个对CLR创建的异常对象的引用。可以在catch内访问异常变量。</p>
-<p>catch字句段可以包含多个catch子句，异常发生时，系统按顺序搜索子句列表，第一个匹配该异常对象类型的子句会被执行。因此，catch子句排序有两个重要的原则：</p>
+<p>个人理解：使用时查询是因为，一旦被查询的集合有任何改变，那之前查询到的结果就会出现问题，甚至是异常。</p>
+<h1 id="1-5-查询表达式的结构"><a href="#1-5-查询表达式的结构" class="headerlink" title="1.5 查询表达式的结构"></a>1.5 查询表达式的结构</h1><p>方法语法的结构：</p>
 <ul>
-<li>最明确的异常类型第一，直至最普通的类型。</li>
-<li>如果有一个一般的catch语句，必须是最后一个。</li>
+<li>子句必须按照一定顺序出现。</li>
+<li>from子句和select group子句是必须的。</li>
+<li>其他子句可选。</li>
+<li>LINQ查询表达式中，select子句在表达式最后，c#中这么做的原因之一是让visual studio智能感应能在我们输入代码时给我们更多选项。</li>
+<li>可以有任意多的from let where子句。</li>
 </ul>
-<h1 id="1-5-Finally语句"><a href="#1-5-Finally语句" class="headerlink" title="1.5 Finally语句"></a>1.5 Finally语句</h1><p>finally始终会执行。无论是否有异常抛出。可选，可以不写。</p>
-<h1 id="1-6-为异常寻找处理程序"><a href="#1-6-为异常寻找处理程序" class="headerlink" title="1.6 为异常寻找处理程序"></a>1.6 为异常寻找处理程序</h1><p>如果异常在一个没有try语句保护的块中产生，系统会按顺序搜索调用栈，进一步寻找匹配的处理代码。</p>
-<h1 id="1-7-抛出异常"><a href="#1-7-抛出异常" class="headerlink" title="1.7 抛出异常"></a>1.7 抛出异常</h1><p>throw可以显示抛出一个异常：</p>
-<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">try</span></span><br><span class="line">&#123;</span><br><span class="line">    ArgumentNullException myEx = <span class="keyword">new</span> ArgumentNullExcpetion(<span class="string">"arg"</span>);</span><br><span class="line">    <span class="keyword">throw</span> myEx;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">catch</span>(ArgumentNullException e)</span><br><span class="line">&#123;</span><br><span class="line">    Console.WriteLine(<span class="string">"Message:"</span>,e.Message);</span><br><span class="line">    <span class="comment">//还可以将异常在catch中抛出，让其他异常处理程序处理。</span></span><br><span class="line">    <span class="comment">//重新抛出异常，没有附加参数。</span></span><br><span class="line">    <span class="keyword">throw</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>*这些东西组合的结构叫查询体。</p>
+<h2 id="from子句"><a href="#from子句" class="headerlink" title="from子句"></a>from子句</h2><p>from指定作为数据源使用的数据集合。</p>
+<p>from语句和foreach不同点如下：</p>
+<ul>
+<li>foreach语句命令式的指定了要从第一个到最后一个按顺序地访问集合中的项，而from子句声明式地规定规定每个项都要被访问，但是没有规定顺序。</li>
+<li>foreach语句遇到代码就执行主体，from语句什么也不执行，之创建可以查询的后台代码对象，只有程序访问查询变量语句时，才会执行查询。</li>
+</ul>
+<h2 id="join子句"><a href="#join子句" class="headerlink" title="join子句"></a>join子句</h2><p>使用联结来结合两个或多个集合中的数据。联结操作接受两个集合然后创建一个临时的对象集合，每个对象包含原始集合对象中的所有字段。</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">join some in collection on field1 equal field2</span><br></pre></td></tr></table></figure>
+<p>例子：</p>
+<figure class="highlight c#"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> query = <span class="keyword">from</span> s <span class="keyword">in</span> students</span><br><span class="line">			<span class="keyword">join</span> c <span class="keyword">in</span> studentsInCourses <span class="keyword">on</span> s.StID <span class="keyword">equals</span> c.StID</span><br></pre></td></tr></table></figure>
+<h2 id="let子句"><a href="#let子句" class="headerlink" title="let子句"></a>let子句</h2><p>let子句接受一个表达式的运算符，并且把它赋值给一个需要在其他运算中使用的标识符。</p>
+<figure class="highlight c#"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> a = Expression</span><br></pre></td></tr></table></figure>
+<p>例子：</p>
+<figure class="highlight c#"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">var</span> groupA = <span class="keyword">new</span>[]&#123;<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>&#125;;</span><br><span class="line">    <span class="keyword">var</span> groupB = <span class="keyword">new</span>[]&#123;<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="number">10</span>&#125;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> someInts = <span class="keyword">from</span> a <span class="keyword">in</span> groupA <span class="keyword">from</span> b <span class="keyword">in</span> groupB</span><br><span class="line">                   <span class="keyword">let</span> sum = a + b</span><br><span class="line">                   <span class="keyword">where</span> sum == <span class="number">12</span></span><br><span class="line">                   <span class="keyword">select</span> <span class="keyword">new</span> &#123;a,b,sum&#125;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">foreach</span> (<span class="keyword">var</span> a <span class="keyword">in</span> someInts)</span><br><span class="line">    &#123;</span><br><span class="line">        Console.WriteLine(a);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Orderby语句"><a href="#Orderby语句" class="headerlink" title="Orderby语句"></a>Orderby语句</h2><p>orderby子句的默认排序是升序。 可以使用asending和descending关键字显示的设置元素的排序为升序或降序。</p>
+<p>例子：</p>
+<figure class="highlight c#"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> query = <span class="keyword">from</span> s <span class="keyword">in</span> students</span><br><span class="line">			<span class="keyword">orderby</span> s.age</span><br><span class="line">    		<span class="keyword">select</span> student</span><br></pre></td></tr></table></figure>
+<h2 id="Select-Group语句"><a href="#Select-Group语句" class="headerlink" title="Select Group语句"></a>Select Group语句</h2><p>group by子句可选，用来指定选择的项如何被分组。</p>
+<figure class="highlight c#"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> Exp <span class="keyword">group</span> collection <span class="keyword">by</span> filed</span><br></pre></td></tr></table></figure>
+<h2 id="查询的匿名类型"><a href="#查询的匿名类型" class="headerlink" title="查询的匿名类型"></a>查询的匿名类型</h2><p>查询结果可以由原始集合的项，项和某些字段或匿名类型组成。</p>
+<figure class="highlight c#"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">var</span> groupA = <span class="keyword">new</span>[]</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">new</span> &#123;filed = <span class="string">"1"</span>,filed2 = <span class="string">"2"</span>&#125;,</span><br><span class="line">        <span class="keyword">new</span> &#123;filed = <span class="string">"1"</span>,filed2 = <span class="string">"2"</span>&#125;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> query = <span class="keyword">from</span> s <span class="keyword">in</span> groupA</span><br><span class="line">                <span class="keyword">select</span> <span class="keyword">new</span> &#123;s.filed&#125;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">foreach</span> (<span class="keyword">var</span> query <span class="keyword">in</span> query)</span><br><span class="line">    &#123;</span><br><span class="line">        Console.WriteLine(a.filed);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="1-6标准查询运算符"><a href="#1-6标准查询运算符" class="headerlink" title="1.6标准查询运算符"></a>1.6标准查询运算符</h1><p>标准查询运算符由一系列的API方法组成，能查询任何.net数组或集合。需要注意的点：</p>
+<ul>
+<li>被查询的集合对象叫序列，必须实现Ienumerable接口。</li>
+<li>标准查询运算符使用方法语法。</li>
+<li>一些运算符返回Ienumerable对象，而其他的一些运算符返回标量。返回标量的运算符立即执行，并返回一个值。</li>
+<li>有很多操作都是一个谓词作为参数，谓词是一个方法，以对象作为参数根据对象是否满足某个条件而返回true和false。</li>
+</ul>
+<p>例子：</p>
+<figure class="highlight c#"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span>[] numbers = <span class="keyword">new</span> <span class="keyword">int</span>[]&#123;<span class="number">2</span>,<span class="number">4</span>,<span class="number">6</span>&#125;;</span><br><span class="line"><span class="keyword">int</span> total = numbers.Sum();</span><br><span class="line"><span class="keyword">int</span> howmayn = numbers.Count();</span><br></pre></td></tr></table></figure>
+<h2 id="1-6-1-标准查询运算符的签名"><a href="#1-6-1-标准查询运算符的签名" class="headerlink" title="1.6.1 标准查询运算符的签名"></a>1.6.1 标准查询运算符的签名</h2><p>System.LINQ.enumerable类声明了标准查询运算符方法，他们也是扩展了Ienumerable<T> 泛型类的扩展方法。</T></p>
+<p>直接调用扩展方法和将其作为扩展进行调用的不同如下面所示：</p>
+<figure class="highlight c#"><table><tr><td class="code"><pre><span class="line"><span class="comment">//注意下面的使用方法是完全等价的</span></span><br><span class="line"><span class="keyword">var</span> count = Enumerable.Count(array);</span><br><span class="line"><span class="keyword">var</span> count2 = array.Count;</span><br></pre></td></tr></table></figure>
+<h1 id="1-7-查询表达式和标准运算符"><a href="#1-7-查询表达式和标准运算符" class="headerlink" title="1.7 查询表达式和标准运算符"></a>1.7 查询表达式和标准运算符</h1><p>标准查询运算符是进行查询的一组方法。</p>
+<p>可以使用带有标准查询运算符的方法语法来编写查询表达式：</p>
+<figure class="highlight c#"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">var</span> numbers = <span class="keyword">new</span> <span class="keyword">int</span>[] &#123;<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>&#125;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> howmany = (<span class="keyword">from</span> n <span class="keyword">in</span> numbers </span><br><span class="line">                    <span class="keyword">where</span> n &lt; <span class="number">7</span> </span><br><span class="line">                    <span class="keyword">select</span> n).Count();</span><br><span class="line">    Console.WriteLine(<span class="string">"Count:&#123;0&#125;"</span>,howMant);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="1-7-1-将委托作为参数"><a href="#1-7-1-将委托作为参数" class="headerlink" title="1.7.1 将委托作为参数"></a>1.7.1 将委托作为参数</h2><p>泛型委托用于给运算符提供用户自定义的代码：</p>
+<p>(count运算符被重载了，且有两种形式，第二种是带泛型委托的参数。）</p>
+<p>第一种：</p>
+<figure class="highlight c#"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> Count&lt;T&gt;(<span class="keyword">this</span> IEnumerable&lt;T&gt; source);</span><br></pre></td></tr></table></figure>
+<p>第二种：</p>
+<figure class="highlight c#"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> Count&lt;T&gt;(<span class="keyword">this</span> IEnumerable&lt;T&gt; source,Func&lt;T,<span class="keyword">bool</span>&gt; predicate);</span><br></pre></td></tr></table></figure>
+<p>如果传入的方法语句只有一条，比较简单，或者并不会在程序的其他地方调用，可以传入lambda表达式。</p>
 ]]></content>
       <categories>
         <category>Program</category>
@@ -1819,6 +1801,37 @@ id5[源代码 Myclass.cs]-->id3[C#编译器]</pre>
 <h2 id="1-4-5-延迟签名"><a href="#1-4-5-延迟签名" class="headerlink" title="1.4.5 延迟签名"></a>1.4.5 延迟签名</h2><p>最终的程序集强命名一般都是在开发的末期，有特殊权限的小组执行。由于公钥是程序集标识符的4个部分之一，所以直到有了公钥才能被设置，如果要测试时需要部署到GAC，就需要一种方式：延迟签名，修改了赋值强命名的形式。或者叫分签名。</p>
 <p>使用延迟签名可以把程序集部署到GAC中，但必须使用命令行取消该机器的GAC签名确认，只针对这个程序集，并允许它被装在GAC中。</p>
 <h2 id="1-4-6-总结"><a href="#1-4-6-总结" class="headerlink" title="1.4.6 总结"></a>1.4.6 总结</h2><p>强命名程序集，和延迟签名程序集，弱程序集都拥有清单，元数据，CIL。区别是，前两者强命名还有拥有公钥私钥的数字签名，延迟签名拥有数字签名占位。弱程序集则没有。</p>
+]]></content>
+      <categories>
+        <category>Program</category>
+      </categories>
+      <tags>
+        <tag>CSharp</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>CSharp基础15 预处理指令</title>
+    <url>/2019/12/17/CSharp%E5%9F%BA%E7%A1%80/CSharp%E5%9F%BA%E7%A1%8015%20%E9%A2%84%E5%A4%84%E7%90%86%E6%8C%87%E4%BB%A4/</url>
+    <content><![CDATA[<p> 预处理指令相关内容</p>
+<a id="more"></a>
+<h1 id="1-1概述"><a href="#1-1概述" class="headerlink" title="1.1概述"></a>1.1概述</h1><p>预处理指令指示编译器如何处理源代码。在C和C++中，有实际的预处理阶段，此时预处理程序遍历源代码并为之后的编译阶段准备文本和输出流，在C#中没有实际的预处理程序，而预处理指令由编译器处理。</p>
+<p>基本规则:</p>
+<ul>
+<li>与代码在不同的个行。</li>
+<li>不需要以分号结尾。</li>
+<li>每一行必须以#字符开始，#前和指令之间可以有空格。</li>
+</ul>
+<h1 id="1-2-define和-undef指令"><a href="#1-2-define和-undef指令" class="headerlink" title="1.2 #define和#undef指令"></a>1.2 #define和#undef指令</h1><p>define指令用于声明一个编译符号，#undef指令取消定义一个编译符号。编译符号是只有两种可能状态的标识符，要么被定义，要么未被定义。</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> valuev</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> valuea</span></span><br><span class="line"><span class="comment">//允许重复定义</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> valuev</span></span><br></pre></td></tr></table></figure>
+<h1 id="1-3-条件编译"><a href="#1-3-条件编译" class="headerlink" title="1.3 条件编译"></a>1.3 条件编译</h1><p>条件编译允许根据某个编译符号是否被定义来决定一段代码被编译或跳过，有四个指令：</p>
+<ul>
+<li>#if</li>
+<li>#else</li>
+<li>#elif</li>
+<li>#endif</li>
+</ul>
+<h1 id="1-4-备注"><a href="#1-4-备注" class="headerlink" title="1.4 备注"></a>1.4 备注</h1><p>这没什么好讲的，就是一些工具语法，有需要再补充，有一个疑惑是，define指令定义的变量的值是什么赋值的。</p>
+<p>之前在unity的platform变量中可以判断是哪个平台在运行，这个值是从哪得到的。</p>
 ]]></content>
       <categories>
         <category>Program</category>
@@ -1988,102 +2001,82 @@ Class01 <|-- object class01 : runworkerasync() cancelasync() reportprogress() wo
       </tags>
   </entry>
   <entry>
-    <title>CSharp基础11 LINQ</title>
-    <url>/2019/12/17/CSharp%E5%9F%BA%E7%A1%80/CSharp%E5%9F%BA%E7%A1%8011%20LINQ/</url>
-    <content><![CDATA[<p>LINQ基础</p>
+    <title>CSharp基础10 枚举类型</title>
+    <url>/2019/12/17/CSharp%E5%9F%BA%E7%A1%80/CSharp%E5%9F%BA%E7%A1%8010%20%E6%9E%9A%E4%B8%BE%E7%B1%BB%E5%9E%8B/</url>
+    <content><![CDATA[<p>Ienumerator接口</p>
 <a id="more"></a>
-<h1 id="1-1概述"><a href="#1-1概述" class="headerlink" title="1.1概述"></a>1.1概述</h1><p>LINQ发音为Link 语言集成查询的缩写（language interated query）</p>
-<p>LINQ是.net框架的扩展，它允许我们以使用SQL查询数据库的方式查询数据集合。</p>
-<p>LINQ可以从数据库，程序对象的集合以及XML文档中查询数据。</p>
-<h1 id="1-2-LINQ提供程序"><a href="#1-2-LINQ提供程序" class="headerlink" title="1.2 LINQ提供程序"></a>1.2 LINQ提供程序</h1><p>每一种数据源类型，在其背后一定有根据该数据源类型实现LINQ查询的代码模块。这些模块叫做LINQ提供程序（provider）。</p>
-<p>关于LINQ提供程序：</p>
+<h1 id="1-1-概述"><a href="#1-1-概述" class="headerlink" title="1.1 概述"></a>1.1 概述</h1><p>数组能使用foreach语句是因为，数组提供了一个叫做枚举器的对象。枚举器实现了Getenumerator方法，可以依次返回请求的数组中的元素，枚举器知道项的次序并跟踪他在序列中的位置。</p>
+<p>获取一个枚举器的方法：调用对象的Getenumerator方法。</p>
+<p>foreach要和可枚举类型一起使用，只要遍历对象是可枚举类型，它就会执行以下行为：</p>
 <ul>
-<li>微软为常见的数据源类型提供了LINQ提供程序。</li>
-<li>可以使用任何支持LINQ的语言来查询有LINQ提供程序的数据源类型。</li>
-<li>第三方也会提供各种数据源类型的提供程序。</li>
+<li>调用Getenumerator获取对象枚举器。</li>
+<li>从枚举器中请求每一项并且把它作为迭代变量，代码可以读取变量但不可以改变。</li>
 </ul>
-<h2 id="1-2-1-匿名类型"><a href="#1-2-1-匿名类型" class="headerlink" title="1.2.1 匿名类型"></a>1.2.1 匿名类型</h2><p>无名类类型的特性叫做匿名类型，常用于LINQ查询的结果之中。</p>
-<p>匿名类型的变量使用和初始化对象一样的表达式（new关键字，类名。或构造方法以及对象初始化语句。），但没有类名和构造函数，且必须使用var声明的对象来赋值。</p>
-<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> stu = <span class="keyword">new</span>&#123;name = <span class="string">"123"</span>,age = <span class="number">1</span>&#125;;</span><br></pre></td></tr></table></figure>
-<p>注意：</p>
+<h1 id="1-2-Ienumerator接口"><a href="#1-2-Ienumerator接口" class="headerlink" title="1.2 Ienumerator接口"></a>1.2 Ienumerator接口</h1><p>实现了ienumerator接口的枚举器包含了3个函数成员：<code>current()</code>, <code>movenext()</code> ,<code>reset()</code>。</p>
+<ul>
+<li>Current 返回序列中当前位置项的属性，它是只读属性，它返回object类型的引用，所以可以返回任何类型。</li>
+<li>Movenext把枚举器位置前进到集合中下一项的方法，它也返回布尔值，指示新的位置是有效的位置还是超过了序列的尾部。</li>
+<li>Reset是把位置重置为原始状态的方法。</li>
+</ul>
+<p>编写foreach循环时，编译器会生成与下面类似的代码：</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span>[] array = &#123;<span class="number">10</span>,<span class="number">20</span>,<span class="number">12</span>,<span class="number">31</span>&#125;;</span><br><span class="line">	IEnumerator ie = array.GetEnumerator();</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">while</span>( ie.MoveNext())</span><br><span class="line">	&#123;	</span><br><span class="line">		<span class="keyword">int</span> i = (<span class="keyword">int</span>) ie.Current;</span><br><span class="line">		Console.WriteLine(<span class="string">"&#123;0&#125;"</span>,i);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="1-3-Ienumerable-接口"><a href="#1-3-Ienumerable-接口" class="headerlink" title="1.3  Ienumerable 接口"></a>1.3  Ienumerable 接口</h1><p>和上面说的ienumerator是不一样的接口。</p>
+<p>可枚举类是指实现了ienumerable接口的类，只有一个成员：Getenumerator方法，它返回对象的枚举器（实现了ienumerator接口）。</p>
+<p>一个例子：</p>
+<p>1.先实现一个枚举器，实现ienumerator接口：</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">using</span> System.Collection;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title">ColorEnumerator</span>:<span class="title">IEnumerator</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">string</span>[] colors;</span><br><span class="line">    <span class="keyword">int</span> position = <span class="number">-1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ColorEnumerator</span>(<span class="params"><span class="keyword">string</span>[] thecolors</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        colors = <span class="keyword">new</span> <span class="keyword">string</span>[thecolors.Length];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; thoColors.Length; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            colors[i] = thecolors[i];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">object</span> Current</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span>&#123;</span><br><span class="line">            <span class="keyword">if</span> (position == <span class="number">-1</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> InvalidOperationException();</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (position &gt;= colors.Length)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> InvalidOperationException();</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span>  colors[position];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">bool</span> <span class="title">MoveNext</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">if</span> (position &lt; colors.Length - <span class="number">1</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            position ++ ;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Reset</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        position = <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>2.类实现Ienumerable 接口：</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span>  <span class="title">Spectrum</span>:<span class="title">IEnumerable</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">string</span>[] Colors = &#123;<span class="string">"1"</span>,<span class="string">"2"</span>,<span class="string">"3"</span>&#125;;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> IEnumerable <span class="title">GerEnumerator</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ColorEnumerator(Colors);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span>  <span class="title">Program</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        Spectrum spectrum = <span class="keyword">new</span> Spectrum();</span><br><span class="line">        <span class="keyword">foreach</span> (<span class="keyword">string</span> color <span class="keyword">in</span> spectrum)</span><br><span class="line">        &#123;</span><br><span class="line">            Console.WriteLine(color);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//控制台输出：1，2，3</span></span><br></pre></td></tr></table></figure>
+<h1 id="1-4-泛型枚举接口"><a href="#1-4-泛型枚举接口" class="headerlink" title="1.4 泛型枚举接口"></a>1.4 泛型枚举接口</h1><p>大多数情况下应该使用泛型版本的枚举接口：</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line">Ienumerable&lt;T&gt;</span><br><span class="line">Ienumerator&lt;T&gt;</span><br></pre></td></tr></table></figure>
+<p>泛型和非泛型枚举接口的差异：</p>
+<p>对于非泛型接口的形式：</p>
+<ul>
+<li>IEnumerable接口的GetEnumerator方法返回实现Ienumerator枚举器的示例；</li>
+<li>实现了IEnumerable的类实现了Current属性，它返回object的引用，然后我们必须把它转换为实际类型的对象。</li>
+</ul>
+<p>对于泛型接口形式：</p>
+<ul>
+<li>IEnumerable<T>接口的GetEnumerator方法返回实现IEnumator<T>的枚举器类的实例。</T></T></li>
+<li>实现IEnumerator<T>的类实现了Current属性，他返回实际类型的对象，而不是object基类的引用。</T></li>
+</ul>
+<p>为什么推荐使用泛型枚举接口：</p>
+<ul>
+<li>非泛型接口的实现是不安全的，它们返回object类型的引用，然后必须转化为实际类型。</li>
+<li>泛型接口的枚举器是类型安全的，它返回实际类型的引用，如果要创建自己的可枚举类，应该实现这些泛型接口。</li>
+</ul>
+<h1 id="1-5-迭代器"><a href="#1-5-迭代器" class="headerlink" title="1.5 迭代器"></a>1.5 迭代器</h1><p>可以把手动写的，替换为迭代器生成的可枚举类型和枚举器。</p>
+<h2 id="1-5-1-迭代器块"><a href="#1-5-1-迭代器块" class="headerlink" title="1.5.1 迭代器块"></a>1.5.1 迭代器块</h2><p>迭代器块是有一个或多个yield语句的代码块。</p>
+<p> 以下3种类型的代码块中的任意一种都可以是迭代器块：</p>
 <ol>
-<li>匿名类型只能和局部变量配合使用，不能用于类成员。</li>
-<li>匿名类型没有名字，必须使用var关键字作为变量类型。</li>
-<li>不能设置匿名类型对象的属性，编译器为匿名对象创建的属性都是只读的。</li>
+<li>方法主体</li>
+<li>访问器主体</li>
+<li>运算符主体</li>
 </ol>
-<p>除了对象初始化语句的赋值形式，匿名类型的对象初始化语句还可以使用简单标识符和成员访问表达式，这两种形式叫做投影初始化语句。如：</p>
-<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">string</span> something = <span class="string">""</span>;</span><br><span class="line"><span class="comment">//name 赋值形式，someclass.obj成员访问，something标识符</span></span><br><span class="line"><span class="keyword">var</span> stu = <span class="keyword">new</span>&#123;name = <span class="string">"123"</span>,someclass.obj，something&#125;;</span><br><span class="line">Console.Write(stu.name,stu.obj,stu.somthing);</span><br><span class="line"><span class="comment">//等同于：</span></span><br><span class="line"><span class="keyword">var</span> stu = <span class="keyword">new</span>&#123;name = <span class="string">"123"</span>, obj = someclass.obj，something = something&#125;;</span><br></pre></td></tr></table></figure>
-<h1 id="1-3-方法语法和查询语法"><a href="#1-3-方法语法和查询语法" class="headerlink" title="1.3 方法语法和查询语法"></a>1.3 方法语法和查询语法</h1><p>LINQ查询有两种形式的语法：查询语法和方法语法。在一个查询中可以组合这两种形式。</p>
-<ul>
-<li>方法语法： 标准方法调用，使用一组标准查询运算符。是命令式的，指明了查询方法的调用的顺序。方法语法使用了lambda表达式。</li>
-<li>查询语法：类似于SQL，使用查询表达式形式书写。是声明式的，查询描述了你需要返回的数据。但没有指明如何执行这个查询。 </li>
-</ul>
-<p>官方推荐查询语法。但有些运算符必须使用方法语法书写。</p>
-<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span>[] numbers = &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,&#125;;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//查询语法</span></span><br><span class="line">    <span class="keyword">var</span> numsQuery = <span class="keyword">from</span> n <span class="keyword">in</span> numbers <span class="keyword">where</span> n &lt; <span class="number">20</span>  <span class="keyword">select</span> n;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//方法语法</span></span><br><span class="line">    <span class="keyword">var</span> numsMethod = numbers.<span class="keyword">where</span>(x=&gt;x &lt; <span class="number">20</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//结合</span></span><br><span class="line">    <span class="keyword">int</span> numscount = (<span class="keyword">from</span> n <span class="keyword">in</span> numbers <span class="keyword">where</span> n&lt;<span class="number">20</span> <span class="keyword">select</span> n).Count();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="1-4-查询变量"><a href="#1-4-查询变量" class="headerlink" title="1.4  查询变量"></a>1.4  查询变量</h1><p>LINQ查询可以返回两种类型的结果：可以是一个可枚举的一组数据，满足查询参数的项列表。也可以是一个叫做标量的单一值。它满足查询条件的结果的某种摘要形式。比如说<code>Count()</code>返回的就是标量。</p>
-<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span>[] numbers = &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,&#125;;</span><br><span class="line">    </span><br><span class="line">    IEnumerable&lt;<span class="keyword">int</span>&gt; lownums = <span class="keyword">from</span> n <span class="keyword">in</span> numbers <span class="keyword">where</span> n &lt; <span class="number">20</span>  <span class="keyword">select</span> n;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span> numscount = (<span class="keyword">from</span> n <span class="keyword">in</span> numbers <span class="keyword">where</span> n&lt;<span class="number">20</span> <span class="keyword">select</span> n).Count();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>在执行上面的代码后，lowNums查询变量不会包含查询结果。编译器会创建能够执行这个查询的代码。</p>
-<p>查询变量numcount包含的是真实的整数值，但只能通过真实运行查询后获得。</p>
-<p>上图两个查询变量有很大的区别，主要是查询执行的时间：</p>
-<ul>
-<li>如果查询表达式返回的是枚举（可枚举类型），查询会在处理枚举时才执行。</li>
-<li>如果枚举被处理多次，查询就会执行多次。</li>
-<li>如果在进行被查询的数据遍历后，查询执行之前数据有改动，则查询会使用新的数据。</li>
-<li>如果查询表达式返回标量，查询立即执行，并会把结果保存在查询变量之中。</li>
-</ul>
-<p>个人理解：使用时查询是因为，一旦被查询的集合有任何改变，那之前查询到的结果就会出现问题，甚至是异常。</p>
-<h1 id="1-5-查询表达式的结构"><a href="#1-5-查询表达式的结构" class="headerlink" title="1.5 查询表达式的结构"></a>1.5 查询表达式的结构</h1><p>方法语法的结构：</p>
-<ul>
-<li>子句必须按照一定顺序出现。</li>
-<li>from子句和select group子句是必须的。</li>
-<li>其他子句可选。</li>
-<li>LINQ查询表达式中，select子句在表达式最后，c#中这么做的原因之一是让visual studio智能感应能在我们输入代码时给我们更多选项。</li>
-<li>可以有任意多的from let where子句。</li>
-</ul>
-<p>*这些东西组合的结构叫查询体。</p>
-<h2 id="from子句"><a href="#from子句" class="headerlink" title="from子句"></a>from子句</h2><p>from指定作为数据源使用的数据集合。</p>
-<p>from语句和foreach不同点如下：</p>
-<ul>
-<li>foreach语句命令式的指定了要从第一个到最后一个按顺序地访问集合中的项，而from子句声明式地规定规定每个项都要被访问，但是没有规定顺序。</li>
-<li>foreach语句遇到代码就执行主体，from语句什么也不执行，之创建可以查询的后台代码对象，只有程序访问查询变量语句时，才会执行查询。</li>
-</ul>
-<h2 id="join子句"><a href="#join子句" class="headerlink" title="join子句"></a>join子句</h2><p>使用联结来结合两个或多个集合中的数据。联结操作接受两个集合然后创建一个临时的对象集合，每个对象包含原始集合对象中的所有字段。</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">join some in collection on field1 equal field2</span><br></pre></td></tr></table></figure>
-<p>例子：</p>
-<figure class="highlight c#"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> query = <span class="keyword">from</span> s <span class="keyword">in</span> students</span><br><span class="line">			<span class="keyword">join</span> c <span class="keyword">in</span> studentsInCourses <span class="keyword">on</span> s.StID <span class="keyword">equals</span> c.StID</span><br></pre></td></tr></table></figure>
-<h2 id="let子句"><a href="#let子句" class="headerlink" title="let子句"></a>let子句</h2><p>let子句接受一个表达式的运算符，并且把它赋值给一个需要在其他运算中使用的标识符。</p>
-<figure class="highlight c#"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> a = Expression</span><br></pre></td></tr></table></figure>
-<p>例子：</p>
-<figure class="highlight c#"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">var</span> groupA = <span class="keyword">new</span>[]&#123;<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>&#125;;</span><br><span class="line">    <span class="keyword">var</span> groupB = <span class="keyword">new</span>[]&#123;<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="number">10</span>&#125;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> someInts = <span class="keyword">from</span> a <span class="keyword">in</span> groupA <span class="keyword">from</span> b <span class="keyword">in</span> groupB</span><br><span class="line">                   <span class="keyword">let</span> sum = a + b</span><br><span class="line">                   <span class="keyword">where</span> sum == <span class="number">12</span></span><br><span class="line">                   <span class="keyword">select</span> <span class="keyword">new</span> &#123;a,b,sum&#125;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">foreach</span> (<span class="keyword">var</span> a <span class="keyword">in</span> someInts)</span><br><span class="line">    &#123;</span><br><span class="line">        Console.WriteLine(a);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="Orderby语句"><a href="#Orderby语句" class="headerlink" title="Orderby语句"></a>Orderby语句</h2><p>orderby子句的默认排序是升序。 可以使用asending和descending关键字显示的设置元素的排序为升序或降序。</p>
-<p>例子：</p>
-<figure class="highlight c#"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> query = <span class="keyword">from</span> s <span class="keyword">in</span> students</span><br><span class="line">			<span class="keyword">orderby</span> s.age</span><br><span class="line">    		<span class="keyword">select</span> student</span><br></pre></td></tr></table></figure>
-<h2 id="Select-Group语句"><a href="#Select-Group语句" class="headerlink" title="Select Group语句"></a>Select Group语句</h2><p>group by子句可选，用来指定选择的项如何被分组。</p>
-<figure class="highlight c#"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> Exp <span class="keyword">group</span> collection <span class="keyword">by</span> filed</span><br></pre></td></tr></table></figure>
-<h2 id="查询的匿名类型"><a href="#查询的匿名类型" class="headerlink" title="查询的匿名类型"></a>查询的匿名类型</h2><p>查询结果可以由原始集合的项，项和某些字段或匿名类型组成。</p>
-<figure class="highlight c#"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">var</span> groupA = <span class="keyword">new</span>[]</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">new</span> &#123;filed = <span class="string">"1"</span>,filed2 = <span class="string">"2"</span>&#125;,</span><br><span class="line">        <span class="keyword">new</span> &#123;filed = <span class="string">"1"</span>,filed2 = <span class="string">"2"</span>&#125;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> query = <span class="keyword">from</span> s <span class="keyword">in</span> groupA</span><br><span class="line">                <span class="keyword">select</span> <span class="keyword">new</span> &#123;s.filed&#125;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">foreach</span> (<span class="keyword">var</span> query <span class="keyword">in</span> query)</span><br><span class="line">    &#123;</span><br><span class="line">        Console.WriteLine(a.filed);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="1-6标准查询运算符"><a href="#1-6标准查询运算符" class="headerlink" title="1.6标准查询运算符"></a>1.6标准查询运算符</h1><p>标准查询运算符由一系列的API方法组成，能查询任何.net数组或集合。需要注意的点：</p>
-<ul>
-<li>被查询的集合对象叫序列，必须实现Ienumerable接口。</li>
-<li>标准查询运算符使用方法语法。</li>
-<li>一些运算符返回Ienumerable对象，而其他的一些运算符返回标量。返回标量的运算符立即执行，并返回一个值。</li>
-<li>有很多操作都是一个谓词作为参数，谓词是一个方法，以对象作为参数根据对象是否满足某个条件而返回true和false。</li>
-</ul>
-<p>例子：</p>
-<figure class="highlight c#"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span>[] numbers = <span class="keyword">new</span> <span class="keyword">int</span>[]&#123;<span class="number">2</span>,<span class="number">4</span>,<span class="number">6</span>&#125;;</span><br><span class="line"><span class="keyword">int</span> total = numbers.Sum();</span><br><span class="line"><span class="keyword">int</span> howmayn = numbers.Count();</span><br></pre></td></tr></table></figure>
-<h2 id="1-6-1-标准查询运算符的签名"><a href="#1-6-1-标准查询运算符的签名" class="headerlink" title="1.6.1 标准查询运算符的签名"></a>1.6.1 标准查询运算符的签名</h2><p>System.LINQ.enumerable类声明了标准查询运算符方法，他们也是扩展了Ienumerable<T> 泛型类的扩展方法。</T></p>
-<p>直接调用扩展方法和将其作为扩展进行调用的不同如下面所示：</p>
-<figure class="highlight c#"><table><tr><td class="code"><pre><span class="line"><span class="comment">//注意下面的使用方法是完全等价的</span></span><br><span class="line"><span class="keyword">var</span> count = Enumerable.Count(array);</span><br><span class="line"><span class="keyword">var</span> count2 = array.Count;</span><br></pre></td></tr></table></figure>
-<h1 id="1-7-查询表达式和标准运算符"><a href="#1-7-查询表达式和标准运算符" class="headerlink" title="1.7 查询表达式和标准运算符"></a>1.7 查询表达式和标准运算符</h1><p>标准查询运算符是进行查询的一组方法。</p>
-<p>可以使用带有标准查询运算符的方法语法来编写查询表达式：</p>
-<figure class="highlight c#"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">var</span> numbers = <span class="keyword">new</span> <span class="keyword">int</span>[] &#123;<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>&#125;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> howmany = (<span class="keyword">from</span> n <span class="keyword">in</span> numbers </span><br><span class="line">                    <span class="keyword">where</span> n &lt; <span class="number">7</span> </span><br><span class="line">                    <span class="keyword">select</span> n).Count();</span><br><span class="line">    Console.WriteLine(<span class="string">"Count:&#123;0&#125;"</span>,howMant);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="1-7-1-将委托作为参数"><a href="#1-7-1-将委托作为参数" class="headerlink" title="1.7.1 将委托作为参数"></a>1.7.1 将委托作为参数</h2><p>泛型委托用于给运算符提供用户自定义的代码：</p>
-<p>(count运算符被重载了，且有两种形式，第二种是带泛型委托的参数。）</p>
-<p>第一种：</p>
-<figure class="highlight c#"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> Count&lt;T&gt;(<span class="keyword">this</span> IEnumerable&lt;T&gt; source);</span><br></pre></td></tr></table></figure>
-<p>第二种：</p>
-<figure class="highlight c#"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> Count&lt;T&gt;(<span class="keyword">this</span> IEnumerable&lt;T&gt; source,Func&lt;T,<span class="keyword">bool</span>&gt; predicate);</span><br></pre></td></tr></table></figure>
-<p>如果传入的方法语句只有一条，比较简单，或者并不会在程序的其他地方调用，可以传入lambda表达式。</p>
+<p>两个版本的迭代器块：</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//版本1</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> IEnumerator&lt;<span class="keyword">string</span>&gt; <span class="title">BlackAndWhite</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">yield</span> <span class="keyword">return</span> <span class="string">"Black"</span>;</span><br><span class="line">    <span class="keyword">yield</span> <span class="keyword">return</span> <span class="string">"gray"</span>;</span><br><span class="line">    <span class="keyword">yield</span> <span class="keyword">return</span> <span class="string">"white"</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//版本2</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> IEnumerator&lt;<span class="keyword">string</span>&gt; <span class="title">BlackAndWhite</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">string</span>[] colors = &#123;<span class="string">"Black"</span>,<span class="string">"gray"</span>,<span class="string">"white"</span>&#125;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; colors.Length; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">yield</span> <span class="keyword">return</span> thoColors[i];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="1-5-2-yield关键字"><a href="#1-5-2-yield关键字" class="headerlink" title="1.5.2 yield关键字"></a>1.5.2 yield关键字</h2><blockquote>
+<p>使用 <code>yield return</code> 语句可一次返回一个元素。</p>
+<p>可通过使用 <a href="https://docs.microsoft.com/zh-cn/dotnet/csharp/language-reference/keywords/foreach-in">foreach</a> 语句或 LINQ 查询来使用从迭代器方法返回的序列。 <code>foreach</code> 循环的每次迭代都会调用迭代器方法。 迭代器方法运行到 <code>yield return</code> 语句时，会返回一个 <code>expression</code>，并保留当前在代码中的位置。 下次调用迭代器函数时，将从该位置重新开始执行。</p>
+<p>可以使用 <code>yield break</code> 语句来终止迭代。</p>
+</blockquote>
+<h2 id="1-5-3-使用迭代器创建枚举器"><a href="#1-5-3-使用迭代器创建枚举器" class="headerlink" title="1.5.3 使用迭代器创建枚举器"></a>1.5.3 使用迭代器创建枚举器</h2><figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">Myclass</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> IEnumerable&lt;<span class="keyword">string</span>&gt; <span class="title">GerEnumerator</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">return</span> BlackAndWhite();</span><br><span class="line">    &#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> IEnumerator&lt;<span class="keyword">string</span>&gt; <span class="title">BlackAndWhite</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>	&#123;</span><br><span class="line">    	<span class="keyword">yield</span> <span class="keyword">return</span> <span class="string">"Black"</span>;</span><br><span class="line">    	<span class="keyword">yield</span> <span class="keyword">return</span> <span class="string">"gray"</span>;</span><br><span class="line">    	<span class="keyword">yield</span> <span class="keyword">return</span> <span class="string">"white"</span>;</span><br><span class="line">	&#125;	</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span>  <span class="title">Program</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        Myclass myclass = <span class="keyword">new</span> Myclass();</span><br><span class="line">        <span class="keyword">foreach</span> (<span class="keyword">string</span> color <span class="keyword">in</span> myclass)</span><br><span class="line">        &#123;</span><br><span class="line">            Console.WriteLine(color);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到，比手动实现IEnumerator要方便一些。实际上编译器在<code>BlackAndWhite()</code>方法内部用一个嵌套类自动实现了枚举器,并且还生成了一个方法<code>BlackAndWhite()</code>。</p>
+<h2 id="1-5-4使用迭代器创建可枚举类"><a href="#1-5-4使用迭代器创建可枚举类" class="headerlink" title="1.5.4使用迭代器创建可枚举类"></a>1.5.4使用迭代器创建可枚举类</h2><p> 这个例子中，<code>BlackAndWhite()</code>方法实现了一个可枚举类，在类中<code>GetEnumerator()</code>返回了这个枚举类。</p>
+<p>此时编译器生成的类既是<code>IEnumerable</code>又是<code>IEnumerator</code>的，并且还生成了一个方法<code>BlackAndWhite()</code>。</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">Myclass</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> IEnumerator <span class="title">GetEnumerator</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        IEnumerable&lt;<span class="keyword">string</span>&gt; enumable = BlackAndWhite();</span><br><span class="line">        <span class="keyword">return</span> enumable.GetEnumerator();</span><br><span class="line">    &#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> IEnumerable&lt;<span class="keyword">string</span>&gt; <span class="title">BlackAndWhite</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>	&#123;</span><br><span class="line">    	<span class="keyword">yield</span> <span class="keyword">return</span> <span class="string">"Black"</span>;</span><br><span class="line">    	<span class="keyword">yield</span> <span class="keyword">return</span> <span class="string">"gray"</span>;</span><br><span class="line">    	<span class="keyword">yield</span> <span class="keyword">return</span> <span class="string">"white"</span>;</span><br><span class="line">	&#125;	</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span>  <span class="title">Program</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        Myclass myclass = <span class="keyword">new</span> Myclass();</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//使用类对象迭代</span></span><br><span class="line">        <span class="keyword">foreach</span> (<span class="keyword">string</span> color <span class="keyword">in</span> myclass)</span><br><span class="line">        &#123;</span><br><span class="line">            Console.WriteLine(color);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//使用类的枚举器方法。</span></span><br><span class="line">        <span class="keyword">foreach</span> (<span class="keyword">string</span> color <span class="keyword">in</span> myclass.BlackAndWhite())</span><br><span class="line">        &#123;</span><br><span class="line">            Console.WriteLine(color);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="1-5-5-常见迭代器模式"><a href="#1-5-5-常见迭代器模式" class="headerlink" title="1.5.5 常见迭代器模式"></a>1.5.5 常见迭代器模式</h2><p>先说一下前两节的不同</p>
+<p>1.5.3：<code>BlackAndWhite()</code>生成了一个<code>Enumerator</code>枚举器。</p>
+<p>1.5.4：<code>BlackAndWhite()</code>生成了一个<code>Enumerable</code>枚举类，而枚举类中包含了<code>Enumerator</code>枚举器，类中还包含一个<code>GetEnumerator()</code>方法。</p>
+<p>所以说1.5.4这种方法要更全面一些，实际上，这两节正是迭代器的常用法：</p>
+<ol>
+<li><p>枚举器的迭代器模式：</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">Myclass</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> IEnumerable&lt;<span class="keyword">string</span>&gt; <span class="title">GerEnumerator</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">return</span> IteratorMethod();</span><br><span class="line">    &#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> IEnumerator&lt;<span class="keyword">string</span>&gt; <span class="title">IteratorMethod</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>	&#123;</span><br><span class="line">    	<span class="keyword">yield</span> <span class="keyword">return</span> ....;</span><br><span class="line">	&#125;	</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="keyword">foreach</span> (<span class="keyword">string</span> color <span class="keyword">in</span> myclass)</span><br><span class="line">   &#123;</span><br><span class="line">      Console.WriteLine(color);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>可枚举类型的迭代器模式</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">Myclass</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> IEnumerable&lt;<span class="keyword">string</span>&gt; <span class="title">GerEnumerator</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">return</span> IteratorMethod().GerEnumerator();</span><br><span class="line">    &#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> IEnumerable&lt;<span class="keyword">string</span>&gt; <span class="title">IteratorMethod</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>	&#123;</span><br><span class="line">    	<span class="keyword">yield</span> <span class="keyword">return</span> ....;</span><br><span class="line">	&#125;	</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="keyword">foreach</span> (<span class="keyword">string</span> color <span class="keyword">in</span> myclass)</span><br><span class="line">   &#123;</span><br><span class="line">      Console.WriteLine(color);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
 ]]></content>
       <categories>
         <category>Program</category>
@@ -2093,28 +2086,35 @@ Class01 <|-- object class01 : runworkerasync() cancelasync() reportprogress() wo
       </tags>
   </entry>
   <entry>
-    <title>CSharp基础15 预处理指令</title>
-    <url>/2019/12/17/CSharp%E5%9F%BA%E7%A1%80/CSharp%E5%9F%BA%E7%A1%8015%20%E9%A2%84%E5%A4%84%E7%90%86%E6%8C%87%E4%BB%A4/</url>
-    <content><![CDATA[<p> 预处理指令相关内容</p>
+    <title>CSharp基础14 异常</title>
+    <url>/2019/12/17/CSharp%E5%9F%BA%E7%A1%80/CSharp%E5%9F%BA%E7%A1%8014%20%E5%BC%82%E5%B8%B8/</url>
+    <content><![CDATA[<p> 异常相关内容</p>
 <a id="more"></a>
-<h1 id="1-1概述"><a href="#1-1概述" class="headerlink" title="1.1概述"></a>1.1概述</h1><p>预处理指令指示编译器如何处理源代码。在C和C++中，有实际的预处理阶段，此时预处理程序遍历源代码并为之后的编译阶段准备文本和输出流，在C#中没有实际的预处理程序，而预处理指令由编译器处理。</p>
-<p>基本规则:</p>
+<h1 id="1-1概述"><a href="#1-1概述" class="headerlink" title="1.1概述"></a>1.1概述</h1><p>系统捕获错误，并抛出一个异常，如果程序没有提供处理该异常的代码，系统会挂起这个程序。</p>
+<h1 id="1-2-Try语句"><a href="#1-2-Try语句" class="headerlink" title="1.2 Try语句"></a>1.2 Try语句</h1><p>try语句由三个部分组成：</p>
 <ul>
-<li>与代码在不同的个行。</li>
-<li>不需要以分号结尾。</li>
-<li>每一行必须以#字符开始，#前和指令之间可以有空格。</li>
+<li>try块：避免出现异常被保护的语句。</li>
+<li>catch语句：处理try块抛出的异常。</li>
+<li>finally块：无论是否有异常都会执行的代码。</li>
 </ul>
-<h1 id="1-2-define和-undef指令"><a href="#1-2-define和-undef指令" class="headerlink" title="1.2 #define和#undef指令"></a>1.2 #define和#undef指令</h1><p>define指令用于声明一个编译符号，#undef指令取消定义一个编译符号。编译符号是只有两种可能状态的标识符，要么被定义，要么未被定义。</p>
-<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> valuev</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> valuea</span></span><br><span class="line"><span class="comment">//允许重复定义</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> valuev</span></span><br></pre></td></tr></table></figure>
-<h1 id="1-3-条件编译"><a href="#1-3-条件编译" class="headerlink" title="1.3 条件编译"></a>1.3 条件编译</h1><p>条件编译允许根据某个编译符号是否被定义来决定一段代码被编译或跳过，有四个指令：</p>
+<p>catch子句可以有多个。注意finally和catch的顺序，异常一旦被捕获，就不会挂起或者有报错信息。</p>
+<h1 id="1-3-异常类"><a href="#1-3-异常类" class="headerlink" title="1.3 异常类"></a>1.3 异常类</h1><p>BCL中定义了许多表示异常类型的异常类，所有异常类都派生自<code>System.exception</code>类。</p>
+<h1 id="1-4-catch语句"><a href="#1-4-catch语句" class="headerlink" title="1.4 catch语句"></a>1.4 catch语句</h1><p>catch语句处理异常，有三种不同级别的处理：</p>
 <ul>
-<li>#if</li>
-<li>#else</li>
-<li>#elif</li>
-<li>#endif</li>
+<li>catch { Statements } ：捕捉任何出现的异常。</li>
+<li>catch(ExceptionType) { Statements }：捕捉匹配任何该名称类型的异常。</li>
+<li>catch(ExceptionType someobj) { Statements }：捕捉匹配任何该名称类型的异常，并接受一个异常变量，用于访问该对象的信息。</li>
 </ul>
-<h1 id="1-4-备注"><a href="#1-4-备注" class="headerlink" title="1.4 备注"></a>1.4 备注</h1><p>这没什么好讲的，就是一些工具语法，有需要再补充，有一个疑惑是，define指令定义的变量的值是什么赋值的。</p>
-<p>之前在unity的platform变量中可以判断是哪个平台在运行，这个值是从哪得到的。</p>
+<p>带对象的特点catch子句提供异常的最多信息，匹配该类或派生自它的类的异常。还会给出一个异常实例，一个对CLR创建的异常对象的引用。可以在catch内访问异常变量。</p>
+<p>catch字句段可以包含多个catch子句，异常发生时，系统按顺序搜索子句列表，第一个匹配该异常对象类型的子句会被执行。因此，catch子句排序有两个重要的原则：</p>
+<ul>
+<li>最明确的异常类型第一，直至最普通的类型。</li>
+<li>如果有一个一般的catch语句，必须是最后一个。</li>
+</ul>
+<h1 id="1-5-Finally语句"><a href="#1-5-Finally语句" class="headerlink" title="1.5 Finally语句"></a>1.5 Finally语句</h1><p>finally始终会执行。无论是否有异常抛出。可选，可以不写。</p>
+<h1 id="1-6-为异常寻找处理程序"><a href="#1-6-为异常寻找处理程序" class="headerlink" title="1.6 为异常寻找处理程序"></a>1.6 为异常寻找处理程序</h1><p>如果异常在一个没有try语句保护的块中产生，系统会按顺序搜索调用栈，进一步寻找匹配的处理代码。</p>
+<h1 id="1-7-抛出异常"><a href="#1-7-抛出异常" class="headerlink" title="1.7 抛出异常"></a>1.7 抛出异常</h1><p>throw可以显示抛出一个异常：</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">try</span></span><br><span class="line">&#123;</span><br><span class="line">    ArgumentNullException myEx = <span class="keyword">new</span> ArgumentNullExcpetion(<span class="string">"arg"</span>);</span><br><span class="line">    <span class="keyword">throw</span> myEx;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">catch</span>(ArgumentNullException e)</span><br><span class="line">&#123;</span><br><span class="line">    Console.WriteLine(<span class="string">"Message:"</span>,e.Message);</span><br><span class="line">    <span class="comment">//还可以将异常在catch中抛出，让其他异常处理程序处理。</span></span><br><span class="line">    <span class="comment">//重新抛出异常，没有附加参数。</span></span><br><span class="line">    <span class="keyword">throw</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>Program</category>
@@ -2387,9 +2387,9 @@ Class01 <|-- object class01 : runworkerasync() cancelasync() reportprogress() wo
         <category>Program</category>
       </categories>
       <tags>
+        <tag>Unity</tag>
         <tag>游戏寻路</tag>
         <tag>Untiy插件</tag>
-        <tag>Unity</tag>
       </tags>
   </entry>
   <entry>
@@ -2701,9 +2701,9 @@ Class01 <|-- object class01 : runworkerasync() cancelasync() reportprogress() wo
         <category>Program</category>
       </categories>
       <tags>
+        <tag>Unity</tag>
         <tag>游戏寻路</tag>
         <tag>Untiy插件</tag>
-        <tag>Unity</tag>
       </tags>
   </entry>
   <entry>
@@ -3534,9 +3534,9 @@ Class01 <|-- object class01 : runworkerasync() cancelasync() reportprogress() wo
         <category>Program</category>
       </categories>
       <tags>
+        <tag>Unity</tag>
         <tag>游戏寻路</tag>
         <tag>Untiy插件</tag>
-        <tag>Unity</tag>
       </tags>
   </entry>
   <entry>
@@ -3660,8 +3660,8 @@ Class01 <|-- object class01 : runworkerasync() cancelasync() reportprogress() wo
         <category>Program</category>
       </categories>
       <tags>
-        <tag>Unity</tag>
         <tag>iOS</tag>
+        <tag>Unity</tag>
         <tag>Lua</tag>
         <tag>SDK</tag>
       </tags>
@@ -4126,9 +4126,9 @@ Class01 <|-- object class01 : runworkerasync() cancelasync() reportprogress() wo
         <category>Program</category>
       </categories>
       <tags>
+        <tag>Unity</tag>
         <tag>游戏寻路</tag>
         <tag>Untiy插件</tag>
-        <tag>Unity</tag>
       </tags>
   </entry>
   <entry>
