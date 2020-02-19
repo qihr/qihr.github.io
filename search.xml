@@ -1702,6 +1702,44 @@ id3-->id4[private]</pre>
       </tags>
   </entry>
   <entry>
+    <title>CSharp基础14 异常</title>
+    <url>/2019/12/17/CSharp%E5%9F%BA%E7%A1%80/CSharp%E5%9F%BA%E7%A1%8014%20%E5%BC%82%E5%B8%B8/</url>
+    <content><![CDATA[<p> 异常相关内容</p>
+<a id="more"></a>
+<h1 id="1-1概述"><a href="#1-1概述" class="headerlink" title="1.1概述"></a>1.1概述</h1><p>系统捕获错误，并抛出一个异常，如果程序没有提供处理该异常的代码，系统会挂起这个程序。</p>
+<h1 id="1-2-Try语句"><a href="#1-2-Try语句" class="headerlink" title="1.2 Try语句"></a>1.2 Try语句</h1><p>try语句由三个部分组成：</p>
+<ul>
+<li>try块：避免出现异常被保护的语句。</li>
+<li>catch语句：处理try块抛出的异常。</li>
+<li>finally块：无论是否有异常都会执行的代码。</li>
+</ul>
+<p>catch子句可以有多个。注意finally和catch的顺序，异常一旦被捕获，就不会挂起或者有报错信息。</p>
+<h1 id="1-3-异常类"><a href="#1-3-异常类" class="headerlink" title="1.3 异常类"></a>1.3 异常类</h1><p>BCL中定义了许多表示异常类型的异常类，所有异常类都派生自<code>System.exception</code>类。</p>
+<h1 id="1-4-catch语句"><a href="#1-4-catch语句" class="headerlink" title="1.4 catch语句"></a>1.4 catch语句</h1><p>catch语句处理异常，有三种不同级别的处理：</p>
+<ul>
+<li>catch { Statements } ：捕捉任何出现的异常。</li>
+<li>catch(ExceptionType) { Statements }：捕捉匹配任何该名称类型的异常。</li>
+<li>catch(ExceptionType someobj) { Statements }：捕捉匹配任何该名称类型的异常，并接受一个异常变量，用于访问该对象的信息。</li>
+</ul>
+<p>带对象的特点catch子句提供异常的最多信息，匹配该类或派生自它的类的异常。还会给出一个异常实例，一个对CLR创建的异常对象的引用。可以在catch内访问异常变量。</p>
+<p>catch字句段可以包含多个catch子句，异常发生时，系统按顺序搜索子句列表，第一个匹配该异常对象类型的子句会被执行。因此，catch子句排序有两个重要的原则：</p>
+<ul>
+<li>最明确的异常类型第一，直至最普通的类型。</li>
+<li>如果有一个一般的catch语句，必须是最后一个。</li>
+</ul>
+<h1 id="1-5-Finally语句"><a href="#1-5-Finally语句" class="headerlink" title="1.5 Finally语句"></a>1.5 Finally语句</h1><p>finally始终会执行。无论是否有异常抛出。可选，可以不写。</p>
+<h1 id="1-6-为异常寻找处理程序"><a href="#1-6-为异常寻找处理程序" class="headerlink" title="1.6 为异常寻找处理程序"></a>1.6 为异常寻找处理程序</h1><p>如果异常在一个没有try语句保护的块中产生，系统会按顺序搜索调用栈，进一步寻找匹配的处理代码。</p>
+<h1 id="1-7-抛出异常"><a href="#1-7-抛出异常" class="headerlink" title="1.7 抛出异常"></a>1.7 抛出异常</h1><p>throw可以显示抛出一个异常：</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">try</span></span><br><span class="line">&#123;</span><br><span class="line">    ArgumentNullException myEx = <span class="keyword">new</span> ArgumentNullExcpetion(<span class="string">"arg"</span>);</span><br><span class="line">    <span class="keyword">throw</span> myEx;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">catch</span>(ArgumentNullException e)</span><br><span class="line">&#123;</span><br><span class="line">    Console.WriteLine(<span class="string">"Message:"</span>,e.Message);</span><br><span class="line">    <span class="comment">//还可以将异常在catch中抛出，让其他异常处理程序处理。</span></span><br><span class="line">    <span class="comment">//重新抛出异常，没有附加参数。</span></span><br><span class="line">    <span class="keyword">throw</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Program</category>
+      </categories>
+      <tags>
+        <tag>CSharp</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>CSharp基础13 命名空间 程序集</title>
     <url>/2019/12/17/CSharp%E5%9F%BA%E7%A1%80/CSharp%E5%9F%BA%E7%A1%8013%20%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4%20%E7%A8%8B%E5%BA%8F%E9%9B%86/</url>
     <content><![CDATA[<p>命名空间 程序集 相关内容</p>
@@ -1781,44 +1819,6 @@ id5[源代码 Myclass.cs]-->id3[C#编译器]</pre>
 <h2 id="1-4-5-延迟签名"><a href="#1-4-5-延迟签名" class="headerlink" title="1.4.5 延迟签名"></a>1.4.5 延迟签名</h2><p>最终的程序集强命名一般都是在开发的末期，有特殊权限的小组执行。由于公钥是程序集标识符的4个部分之一，所以直到有了公钥才能被设置，如果要测试时需要部署到GAC，就需要一种方式：延迟签名，修改了赋值强命名的形式。或者叫分签名。</p>
 <p>使用延迟签名可以把程序集部署到GAC中，但必须使用命令行取消该机器的GAC签名确认，只针对这个程序集，并允许它被装在GAC中。</p>
 <h2 id="1-4-6-总结"><a href="#1-4-6-总结" class="headerlink" title="1.4.6 总结"></a>1.4.6 总结</h2><p>强命名程序集，和延迟签名程序集，弱程序集都拥有清单，元数据，CIL。区别是，前两者强命名还有拥有公钥私钥的数字签名，延迟签名拥有数字签名占位。弱程序集则没有。</p>
-]]></content>
-      <categories>
-        <category>Program</category>
-      </categories>
-      <tags>
-        <tag>CSharp</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>CSharp基础14 异常</title>
-    <url>/2019/12/17/CSharp%E5%9F%BA%E7%A1%80/CSharp%E5%9F%BA%E7%A1%8014%20%E5%BC%82%E5%B8%B8/</url>
-    <content><![CDATA[<p> 异常相关内容</p>
-<a id="more"></a>
-<h1 id="1-1概述"><a href="#1-1概述" class="headerlink" title="1.1概述"></a>1.1概述</h1><p>系统捕获错误，并抛出一个异常，如果程序没有提供处理该异常的代码，系统会挂起这个程序。</p>
-<h1 id="1-2-Try语句"><a href="#1-2-Try语句" class="headerlink" title="1.2 Try语句"></a>1.2 Try语句</h1><p>try语句由三个部分组成：</p>
-<ul>
-<li>try块：避免出现异常被保护的语句。</li>
-<li>catch语句：处理try块抛出的异常。</li>
-<li>finally块：无论是否有异常都会执行的代码。</li>
-</ul>
-<p>catch子句可以有多个。注意finally和catch的顺序，异常一旦被捕获，就不会挂起或者有报错信息。</p>
-<h1 id="1-3-异常类"><a href="#1-3-异常类" class="headerlink" title="1.3 异常类"></a>1.3 异常类</h1><p>BCL中定义了许多表示异常类型的异常类，所有异常类都派生自<code>System.exception</code>类。</p>
-<h1 id="1-4-catch语句"><a href="#1-4-catch语句" class="headerlink" title="1.4 catch语句"></a>1.4 catch语句</h1><p>catch语句处理异常，有三种不同级别的处理：</p>
-<ul>
-<li>catch { Statements } ：捕捉任何出现的异常。</li>
-<li>catch(ExceptionType) { Statements }：捕捉匹配任何该名称类型的异常。</li>
-<li>catch(ExceptionType someobj) { Statements }：捕捉匹配任何该名称类型的异常，并接受一个异常变量，用于访问该对象的信息。</li>
-</ul>
-<p>带对象的特点catch子句提供异常的最多信息，匹配该类或派生自它的类的异常。还会给出一个异常实例，一个对CLR创建的异常对象的引用。可以在catch内访问异常变量。</p>
-<p>catch字句段可以包含多个catch子句，异常发生时，系统按顺序搜索子句列表，第一个匹配该异常对象类型的子句会被执行。因此，catch子句排序有两个重要的原则：</p>
-<ul>
-<li>最明确的异常类型第一，直至最普通的类型。</li>
-<li>如果有一个一般的catch语句，必须是最后一个。</li>
-</ul>
-<h1 id="1-5-Finally语句"><a href="#1-5-Finally语句" class="headerlink" title="1.5 Finally语句"></a>1.5 Finally语句</h1><p>finally始终会执行。无论是否有异常抛出。可选，可以不写。</p>
-<h1 id="1-6-为异常寻找处理程序"><a href="#1-6-为异常寻找处理程序" class="headerlink" title="1.6 为异常寻找处理程序"></a>1.6 为异常寻找处理程序</h1><p>如果异常在一个没有try语句保护的块中产生，系统会按顺序搜索调用栈，进一步寻找匹配的处理代码。</p>
-<h1 id="1-7-抛出异常"><a href="#1-7-抛出异常" class="headerlink" title="1.7 抛出异常"></a>1.7 抛出异常</h1><p>throw可以显示抛出一个异常：</p>
-<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">try</span></span><br><span class="line">&#123;</span><br><span class="line">    ArgumentNullException myEx = <span class="keyword">new</span> ArgumentNullExcpetion(<span class="string">"arg"</span>);</span><br><span class="line">    <span class="keyword">throw</span> myEx;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">catch</span>(ArgumentNullException e)</span><br><span class="line">&#123;</span><br><span class="line">    Console.WriteLine(<span class="string">"Message:"</span>,e.Message);</span><br><span class="line">    <span class="comment">//还可以将异常在catch中抛出，让其他异常处理程序处理。</span></span><br><span class="line">    <span class="comment">//重新抛出异常，没有附加参数。</span></span><br><span class="line">    <span class="keyword">throw</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>Program</category>
@@ -1988,37 +1988,6 @@ Class01 <|-- object class01 : runworkerasync() cancelasync() reportprogress() wo
       </tags>
   </entry>
   <entry>
-    <title>CSharp基础15 预处理指令</title>
-    <url>/2019/12/17/CSharp%E5%9F%BA%E7%A1%80/CSharp%E5%9F%BA%E7%A1%8015%20%E9%A2%84%E5%A4%84%E7%90%86%E6%8C%87%E4%BB%A4/</url>
-    <content><![CDATA[<p> 预处理指令相关内容</p>
-<a id="more"></a>
-<h1 id="1-1概述"><a href="#1-1概述" class="headerlink" title="1.1概述"></a>1.1概述</h1><p>预处理指令指示编译器如何处理源代码。在C和C++中，有实际的预处理阶段，此时预处理程序遍历源代码并为之后的编译阶段准备文本和输出流，在C#中没有实际的预处理程序，而预处理指令由编译器处理。</p>
-<p>基本规则:</p>
-<ul>
-<li>与代码在不同的个行。</li>
-<li>不需要以分号结尾。</li>
-<li>每一行必须以#字符开始，#前和指令之间可以有空格。</li>
-</ul>
-<h1 id="1-2-define和-undef指令"><a href="#1-2-define和-undef指令" class="headerlink" title="1.2 #define和#undef指令"></a>1.2 #define和#undef指令</h1><p>define指令用于声明一个编译符号，#undef指令取消定义一个编译符号。编译符号是只有两种可能状态的标识符，要么被定义，要么未被定义。</p>
-<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> valuev</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> valuea</span></span><br><span class="line"><span class="comment">//允许重复定义</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> valuev</span></span><br></pre></td></tr></table></figure>
-<h1 id="1-3-条件编译"><a href="#1-3-条件编译" class="headerlink" title="1.3 条件编译"></a>1.3 条件编译</h1><p>条件编译允许根据某个编译符号是否被定义来决定一段代码被编译或跳过，有四个指令：</p>
-<ul>
-<li>#if</li>
-<li>#else</li>
-<li>#elif</li>
-<li>#endif</li>
-</ul>
-<h1 id="1-4-备注"><a href="#1-4-备注" class="headerlink" title="1.4 备注"></a>1.4 备注</h1><p>这没什么好讲的，就是一些工具语法，有需要再补充，有一个疑惑是，define指令定义的变量的值是什么赋值的。</p>
-<p>之前在unity的platform变量中可以判断是哪个平台在运行，这个值是从哪得到的。</p>
-]]></content>
-      <categories>
-        <category>Program</category>
-      </categories>
-      <tags>
-        <tag>CSharp</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>CSharp基础11 LINQ</title>
     <url>/2019/12/17/CSharp%E5%9F%BA%E7%A1%80/CSharp%E5%9F%BA%E7%A1%8011%20LINQ/</url>
     <content><![CDATA[<p>LINQ基础</p>
@@ -2115,6 +2084,37 @@ Class01 <|-- object class01 : runworkerasync() cancelasync() reportprogress() wo
 <p>第二种：</p>
 <figure class="highlight c#"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> Count&lt;T&gt;(<span class="keyword">this</span> IEnumerable&lt;T&gt; source,Func&lt;T,<span class="keyword">bool</span>&gt; predicate);</span><br></pre></td></tr></table></figure>
 <p>如果传入的方法语句只有一条，比较简单，或者并不会在程序的其他地方调用，可以传入lambda表达式。</p>
+]]></content>
+      <categories>
+        <category>Program</category>
+      </categories>
+      <tags>
+        <tag>CSharp</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>CSharp基础15 预处理指令</title>
+    <url>/2019/12/17/CSharp%E5%9F%BA%E7%A1%80/CSharp%E5%9F%BA%E7%A1%8015%20%E9%A2%84%E5%A4%84%E7%90%86%E6%8C%87%E4%BB%A4/</url>
+    <content><![CDATA[<p> 预处理指令相关内容</p>
+<a id="more"></a>
+<h1 id="1-1概述"><a href="#1-1概述" class="headerlink" title="1.1概述"></a>1.1概述</h1><p>预处理指令指示编译器如何处理源代码。在C和C++中，有实际的预处理阶段，此时预处理程序遍历源代码并为之后的编译阶段准备文本和输出流，在C#中没有实际的预处理程序，而预处理指令由编译器处理。</p>
+<p>基本规则:</p>
+<ul>
+<li>与代码在不同的个行。</li>
+<li>不需要以分号结尾。</li>
+<li>每一行必须以#字符开始，#前和指令之间可以有空格。</li>
+</ul>
+<h1 id="1-2-define和-undef指令"><a href="#1-2-define和-undef指令" class="headerlink" title="1.2 #define和#undef指令"></a>1.2 #define和#undef指令</h1><p>define指令用于声明一个编译符号，#undef指令取消定义一个编译符号。编译符号是只有两种可能状态的标识符，要么被定义，要么未被定义。</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> valuev</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> valuea</span></span><br><span class="line"><span class="comment">//允许重复定义</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> valuev</span></span><br></pre></td></tr></table></figure>
+<h1 id="1-3-条件编译"><a href="#1-3-条件编译" class="headerlink" title="1.3 条件编译"></a>1.3 条件编译</h1><p>条件编译允许根据某个编译符号是否被定义来决定一段代码被编译或跳过，有四个指令：</p>
+<ul>
+<li>#if</li>
+<li>#else</li>
+<li>#elif</li>
+<li>#endif</li>
+</ul>
+<h1 id="1-4-备注"><a href="#1-4-备注" class="headerlink" title="1.4 备注"></a>1.4 备注</h1><p>这没什么好讲的，就是一些工具语法，有需要再补充，有一个疑惑是，define指令定义的变量的值是什么赋值的。</p>
+<p>之前在unity的platform变量中可以判断是哪个平台在运行，这个值是从哪得到的。</p>
 ]]></content>
       <categories>
         <category>Program</category>
@@ -2387,9 +2387,9 @@ Class01 <|-- object class01 : runworkerasync() cancelasync() reportprogress() wo
         <category>Program</category>
       </categories>
       <tags>
-        <tag>Unity</tag>
         <tag>游戏寻路</tag>
         <tag>Untiy插件</tag>
+        <tag>Unity</tag>
       </tags>
   </entry>
   <entry>
@@ -2701,9 +2701,9 @@ Class01 <|-- object class01 : runworkerasync() cancelasync() reportprogress() wo
         <category>Program</category>
       </categories>
       <tags>
-        <tag>Unity</tag>
         <tag>游戏寻路</tag>
         <tag>Untiy插件</tag>
+        <tag>Unity</tag>
       </tags>
   </entry>
   <entry>
@@ -3534,9 +3534,9 @@ Class01 <|-- object class01 : runworkerasync() cancelasync() reportprogress() wo
         <category>Program</category>
       </categories>
       <tags>
-        <tag>Unity</tag>
         <tag>游戏寻路</tag>
         <tag>Untiy插件</tag>
+        <tag>Unity</tag>
       </tags>
   </entry>
   <entry>
@@ -4126,9 +4126,9 @@ Class01 <|-- object class01 : runworkerasync() cancelasync() reportprogress() wo
         <category>Program</category>
       </categories>
       <tags>
-        <tag>Unity</tag>
         <tag>游戏寻路</tag>
         <tag>Untiy插件</tag>
+        <tag>Unity</tag>
       </tags>
   </entry>
   <entry>
