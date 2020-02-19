@@ -1,0 +1,1423 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/myselficon.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/myselficon32.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/myselficon16.png?v=7.1.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.1.0',
+    sidebar: {"position":"left","width":200,"display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: true,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="异步编程相关内容">
+<meta name="keywords" content="CSharp">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CSharp基础12 异步编程">
+<meta property="og:url" content="http://yoursite.com/2019/12/17/CSharp基础/CSharp基础12 异步编程/index.html">
+<meta property="og:site_name" content="Note">
+<meta property="og:description" content="异步编程相关内容">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-02-19T15:46:59.772Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CSharp基础12 异步编程">
+<meta name="twitter:description" content="异步编程相关内容">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://yoursite.com/2019/12/17/CSharp基础/CSharp基础12 异步编程/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>CSharp基础12 异步编程 | Note</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Note</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">How more than you show,speak less than you know.</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/17/CSharp基础/CSharp基础12 异步编程/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sayi">
+      <meta itemprop="description" content="Just noob.">
+      <meta itemprop="image" content="/images/myselelogin.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Note">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">CSharp基础12 异步编程
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-12-17 08:55:00" itemprop="dateCreated datePublished" datetime="2019-12-17T08:55:00+08:00">2019-12-17</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2020-02-19 23:46:59" itemprop="dateModified" datetime="2020-02-19T23:46:59+08:00">2020-02-19</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Program/" itemprop="url" rel="index"><span itemprop="name">Program</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">13k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">12 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>异步编程相关内容</p>
+<a id="more"></a>
+<h1 id="1-1概述"><a href="#1-1概述" class="headerlink" title="1.1概述"></a>1.1概述</h1><p>异步编程时.Net框架的一部分，并不是c#特有的。</p>
+<p>启动程序时，系统会在内存中创建一个新的进程。进程是构成运行程序资源的集合，资源包括：虚地址空间，文件句柄，和其他程序运行需要的东西。</p>
+<p>进程内部，系统创建了一个称为线程（执行线程的简称）的内核对象，它代表真正执行的程序。 一旦进程建立，系统会在Main方法的第一句语句处就开始线程的执行。</p>
+<p>关于线程的几点：</p>
+<ul>
+<li>默认情况，一个进程只包括一个线程。从程序的开始一直到执行结束。</li>
+<li>线程可以派生其他线程，一个进程可以包含不同状态的多个线程，来执行程序的不同部分。</li>
+<li>一个进程拥有多个线程，线程间会共享进程的资源。</li>
+<li>系统为处理器执行所规划的单元是线程，不是进程。</li>
+</ul>
+<p>例子：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">class</span> <span class="title">SyncPractice</span></span><br><span class="line">    &#123;</span><br><span class="line">     	<span class="comment">//用于测试代码中不同任务的执行时间</span></span><br><span class="line">        Stopwatch sw = <span class="keyword">new</span> Stopwatch();</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">DoRun</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">const</span> <span class="keyword">int</span> LargeNumber = <span class="number">600000</span>;</span><br><span class="line">            sw.Start();</span><br><span class="line"></span><br><span class="line">            <span class="keyword">int</span> t1 = CountCharacters(<span class="number">1</span>,<span class="string">"http://www.microsoft.com"</span>);</span><br><span class="line">            <span class="keyword">int</span> t2 = CountCharacters(<span class="number">2</span>, <span class="string">"http://www.baidu.com"</span>);</span><br><span class="line"></span><br><span class="line">            CountToALargeNumber(<span class="number">1</span>, LargeNumber);</span><br><span class="line">            CountToALargeNumber(<span class="number">2</span>, LargeNumber);</span><br><span class="line">            CountToALargeNumber(<span class="number">3</span>, LargeNumber);</span><br><span class="line">            CountToALargeNumber(<span class="number">4</span>, LargeNumber);</span><br><span class="line"></span><br><span class="line">            Console.WriteLine(<span class="string">"chars in www.microsoft.com:&#123;0&#125;"</span>, t1);</span><br><span class="line">            Console.WriteLine(<span class="string">"chars in www.baidu.com:&#123;1&#125;"</span>, t2);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment">//下载网站的内容，返回网站包含的字符串数。     </span></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">CountCharacters</span>(<span class="params"><span class="keyword">int</span> id , <span class="keyword">string</span> uriString</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            WebClient wc1 = <span class="keyword">new</span> WebClient();</span><br><span class="line">            Console.WriteLine(<span class="string">"Starting call&#123;0&#125;:&#123;1,4:NO&#125; ms"</span>, id, sw.Elapsed.TotalMilliseconds);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">string</span> result = wc1.DownloadString(<span class="keyword">new</span> Uri(uriString));</span><br><span class="line">            Console.WriteLine(<span class="string">"call&#123;0&#125; compelted:&#123;1,4:NO&#125; ms"</span>, id, sw.Elapsed.TotalMilliseconds);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> result.Length;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">     	<span class="comment">//只是一个消耗时间的方法，测试用</span></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">CountToALargeNumber</span>(<span class="params"><span class="keyword">int</span> id, <span class="keyword">int</span> <span class="keyword">value</span></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">long</span> i  = <span class="number">0</span>;  i &lt; <span class="keyword">value</span>; i++)</span><br><span class="line">            &#123;</span><br><span class="line">                Console.WriteLine(<span class="string">"End Counting &#123;0&#125; : &#123;1,4:NO&#125; ms"</span>, id, sw.Elapsed.TotalMilliseconds);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title">Program</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="keyword">string</span>[] args</span>)</span></span><br><span class="line"><span class="function"></span>   &#123;</span><br><span class="line">    SyncPractice sp = <span class="keyword">new</span> SyncPractice();</span><br><span class="line">    sp.DoRun();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Starting call 1:0.7881 ms</span><br><span class="line">call1 compelted:132.0713 ms</span><br><span class="line">Starting call 2:132.1764 ms</span><br><span class="line">call2 compelted:983.1649 ms</span><br><span class="line">End Counting 1 : 983.5177 ms</span><br><span class="line">End Counting 2 : 983.8779 ms</span><br><span class="line">End Counting 3 : 984.1251 ms</span><br><span class="line">End Counting 4 : 984.416 ms</span><br><span class="line">chars in www.bing.com:14462</span><br><span class="line">chars in www.baidu.com:111980</span><br></pre></td></tr></table></figure>
+<p>实例的执行顺序是：1.执行两次下载网页内容的CountCharacters。2.执行四次CountToALargeNumber，可以看到，时间大部分都浪费在等待网站相应上了，如果先执行四次CountToALargeNumber方法，同时等待网络，时间会减少很多。所以引入了Async/await特性。</p>
+<h1 id="1-2-Async-Await特性"><a href="#1-2-Async-Await特性" class="headerlink" title="1.2 Async/Await特性"></a>1.2 Async/Await特性</h1><p>Async/Await特性可以实现不需像上例中等待网络响应后再做其他操作。</p>
+<h2 id="1-2-1-例子"><a href="#1-2-1-例子" class="headerlink" title="1.2.1 例子"></a>1.2.1 例子</h2><p>一个应用了Async/await特性的例子：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">SyncPracticeUseSync</span></span><br><span class="line">&#123;</span><br><span class="line">        Stopwatch sw = <span class="keyword">new</span> Stopwatch();    </span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">DoRun</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">const</span> <span class="keyword">int</span> LargeNumber = <span class="number">6</span>;</span><br><span class="line">        sw.Start();</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//保存结果的对象</span></span><br><span class="line">        Task&lt;<span class="keyword">int</span>&gt; t1 = CountCharacters(<span class="number">1</span>, <span class="string">"https://www.baidu.com/"</span>);</span><br><span class="line">        Task&lt;<span class="keyword">int</span>&gt; t2 = CountCharacters(<span class="number">2</span>, <span class="string">"https://cn.bing.com"</span>);</span><br><span class="line"></span><br><span class="line">        CountToALargeNumber(<span class="number">1</span>, LargeNumber);</span><br><span class="line">        CountToALargeNumber(<span class="number">2</span>, LargeNumber);</span><br><span class="line">        CountToALargeNumber(<span class="number">3</span>, LargeNumber);</span><br><span class="line">        CountToALargeNumber(<span class="number">4</span>, LargeNumber);</span><br><span class="line">	</span><br><span class="line">        <span class="comment">//获取结果</span></span><br><span class="line">        Console.WriteLine(<span class="string">"chars in www.bing.com:&#123;0&#125;"</span>, t1.Result);</span><br><span class="line">        Console.WriteLine(<span class="string">"chars in www.baidu.com:&#123;0&#125;"</span>, t2.Result);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//上下文关键字 </span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">async</span> Task&lt;<span class="keyword">int</span>&gt; <span class="title">CountCharacters</span>(<span class="params"><span class="keyword">int</span> id, <span class="keyword">string</span> uriString</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        WebClient wc1 = <span class="keyword">new</span> WebClient();</span><br><span class="line">        Console.WriteLine(<span class="keyword">string</span>.Format(<span class="string">"Starting call &#123;0&#125;:&#123;1&#125; ms"</span>, id, sw.Elapsed.TotalMilliseconds));</span><br><span class="line">			<span class="comment">//上下文关键字</span></span><br><span class="line">        <span class="keyword">string</span> result = <span class="keyword">await</span> wc1.DownloadStringTaskAsync(<span class="keyword">new</span> Uri(uriString));</span><br><span class="line">        Console.WriteLine(<span class="keyword">string</span>.Format(<span class="string">"call&#123;0&#125; compelted:&#123;1&#125; ms"</span>, id, sw.Elapsed.TotalMilliseconds));</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> result.Length;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">CountToALargeNumber</span>(<span class="params"><span class="keyword">int</span> id, <span class="keyword">int</span> <span class="keyword">value</span></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">long</span> i = <span class="number">0</span>; i &lt; <span class="keyword">value</span>; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            Console.WriteLine(<span class="keyword">string</span>.Format(<span class="string">"End Counting &#123;0&#125; : &#123;1&#125; ms"</span>, id, sw.Elapsed.TotalMilliseconds));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行后的结果为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Starting call 1:1.6199 ms</span><br><span class="line">Starting call 2:85.9381 ms</span><br><span class="line">End Counting 1 : 87.4253 ms</span><br><span class="line">End Counting 2 : 87.8023 ms</span><br><span class="line">End Counting 3 : 87.8327 ms</span><br><span class="line">End Counting 4 : 88.333 ms</span><br><span class="line">call1 compelted:381.3264 ms</span><br><span class="line">chars in www.bing.com:14462</span><br><span class="line">call2 compelted:924.1949 ms</span><br><span class="line">chars in www.baidu.com:111980</span><br></pre></td></tr></table></figure>
+<p>比之前的结果快很多，现在CountToALargeNumber方法的4次调用是在等待网站响应时进行的，<strong>所有的工作都是在主线程中进行的，并没有创建额外的线程。</strong></p>
+<h2 id="1-2-2-Async-Await的结构"><a href="#1-2-2-Async-Await的结构" class="headerlink" title="1.2.2 Async/Await的结构"></a>1.2.2 Async/Await的结构</h2><p>两种调用方法的时机：</p>
+<ul>
+<li>同步方法：一个程序调用某个方法，等待方法执行所有处理后才能继续执行。</li>
+<li>异步方法：在方法处理完成之前就返回到调用位置。</li>
+</ul>
+<p>async/await可以创建并使用异步方法，它由三个部分组成：</p>
+<ol>
+<li><p>调用方法：该方法调用异步方法，然后异步方法（可能在相同的线程，亦可能在不同的线程）执行其任务时继续执行。如例子中的DoRun()。</p>
+</li>
+<li><p>异步方法：该方法异步执行其工作，然后立即返回到调用方法。如同例子中的CountCharacters();</p>
+</li>
+<li><p>await表达式：用于异步方法内部，指明需要异步执行的任务，异步方法可以包含任意多个await表达式，如果一个不包含的话编译器会发出警告。如同例子的：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">string</span> result = <span class="keyword">await</span> wc1.DownloadStringTaskAsync(<span class="keyword">new</span> Uri(uriString));</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h1 id="1-3-异步方法"><a href="#1-3-异步方法" class="headerlink" title="1.3 异步方法"></a>1.3 异步方法</h1><p>异步方法的语法特点：</p>
+<ol>
+<li>方法头中包含async方法修饰符。</li>
+<li>包含一个或多个await表达式，表示可以异步完成的任务。</li>
+<li>必须具备以下三种返回类型：Void，Task，Task<t> 。后两种的返回对象表示将在未来完成的工作，调用方法和异步方法可以继续执行。</t></li>
+<li>异步方法的参数可以为任意类型任意数量，但不能是out或ref参数。</li>
+<li>按约定，异步方法名称应该以Async为后缀。</li>
+<li>除方法以外，lambda表达式和匿名方法也可以作为异步对象。</li>
+<li>await语句可以放入Try Catch结构内。</li>
+</ol>
+<p>async关键字只是包含一个或多个await表达式，它本身不能创建任何异步操作。同时，async关键字还是一个上下文关键字，除了作为方法的修饰符，async还可作为标识符。</p>
+<h2 id="1-3-1-三种返回类型介绍"><a href="#1-3-1-三种返回类型介绍" class="headerlink" title="1.3.1 三种返回类型介绍"></a>1.3.1 三种返回类型介绍</h2><p>Task<t> ：</t></p>
+<p>如果调用方法要从调用中获取一个T类型的值，异步方法的返回类型就必须是Task<t> ，调用方法将通过读取Task的Result属性获取这个T类型的值。</t></p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Task&lt;<span class="keyword">int</span>&gt; t1 = CountCharacters(<span class="number">1</span>, <span class="string">"https://www.baidu.com/"</span>);</span><br></pre></td></tr></table></figure>
+<p>Task :</p>
+<p>如果调用方法不需要从异步方法中返回值，但需要检查异步方法的状态，就可以只返回一个Task类型的对象，如果异步方法种有return语句，也不会返回任何东西：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Task t1 = CountCharacters(<span class="number">1</span>, <span class="string">"https://www.baidu.com/"</span>);</span><br></pre></td></tr></table></figure>
+<p>Void :</p>
+<p>如果调用方法仅仅想执行异步方法，而不需要做任何交互，这种叫做调用并忘记，异步方法可以返回void类型，同时return语句也不会返回任何东西。</p>
+<h2 id="1-3-2-异步方法的控制流"><a href="#1-3-2-异步方法的控制流" class="headerlink" title="1.3.2 异步方法的控制流"></a>1.3.2 异步方法的控制流</h2><p>异步方法的结构包括三个不同的区域：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">async</span> Task&lt;<span class="keyword">int</span>&gt; <span class="title">CountCharacters</span>(<span class="params"><span class="keyword">int</span> id, <span class="keyword">string</span> uriString</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">/*1.await表达式之前的部分*/</span></span><br><span class="line">  	WebClient wc1 = <span class="keyword">new</span> WebClient();</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*2.await表达式*/</span></span><br><span class="line">    <span class="keyword">string</span> result = <span class="keyword">await</span> wc1.DownloadStringTaskAsync(<span class="keyword">new</span> Uri(uriString));</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/*3.后续部分*/</span></span><br><span class="line">    <span class="keyword">return</span> result.Length;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>控制流：</p>
+<pre class="mermaid">graph TD;
+    id1[调用异步方法]-->id2(同步地执行代码,是否遇到await表达式);
+    id2--否-->id100[继续执行]
+    id2--是-->id3[await表达式是否完成?]
+    id3--是-->id2
+    id3--否-->id4[1.创建空闲任务2.创建后续部分3.返回调用方法的控制流]
+    id4-->id100
+    id4-->id5[执行await的空闲任务]
+    id5-->id6[执行后续部分]
+    id6-->id7[设置返回的task状态和返回值]
+    id7-->id9[退出]</pre>
+
+<p>*注：这需要解释一下，异步方法的返回值返回的是一个任务，里面有需要的数值length。 当执行到await时，异步方法会继续执行调用方法，同时返回了一个task，此时任务可能未完成，但异步方法还是返回了一个task，同时可以通过task来判断await表达式是否执行完成。当await表达式结束后，return legnth才会真正执行，同时可以通过调用task对象的成员来使用：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">async</span> Task&lt;<span class="keyword">int</span>&gt; <span class="title">CountCharacters</span>(<span class="params"><span class="keyword">int</span> id, <span class="keyword">string</span> uriString</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  	WebClient wc1 = <span class="keyword">new</span> WebClient();</span><br><span class="line">    <span class="keyword">string</span> result = <span class="keyword">await</span> wc1.DownloadStringTaskAsync(<span class="keyword">new</span> Uri(uriString));</span><br><span class="line">    <span class="keyword">return</span> result.Length;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="1-3-3-Await表达式"><a href="#1-3-3-Await表达式" class="headerlink" title="1.3.3 Await表达式"></a>1.3.3 Await表达式</h2><p><strong>Await</strong>：由关键字和一个空闲对象（任务）组成，表达式指定了一个异步执行的任务。</p>
+<p><strong>空闲对象</strong>：就是一个awaitable类型的实例，awaitable类型指包含GetAwaiter方法的类型，该方法没有参数，返回一个awaiter类型的对象。</p>
+<p><strong>Awaiter</strong>：包含以下成员(实际上，不需要构建自己的awaitable。)</p>
+<ul>
+<li>bool IsCompleted{get;}</li>
+<li>void OnCompleted(Action);</li>
+<li>Void GetResult();或T GetResult();</li>
+</ul>
+<h2 id="1-3-4-自定义异步任务"><a href="#1-3-4-自定义异步任务" class="headerlink" title="1.3.4 自定义异步任务"></a>1.3.4 自定义异步任务</h2><p>作为await表达式的任务，最简单的方法是在自己的方法中使用Task.run方法。</p>
+<p>Task. run会在不同的线程上运行你的方法，签名：以Func<treturn>委托作为参数，返回值类型为T return。有三种创建方法：</treturn></p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">UserAwaitFunc</span></span><br><span class="line">   &#123;</span><br><span class="line">       <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">GetNum</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>       &#123;</span><br><span class="line">           <span class="keyword">return</span> <span class="number">10</span>;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="function"><span class="keyword">public</span> <span class="keyword">async</span> Task <span class="title">DoWorkAsync</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>       &#123;</span><br><span class="line">           <span class="comment">//第一种</span></span><br><span class="line">           Func&lt;<span class="keyword">int</span>&gt; ten = <span class="keyword">new</span> Func&lt;<span class="keyword">int</span>&gt;(GetNum);</span><br><span class="line">           <span class="keyword">int</span> a = <span class="keyword">await</span> Task.Run(ten);</span><br><span class="line">           <span class="comment">//第二种</span></span><br><span class="line">           <span class="keyword">int</span> b = <span class="keyword">await</span> Task.Run(<span class="keyword">new</span> Func&lt;<span class="keyword">int</span>&gt;(GetNum));</span><br><span class="line">           <span class="comment">//第三种</span></span><br><span class="line">           <span class="keyword">int</span> c = <span class="keyword">await</span> Task.Run(() =&gt; &#123; <span class="keyword">return</span> <span class="number">10</span>; &#125;);</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>Task.Run()有很多重载，包括以Func和Action为参数等等。如果方法的参数不匹配，则可以使用lambda表达式包装此不兼容的方法。</p>
+<h2 id="1-3-5-取消一个异步操作"><a href="#1-3-5-取消一个异步操作" class="headerlink" title="1.3.5 取消一个异步操作"></a>1.3.5 取消一个异步操作</h2><p>一些.net异步方法允许请求终止执行，自定义的异步方法中也可以加入这个特性。</p>
+<p>System.threading.task命名空间有两个为此设计：cancellationtoken和cancellationtokensource。</p>
+<ul>
+<li>cancellationtoken对象包含任务是否应被取消的信息，拥有cancellationtoken对象的任务需要定期检查其令牌（token）的状态，如果cancellationtoken对象的iscancellationrequested的属性为true，任务需停止操作并返回。cancellationtoken不可逆，一旦取消被设置为true，就不能被更改。</li>
+<li>cancellationtokensource对象创建可分配给不同任务的cancellationtoken对象，任何持有cancellationtokensource的对象都可以调用其cancel方法，这样会将iscancellationrequested属性设置为true。</li>
+</ul>
+<p>简略的说：调用cancellationtokensource的cancel时，本身并不会执行取消操作。只是将cancellationtoken的iscancellationrequested属性设置为true，包含cancellationtoken的代码负责检查该属性来判断任务是否停止执行。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">CancelSync</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">async</span> Task <span class="title">RunAsync</span>(<span class="params"> CancellationToken ct</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">if</span> (ct.IsCancellationRequested)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">await</span> Task.Run(() =&gt; CycleMethod(ct), ct);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">CycleMethod</span>(<span class="params">CancellationToken ct</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            Console.WriteLine(<span class="string">"Starting CycleMethod"</span>);</span><br><span class="line">            <span class="keyword">const</span> <span class="keyword">int</span> max = <span class="number">5</span>;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; max; i++)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span> (ct.IsCancellationRequested)</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">return</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                Thread.Sleep(<span class="number">1000</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">Program</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="keyword">string</span>[] args</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        CancellationTokenSource cts = <span class="keyword">new</span> CancellationTokenSource();</span><br><span class="line">        CancellationToken token = cts.Token;</span><br><span class="line"></span><br><span class="line">        CancelSync mc = <span class="keyword">new</span> CancelSync();</span><br><span class="line">        Task t = mc.RunAsync(token);</span><br><span class="line"></span><br><span class="line">        Thread.Sleep(<span class="number">3000</span>);</span><br><span class="line">        cts.Cancel();</span><br><span class="line">        t.Wait();</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="1-3-6-调用方法中同步的等待任务"><a href="#1-3-6-调用方法中同步的等待任务" class="headerlink" title="1.3.6 调用方法中同步的等待任务"></a>1.3.6 调用方法中同步的等待任务</h2><p>有的时候需要等待某个Task对象完成，Task的Wait方法可以实现该功能。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">class Program</span><br><span class="line">&#123;</span><br><span class="line">    static void Main(string[] args)</span><br><span class="line">    &#123;</span><br><span class="line">        CancelSync mc = new CancelSync();</span><br><span class="line">        Task t = mc.RunAsync();</span><br><span class="line">        t.Wait();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>wait方法可用于单一task或一组task对象，对于一组task对象，可以等待所有任务都结束，也可以等待某一个任务结束。 实现这两个功能的是task类中的两个静态方法：</p>
+<ul>
+<li>Waitall(params Task[] tasks);</li>
+<li>Waitany(params Task[] tasks);</li>
+</ul>
+<p>这两个方法都没有返回值，调用时会停止，直到条件满足后再继续执行。</p>
+<h2 id="1-3-7-在异步方法中异步地等待任务"><a href="#1-3-7-在异步方法中异步地等待任务" class="headerlink" title="1.3.7 在异步方法中异步地等待任务"></a>1.3.7 在异步方法中异步地等待任务</h2><p>在异步方法中，有时会希望用await表达式等待task，这时异步方法会返回到调用方法。Task.whenall task.whenany方法实现，这两个方法称为组合子(combinator）</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">DoRun</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">const</span> <span class="keyword">int</span> LargeNumber = <span class="number">6</span>;</span><br><span class="line">        sw.Start();</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//保存结果的对象</span></span><br><span class="line">        Task&lt;<span class="keyword">int</span>&gt; t1 = CountCharacters(<span class="number">1</span>, <span class="string">"https://www.baidu.com/"</span>);</span><br><span class="line">        Task&lt;<span class="keyword">int</span>&gt; t2 = CountCharacters(<span class="number">2</span>, <span class="string">"https://cn.bing.com"</span>);</span><br><span class="line">        </span><br><span class="line">        List&lt;Task&gt; tasks = <span class="keyword">new</span> List&lt;Task&lt;<span class="keyword">int</span>&gt;&gt;();</span><br><span class="line">    	tasks.Add(t1);</span><br><span class="line">    	tasks.Add(t2);</span><br><span class="line">    	<span class="keyword">await</span> Task.WhenAll(tasks);</span><br><span class="line">    	Console.WriteLine(<span class="string">"Done"</span>);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>此时会等待两次CountCharacters执行完毕，然后输出Done。</p>
+<p>将WhenAll换成如下，此时会等待其中一个CountCharacters执行完毕，然后输出Done。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">await</span> Task.WhenAny(tasks);</span><br></pre></td></tr></table></figure>
+<h2 id="1-3-8-Task-Delay方法"><a href="#1-3-8-Task-Delay方法" class="headerlink" title="1.3.8 Task.Delay方法"></a>1.3.8 Task.Delay方法</h2><p>Task.Delay 方法创建一个task对象，该对象将暂停其在线程中的处理，和thread.sleep阻塞线程不同的是，task.delay不会阻塞线程，线程可以继续处理其他工作。</p>
+<h1 id="1-4-BackgroundWork类"><a href="#1-4-BackgroundWork类" class="headerlink" title="1.4 BackgroundWork类"></a>1.4 BackgroundWork类</h1><p>Async/await 特性适合处理需要在后台完成的，不相关的小任务。但有时候，可能需要新建一个线程，在后台持续允许已完成某项工作，并不时与主线程进行通信。background类就是为此创建的。</p>
+<pre class="mermaid">classDiagram
+Class01 <|-- object class01 : runworkerasync() cancelasync() reportprogress() workerreportsprogress workersupportscancellation isbusy cancellationpending event:doworkevent event:progresschanged event:runworkercampleted< pre>
+
+<p><code>WorkerReportsProgress</code>和<code>WorkerSupportsCancellation</code>用于设置后台任务是否可以把它的进度汇报给主线程，以及是否支持从主线程取消。可以用<code>isbusy</code>属性检查后台任务是否在运行。</p>
+<p>后台线程开始时触发<code>DoWork</code>，后台任务汇报状态的时候触发<code>ProgressChanged</code>事件，线程退出的时候 触发<code>RunWorkerCompeted</code>事件。</p>
+<p><code>RunWorkerAsync()</code>用于获取后台线程并执行DoWork事件处理程序，<code>CancelAsync()</code>会把<code>CancellationPending</code>设置为True，<code>DoWork</code>事件处理需要检查这个属性决定是否应该停止处理，<code>ReportProgress()</code>用于Dowork向主线程汇报进度。</p>
+<p>要使用Back类，需要写一些事件处理程序，<code>DoWork</code>事件的处理程序是必须的。剩下两个可选。</p>
+<p>注：这块东西也比较多，但是对于我来说不常用，等用到再回来补充。</p>
+<h1 id="1-5-并行循环"><a href="#1-5-并行循环" class="headerlink" title="1.5 并行循环"></a>1.5 并行循环</h1><p>任务并行库（task parellel library）是BCL中的一个类库，简化了并行编程。简单的介绍以下这个类库：<code>Parallel.for</code>，<code>Parallel.foreach</code>循环，用于不与其他动作依赖的迭代行为。一定要注意的是，此方式不能保证迭代的执行次序，只能保证结果的正确。</p>
+<h2 id="1-5-1-Parallel-for"><a href="#1-5-1-Parallel-for" class="headerlink" title="1.5.1 Parallel.for"></a>1.5.1 Parallel.for</h2><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> ParallelLoopResult.For(<span class="keyword">int</span> fromInclusive,<span class="keyword">int</span> toExclusive,Action body)</span><br></pre></td></tr></table></figure>
+<p>例子：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Parallel.<span class="keyword">for</span>(<span class="number">0</span>,<span class="number">15</span>,i=&gt;Console.WriteLine(<span class="string">"wwww"</span> + i));</span><br></pre></td></tr></table></figure>
+<h2 id="1-5-2-Parallel-foreach"><a href="#1-5-2-Parallel-foreach" class="headerlink" title="1.5.2 Parallel.foreach"></a>1.5.2 Parallel.foreach</h2><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> ParallelLoopResult <span class="title">ForEach</span>(<span class="params">IEnumerable&lt;TSource&gt; source,Action&lt;TSource&gt; body</span>)</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Parallel.ForEach(array,i=&gt;Console.WriteLine(<span class="string">"wwww"</span> + i));</span><br></pre></td></tr></table></figure>
+<h1 id="1-6-其他异步编程模式"><a href="#1-6-其他异步编程模式" class="headerlink" title="1.6 其他异步编程模式"></a>1.6 其他异步编程模式</h1><p>了解一下旧的异步方法的模式：</p>
+<p>当委托对象在调用列表中只有一个方法，就可以异步执行这个方法（下面叫引用方法）。委托类有两个方法，叫做<code>BeginInvoke</code>和<code>Endinvoke</code>，当调用<code>Begininvoke</code>方法时，它开始在独立线程上执行引用方法，并且立即返回到原始线程。原始线程可以继续，引用方法会在线程池的线程中并行执行。</p>
+<p>当程序希望获取已完成的异步方法的结果时，可以检查<code>Begininvoke</code>返回的<code>Iasyncresult</code>的<code>Iscompleted</code>属性，或调用委托的<code>Endinvoke</code>方法等待委托完成。</p>
+<p>下面介绍一下原始线程如何知道发起的线程是否完成的几个办法。</p>
+<h2 id="1-6-1-等待一直到结束模式"><a href="#1-6-1-等待一直到结束模式" class="headerlink" title="1.6.1 等待一直到结束模式"></a>1.6.1 等待一直到结束模式</h2><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">MyDel del = <span class="keyword">new</span> MyDel(Sum);</span><br><span class="line">IAsyncReult iar = del.BeginInvoke(<span class="number">3</span>,<span class="number">5</span>,<span class="literal">null</span>,<span class="literal">null</span>);</span><br><span class="line"><span class="comment">//等待开启的线程结束</span></span><br><span class="line"><span class="keyword">long</span> result = del.EndInvoke(iar);</span><br></pre></td></tr></table></figure>
+<h2 id="1-6-2-轮询模式"><a href="#1-6-2-轮询模式" class="headerlink" title="1.6.2 轮询模式"></a>1.6.2 轮询模式</h2><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">MyDel del = <span class="keyword">new</span> MyDel(Sum);</span><br><span class="line">IAsyncReult iar = del.BeginInvoke(<span class="number">3</span>,<span class="number">5</span>,<span class="literal">null</span>,<span class="literal">null</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span>(!iar.IsCompleted)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="comment">//dosomething</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//调用EndInvoke来获取接口并进行清理</span></span><br><span class="line"><span class="keyword">long</span> result = del.EndInvoke(iar);</span><br></pre></td></tr></table></figure>
+<h2 id="1-6-3-回调模式"><a href="#1-6-3-回调模式" class="headerlink" title="1.6.3 回调模式"></a>1.6.3 回调模式</h2><p>等待一直结束模式和轮询模式中，初始线程继续自己的流程，然后去观察开启的线程是否完成，然后拿到结果并继续。回调模式不同，一旦开启，就是自己管自己，不用考虑同步，异步方法结束后，系统调用一个用户自定义的方法处理结果，并且调用委托的endinvoke方法，这个用户自定义的方法叫做回调方法或回调。</p>
+<p><code>Begininvoke</code>方法需要传入两个参数：</p>
+<ul>
+<li>第一个，回调方法的名字。签名必须与<code>void AsyncCallback(IAsyncReult iar)</code>一致。</li>
+<li>第二个，state，可以传null，或者传入回调方法的一个对象的引用。</li>
+</ul>
+<p>例子：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">IAsyncReult iar1 = del.BeginInvoke(<span class="number">3</span>,<span class="number">5</span>,<span class="keyword">new</span> AsyncCallback(CallBack),<span class="literal">null</span>);</span><br><span class="line">IAsyncReult iar2 = del.BeginInvoke(<span class="number">3</span>,<span class="number">5</span>,CallBack,<span class="literal">null</span>);</span><br></pre></td></tr></table></figure>
+<p>回调方法内调要调用<code>Endinvoke</code>处理异步方法执行后的输出值。要调用<code>Endinvoke</code>方法，需要有委托对象的引用，但他在初始线程中，不在开启的线程中。如果不使用<code>BeginInvoke</code>的state参数作为其他用途，可以使用它发送委托的引用给回调方法。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">IAsyncReult iar = del.BeginInvoke(<span class="number">3</span>,<span class="number">5</span>,CallBack,del);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">CallBack</span>(<span class="params">IAsyncReult iar</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	AsyncReult ar = (AsyncReult)iar;</span><br><span class="line">	Mydel del = (Mydel)ar.AsyncDelegate;</span><br><span class="line">	<span class="keyword">long</span> Sum = del.EndInvoke(iar);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="1-6-3-计时器"><a href="#1-6-3-计时器" class="headerlink" title="1.6.3 计时器"></a>1.6.3 计时器</h2><p>计时器每次时间到期后调用回调方法。回调方法必须是<code>TimerCallback</code>形式的:<code>void TimerCallback(object state)</code> </p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Timeer mytimer = <span class="keyword">new</span> Timer(MyCallback,someobject,<span class="number">2000</span>,<span class="number">2000</span>)</span><br></pre></td></tr></table></figure>
+<p>参数含义：</p>
+<ol>
+<li>回调的名字。</li>
+<li>传给回调的对象，可以是null或者每次回调方法执行时要传入的对象引用。</li>
+<li>多少秒后第一次调用。</li>
+<li>每多少秒执行一次。</li>
+</ol>
+</|--></pre>
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/CSharp/" rel="tag"># CSharp</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/12/17/CSharp基础/CSharp基础13 命名空间 程序集/" rel="next" title="CSharp基础13 命名空间 程序集">
+                <i class="fa fa-chevron-left"></i> CSharp基础13 命名空间 程序集
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/12/17/CSharp基础/CSharp基础11 LINQ/" rel="prev" title="CSharp基础11 LINQ">
+                CSharp基础11 LINQ <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+ 
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/myselelogin.png" alt="Sayi">
+            
+              <p class="site-author-name" itemprop="name">Sayi</p>
+              <div class="site-description motion-element" itemprop="description">Just noob.</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">22</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                    <span class="site-state-item-count">1</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">9</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/qihr" title="GitHub &rarr; https://github.com/qihr" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:qhr.geek@gmail.com" title="E-Mail &rarr; mailto:qhr.geek@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-1概述"><span class="nav-text">1.1概述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-2-Async-Await特性"><span class="nav-text">1.2 Async/Await特性</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-1-例子"><span class="nav-text">1.2.1 例子</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-2-Async-Await的结构"><span class="nav-text">1.2.2 Async/Await的结构</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-3-异步方法"><span class="nav-text">1.3 异步方法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-1-三种返回类型介绍"><span class="nav-text">1.3.1 三种返回类型介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-2-异步方法的控制流"><span class="nav-text">1.3.2 异步方法的控制流</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-3-Await表达式"><span class="nav-text">1.3.3 Await表达式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-4-自定义异步任务"><span class="nav-text">1.3.4 自定义异步任务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-5-取消一个异步操作"><span class="nav-text">1.3.5 取消一个异步操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-6-调用方法中同步的等待任务"><span class="nav-text">1.3.6 调用方法中同步的等待任务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-7-在异步方法中异步地等待任务"><span class="nav-text">1.3.7 在异步方法中异步地等待任务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-8-Task-Delay方法"><span class="nav-text">1.3.8 Task.Delay方法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-4-BackgroundWork类"><span class="nav-text">1.4 BackgroundWork类</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-5-并行循环"><span class="nav-text">1.5 并行循环</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-5-1-Parallel-for"><span class="nav-text">1.5.1 Parallel.for</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-5-2-Parallel-foreach"><span class="nav-text">1.5.2 Parallel.foreach</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-6-其他异步编程模式"><span class="nav-text">1.6 其他异步编程模式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-6-1-等待一直到结束模式"><span class="nav-text">1.6.1 等待一直到结束模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-6-2-轮询模式"><span class="nav-text">1.6.2 轮询模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-6-3-回调模式"><span class="nav-text">1.6.3 回调模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-6-3-计时器"><span class="nav-text">1.6.3 计时器</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sayi</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">站点总字数：</span>
+    
+    <span title="站点总字数">180k</span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    
+    <span title="站点阅读时长">2:43</span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+  <script src="https://unpkg.com/mermaid@7.1.2/dist/mermaid.min.js"></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize("");
+    }
+  </script>
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.0"></script>
+
+  <script src="/js/motion.js?v=7.1.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.1.0"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.0"></script>
+<script src="/js/post-details.js?v=7.1.0"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.0"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+<script>
+if ($('body').find('pre.mermaid').length) {
+  $.ajax({
+    type: 'GET',
+    url: '',
+    dataType: 'script',
+    cache: true,
+    success: function() {
+      mermaid.initialize({
+        theme: '',
+        logLevel: 3,
+        flowchart: { curve: 'linear' },
+        gantt: { axisFormat: '%m/%d/%Y' },
+        sequence: { actorMargin: 50 }
+      });
+    }
+  });
+}
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
